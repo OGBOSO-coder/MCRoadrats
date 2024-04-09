@@ -1,10 +1,10 @@
 .footer-container {
-  background-color: #101522;
-  padding: 2rem 0 2rem 0;
+  background-color: #161616;
+  padding: 2rem 0;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 
 .social-media {
@@ -14,10 +14,8 @@
 
 .social-media-wrap {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  width: 90%;
-  margin: 4px auto 0 auto;
 }
 
 .footer-logo {
@@ -27,13 +25,11 @@
 
 .social-logo {
   color: #fff;
-  justify-self: start;
   cursor: pointer;
   text-decoration: none;
   font-size: 2rem;
-  display: flex;
-  align-items: center;
   font-weight: bold;
+  margin-bottom: 16px;
 }
 
 .social-logo:hover {
@@ -42,12 +38,11 @@
 
 .website-rights {
   color: #fff;
-  margin-bottom: 16px;
+  padding-top: 20px;
 }
-
 .social-icons {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   width: 240px;
 }
@@ -55,6 +50,7 @@
 .social-icon-link {
   color: #fff;
   font-size: 24px;
+  margin: 0 10px;
 }
 
 .social-icon-link:hover {
@@ -72,12 +68,4 @@
 
 .youtube:hover {
   color: #c4302b;
-}
-
-.twitter:hover {
-  color: #00acee;
-}
-
-.linkedin:hover {
-  color: #0077b5;
 }
