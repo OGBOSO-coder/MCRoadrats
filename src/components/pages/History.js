@@ -1,11 +1,22 @@
-import React from 'react';
-import '../../App.css';
-import Cards from '../Cards'; // Import the 'Cards' component
+import React, { useState, useEffect } from 'react';
+import "../History.css"
 
-export default function Services() {
+// Components 
+const EditForm = () => {
     return (
         <div>
             
         </div>
     )
 }
+// -----
+
+const History = () => {
+  return (
+    <div>
+      <EditForm/>
+    </div>
+  );
+};
+
+export default History;
