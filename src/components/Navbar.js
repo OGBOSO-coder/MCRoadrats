@@ -29,7 +29,7 @@ function Navbar() {
       <nav className='navbar'>
         <div className='navbar-container'>
           <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
-            LOGO
+            MC ROADRATS
           </Link>
           <div className='menu-icon' onClick={handleClick}>
             <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
@@ -42,11 +42,20 @@ function Navbar() {
             </li>
             <li className='nav-item'>
               <Link
-                to='/services'
+                to='/kerho'
                 className='nav-links'
                 onClick={closeMobileMenu}
               >
-                Services
+                Kerho
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link
+                to='/hallitus'
+                className='nav-links'
+                onClick={closeMobileMenu}
+              >
+                Hallitus
               </Link>
             </li>
             <li className='nav-item'>
@@ -60,11 +69,11 @@ function Navbar() {
             </li>
             <li className='nav-item'>
               <Link
-                to='/products'
+                to='/rottaralli'
                 className='nav-links'
                 onClick={closeMobileMenu}
               >
-                Products
+                Rottaralli
               </Link>
             </li>
 

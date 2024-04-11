@@ -3,8 +3,9 @@ import Navbar from './components/Navbar';
 import './App.css';
 import Home from './components/pages/Home';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Services from './components/pages/Services';
-import Products from './components/pages/Products';
+import kerho from './components/pages/kerho';
+import hallitus from './components/pages/hallitus';
+import rottaralli from './components/pages/rottaralli';
 import SignUp from './components/pages/SignUp';
 import History from './components/pages/History';
 
@@ -15,8 +16,9 @@ function App() {
         <Navbar />
         <Switch>
           <Route path='/' exact component={Home} />
-          <Route path='/services' component={Services} />
-          <Route path='/products' component={Products} />
+          <Route path='/kerho' component={kerho} />
+          <Route path='/hallitus' component={hallitus} />
+          <Route path='/rottaralli' component={rottaralli} />
           <Route path='/history' component={History}/>
           <Route path='/sign-up' component={SignUp} />
         </Switch>
