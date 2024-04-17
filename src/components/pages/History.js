@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import "../History.css"
+import Footer from '../Footer';
+
+
 
 // Components 
+const ImageSlider = () => {
+
+}
+
 const EditForm = () => {
+
+
     return (
         <div>
             <div class='history-div'>
@@ -12,7 +21,8 @@ const EditForm = () => {
 
 Is at purse tried jokes china ready decay an. Small its shy way had woody downs power. To denoting admitted speaking learning my exercise so in. Procured shutters mr it feelings. To or three offer house begin taken am at. As dissuade cheerful overcame so of friendly he indulged unpacked. Alteration connection to so as collecting me. Difficult in delivered extensive at direction allowance. Alteration put use diminution can considered sentiments interested discretion. An seeing feebly stairs am branch income me unable.
 
-Whole every miles as tiled at seven or. Wished he entire esteem mr oh by. Possible bed you pleasure civility boy elegance ham. He prevent request by if in pleased. Picture too and concern has was comfort. Ten difficult resembled eagerness nor. Same park bore on be. Warmth his law design say are person. Pronounce suspected in belonging conveying ye repulsive.
+Whole every miles as tiled at seven or. 
+Wished he entire esteem mr oh by. Possible bed you pleasure civility boy elegance ham. He prevent request by if in pleased. Picture too and concern has was comfort. Ten difficult resembled eagerness nor. Same park bore on be. Warmth his law design say are person. Pronounce suspected in belonging conveying ye repulsive.
 
 Of friendship on inhabiting diminution discovered as. Did friendly eat breeding building few nor. Object he barton no effect played valley afford. Period so to oppose we little seeing or branch. Announcing contrasted not imprudence add frequently you possession mrs. Period saw his houses square and misery. Hour had held lain give yet.
 
@@ -23,7 +33,11 @@ Much did had call new drew that kept. Limits expect wonder law she. Now has you 
                   Breakfast procuring nay end happiness allowance assurance frankness. Met simplicity nor difficulty unreserved who. Entreaties mr conviction dissimilar me astonished estimating cultivated. On no applauded exquisite my additions. Pronounce add boy estimable nay suspected. You sudden nay elinor thirty esteem temper. Quiet leave shy you gay off asked large style.
               </p>
             </div>
-            
+
+            <div class='history-image-slider-div'>
+
+            </div>
+
         </div>
     )
 }
@@ -33,6 +47,7 @@ const History = () => {
   return (
     <div>
       <EditForm/>
+      <Footer/>
     </div>
   );
 };

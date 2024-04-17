@@ -8,3 +8,8 @@
 .history-title{
     display: flex;
 }
+.history-image-slider-div{
+    background-color: rgb(160, 156, 156);
+    height: 600px;
+    margin-bottom: 100px;
+}
