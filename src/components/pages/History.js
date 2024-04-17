@@ -6,7 +6,15 @@ import Footer from '../Footer';
 
 // Components 
 const ImageSlider = () => {
+    const [imageIndex, setImageIndex] = useState(0)
 
+    const images = ["images/img-6.jpg", "images/img-7.jpg", "images/img-8.jpg", "images/img-9.jpg"]
+
+    return (
+      <div style={{width: "100%", height: "100%"}}>
+        <img src={images[imageIndex]} className="history-img-slider-img"/>
+      </div>
+    )
 }
 
 const EditForm = () => {
@@ -33,11 +41,11 @@ Much did had call new drew that kept. Limits expect wonder law she. Now has you 
                   Breakfast procuring nay end happiness allowance assurance frankness. Met simplicity nor difficulty unreserved who. Entreaties mr conviction dissimilar me astonished estimating cultivated. On no applauded exquisite my additions. Pronounce add boy estimable nay suspected. You sudden nay elinor thirty esteem temper. Quiet leave shy you gay off asked large style.
               </p>
             </div>
-
-            <div class='history-image-slider-div'>
-
-            </div>
-
+            <center>
+              <div class='history-image-slider-div'>
+                <ImageSlider/>
+              </div>
+            </center>
         </div>
     )
 }

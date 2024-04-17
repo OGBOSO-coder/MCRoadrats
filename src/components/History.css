@@ -10,6 +10,15 @@
 }
 .history-image-slider-div{
     background-color: rgb(160, 156, 156);
+    max-width: 1200px;
+    width: 100%;
     height: 600px;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
+}
+
+.history-img-slider-img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    display: block;
 }
