@@ -92,3 +92,48 @@
   font-size: 1.5rem;
   margin-bottom: 10px;
 }
+
+.equipment-container {
+  margin: 20px;
+}
+
+.equipment-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.equipment-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust the minimum and maximum width as needed */
+  gap: 20px;
+}
+
+.equipment-image {
+  text-align: center;
+  max-width: 280px; /* Adjust the maximum width of the image container */
+}
+.equipment-image img {
+  width: 100%; /* Ensure all images take up the full width of their container */
+  height: auto;
+  border-radius: 8px;
+}
+
+.image-caption {
+  margin-top: 10px;
+  font-size: 1rem;
+}
+.equipment-description {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.tulokset {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust the minimum and maximum width as needed */
+  gap: 20px;
+  justify-content: center; /* Horizontally center the grid items */
+}
+
+.tulokset img {
+  max-width: 100%; /* Make sure the image doesn't exceed its container's width */
+}
