@@ -1,21 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import "../History.css"
 import Footer from '../Footer';
+import ImageSlider from '../ImageSlider';
 
-
+const images = ["images/img-6.jpg", "images/img-7.jpg", "images/img-8.jpg", "images/img-9.jpg"]
 
 // Components 
-const ImageSlider = () => {
-    const [imageIndex, setImageIndex] = useState(0)
-
-    const images = ["images/img-6.jpg", "images/img-7.jpg", "images/img-8.jpg", "images/img-9.jpg"]
-
-    return (
-      <div style={{width: "100%", height: "100%"}}>
-        <img src={images[imageIndex]} className="history-img-slider-img"/>
-      </div>
-    )
-}
 
 const EditForm = () => {
 
@@ -25,25 +15,19 @@ const EditForm = () => {
             <div class='history-div'>
               <h1 class='history-title'>Mc Roadrats Historia</h1>
               <p className='history-text'>
-              Whole wound wrote at whose to style in. Figure ye innate former do so we. Shutters but sir yourself provided you required his. So neither related he am do believe. Nothing but you hundred had use regular. Fat sportsmen arranging preferred can. Busy paid like is oh. Dinner our ask talent her age hardly. Neglected collected an attention listening do abilities.
-
-Is at purse tried jokes china ready decay an. Small its shy way had woody downs power. To denoting admitted speaking learning my exercise so in. Procured shutters mr it feelings. To or three offer house begin taken am at. As dissuade cheerful overcame so of friendly he indulged unpacked. Alteration connection to so as collecting me. Difficult in delivered extensive at direction allowance. Alteration put use diminution can considered sentiments interested discretion. An seeing feebly stairs am branch income me unable.
-
-Whole every miles as tiled at seven or. 
-Wished he entire esteem mr oh by. Possible bed you pleasure civility boy elegance ham. He prevent request by if in pleased. Picture too and concern has was comfort. Ten difficult resembled eagerness nor. Same park bore on be. Warmth his law design say are person. Pronounce suspected in belonging conveying ye repulsive.
-
-Of friendship on inhabiting diminution discovered as. Did friendly eat breeding building few nor. Object he barton no effect played valley afford. Period so to oppose we little seeing or branch. Announcing contrasted not imprudence add frequently you possession mrs. Period saw his houses square and misery. Hour had held lain give yet.
-
-Ever man are put down his very. And marry may table him avoid. Hard sell it were into it upon. He forbade affixed parties of assured to me windows. Happiness him nor she disposing provision. Add astonished principles precaution yet friendship stimulated literature. State thing might stand one his plate. Offending or extremity therefore so difficult he on provision. Tended depart turned not are.
-
-Much did had call new drew that kept. Limits expect wonder law she. Now has you views woman noisy match money rooms. To up remark it eldest length oh passed. Off because yet mistake feeling has men. Consulted disposing to moonlight ye extremity. Engage piqued in on coming.
-
-                  Breakfast procuring nay end happiness allowance assurance frankness. Met simplicity nor difficulty unreserved who. Entreaties mr conviction dissimilar me astonished estimating cultivated. On no applauded exquisite my additions. Pronounce add boy estimable nay suspected. You sudden nay elinor thirty esteem temper. Quiet leave shy you gay off asked large style.
-              </p>
+Kerho perustettiin toukokuussa 1987 ja nimeksi silloin annettiin Mikkelin Matkamoottoripyöräilijät (MMP). Ajatuksena oli saada Mikkelin seudun motoristit aktiivisen ja yhdistävän toiminnan piiriin. Jo seuraavana vuonna kerhon jäsenmäärä saavutti nykyisen noin 100 jäsenen tason. MMP toimi ensimmäiset vuodet Saksalan kaupunginosan toimintakeskuksessa. Tilojen vapaassa käytössä ilmeni kuitenkin tiettyjä rajoituksia, joten kerhon aktivistit alkoivat etsiä uusia ja suurempia kerhotiloja toiminnan kasvaessa. Mahdollista muuttoa edesauttoi kerhon taloudellisen tilanteen parantuminen Rottarallista saatujen tulojen myötä. Tämä jo legendaariseksi muodostunut kokoontumisajo pidettiin ensimmäisen kerran 1990.
+Seuraavat kerhotilat löytyivät Pursialan teollisuusalueelta, kun kaupungilta vapautui vanha kasvihuoneiden huoltorakennus. Näihin tiloihin päästiin muuttamaan marraskuussa 1993. Kerhon nimeksi vaihdettiin Mc Road Rats. Siitä alkoi innokas tilojen kunnostus moottoripyöräkerholle sopivaksi. Yläkertaan rakennettiin baari, konttori, keittokomero, sauna sosiaalitiloineen ja yöpymistilat uupuneille motoristeille. Yläkerrassa oli myös kylmä säilytystila Rottarallin kalusteille. Alakertaan remontoitiin huolto-, pesu-, maalaus- ja säilytystilat.
+ 
+ 
+Nykyisiin tiloihimme muutimme 14.5.2005. Kerhomme osti oman hallin, jota on rakenneltu toimintaamme sopivaksi. Kerholla on hyvät talvisäilytys ja huoltotilat. Jäsenistömme viihtyvyyteen on panostettu yläkerran oleskelutiloissa, joita laajensimme 2009. Hankimme kiinteistömme takapihalla olevan varastorakennuksen, jota olemme kunnostaneet vuosien varrella. Kerhotiloissa järjestetään vuosittain useita siivous- ja remontointitalkoita. Omassa baarissa vietetään pikkujoulut ja satunnaisesti spontaaneja juhlia. Ajokauden aloitus- ja lopetusbailut on juhlittu milloin missäkin. Pakollinen traditio on tietenkin Helsingin moottoripyöränäyttely. Yhteislähtöjä järjestetään joihinkin kokoontumisiin ja osa porukasta reissaa yhdessä ympäri Eurooppaa.
+ 
+ 
+Rottarallin järjestäminen on tärkein yhteinen vuosittainen tapahtumamme, jonka avulla mahdollistamme yhdistyksemme toiminnan.              </p>
             </div>
+            <h1>Kuvia MCRoadrats</h1>
             <center>
               <div class='history-image-slider-div'>
-                <ImageSlider/>
+                <ImageSlider imageUrls={images}/>
               </div>
             </center>
         </div>
