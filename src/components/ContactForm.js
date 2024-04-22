@@ -6,7 +6,11 @@ const ContactForm = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    message: ''
+    phone: '',
+    about: '',
+    reason: '',
+    address: '',
+    motorbikeBrand: ''
   });
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -39,7 +43,11 @@ const ContactForm = () => {
         setFormData({
           name: '',
           email: '',
-          message: ''
+          phone: '',
+          about: '',
+          reason: '',
+          address: '',
+          motorbikeBrand: ''
         });
         setErrorMessage('');
       })
@@ -57,19 +65,35 @@ const ContactForm = () => {
       {successMessage && <p>{successMessage}</p>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="name">Nimi:</label>
           <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
         </div>
         <div className="form-group">
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email">Sähköposti:</label>
           <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
         </div>
         <div className="form-group">
-          <label htmlFor="message">Message:</label>
-          <textarea id="message" name="message" value={formData.message} onChange={handleChange} required />
+          <label htmlFor="phone">Puhelinnumero:</label>
+          <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} required />
+          <div className="form-group">
+            <label htmlFor="address">Osoite:</label>
+            <input type="text" id="address" name="address" value={formData.address} onChange={handleChange} required />
+          </div>
+          <div className="form-group">
+            <label htmlFor="motorbikeBrand">Moottoripyörämerkki:</label>
+            <input type="text" id="motorbikeBrand" name="motorbikeBrand" value={formData.motorbikeBrand} onChange={handleChange} required />
+          </div>
+        </div>
+        <div className="form-group">
+          <label htmlFor="about">Kerro itsestäsi:</label>
+          <textarea id="about" name="about" value={formData.about} onChange={handleChange} required />
+        </div>
+        <div className="form-group">
+          <label htmlFor="reason">Miksi haluat liittyä:</label>
+          <textarea id="reason" name="reason" value={formData.reason} onChange={handleChange} required />
         </div>
         {errorMessage && <p>{errorMessage}</p>}
-        <button type="submit" disabled={isSubmitting}>Send</button> {/* Disable button when submitting */}
+        <button type="submit" disabled={isSubmitting}>Lähetä</button> {/* Disable button when submitting */}
       </form>
     </div>
   );
