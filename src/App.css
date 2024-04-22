@@ -104,13 +104,17 @@
 
 .equipment-images {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust the minimum and maximum width as needed */
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); /* Adjust the minimum and maximum width as needed */
   gap: 20px;
 }
 
 .equipment-image {
   text-align: center;
-  max-width: 280px; /* Adjust the maximum width of the image container */
+  max-width: 350px; /* Adjust the maximum width of the image container */
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 .equipment-image img {
   width: 100%; /* Ensure all images take up the full width of their container */
@@ -121,12 +125,21 @@
 .image-caption {
   margin-top: 10px;
   font-size: 1rem;
+  
 }
 .equipment-description {
   font-size: 1.5rem;
   margin-bottom: 20px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
+.equipment1-description {
+  font-size: 1.5rem;
+  margin-bottom: 40px;
+  margin-left: 15px;
+}
 .tulokset {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust the minimum and maximum width as needed */

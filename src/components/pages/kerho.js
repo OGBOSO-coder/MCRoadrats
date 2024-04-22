@@ -1,20 +1,20 @@
 import React from 'react';
 import '../../App.css';
+import Footer from '../Footer';
 
 export default function Products() {
   return (
+  <div className=''>
     <div className='equipment-container'>
-      <h1 className='equipment-title'>Meidän laitteisto</h1>
+      <h1 className='equipment-title'>Palvelut</h1>
       <p className='equipment-description'>
-        Explore our top-of-the-line equipment below:
+        Palvelut:
         <br />
-        - Eho-, vääntö- ja seoksenmittaus inertiapenkissämme.
+        - Teho-, vääntö- ja seoksenmittaus inertiapenkissämme.
         <br />
         - Laitteistossamme on kotimainen huippuohjelmisto.
         <br />
-        - Seosmittaus laajakaistalambdalla.
-        <br />
-        - Tulokset ennen ja jälkeen säädön saat mukaan paperitulosteena, jossa näkyy hevosvoima-, vääntö- ja seoskäyrä.
+        - Laitteistossamme on kotimainen huippuohjelmisto. Seosmittaus laajakaistalambdalla. Tulokset ennen ja jälkeen säädön saat mukaan paperitulosteena, jossa näkyy hevosvoima-, vääntö- ja seoskäyrä.
         <br />
         - Uutta! Säätö myös TuneEcu:lla. <a href='http://www.tuneecu.com'>www.tuneecu.com</a>
         <br />
@@ -43,6 +43,21 @@ export default function Products() {
           </p>
         </div>
       </div>
+      <p className='equipment1-description'>
+        Kerhomme kalustoa tapahtumiim:
+        <br />
+        - Rottarallin tapahtuma teltat 2 kpl 13 x 38 m
+        <br />
+        - Tapahtumapöydät ja tuolit
+        <br />
+        - POP-UP teltat 4 x 4 m 2 kpl
+        <br />
+        - Grillikontti ruoan valmistukseen ( vaihtolava vaijereilla )
+        <br />
+        - Toimisto/vastaanotto kioski ( vaihtolava vaijereilla )
+        <br />
+        - Soppatykit, isot muurikkapannut, alfakeittimet
+      </p>
       <p className='equipment-description'>
       Muutamia mitattuja moottoripyöriä.
       </p>
@@ -64,5 +79,7 @@ export default function Products() {
         </div>
       </div>
     </div>
+    <Footer />
+  </div>
   );
 }
