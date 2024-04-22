@@ -44,30 +44,30 @@ export default function Services() {
           <p className='service-description'>varajäsen</p>
         </div>
         {/* Add more services as needed */}
+      </div>
+      <div className='members-container'>
+        <div className='members-section'>
+          <h2 className='members-section-title'>Honored Members</h2>
+          <p>Kimmo Saranen, Kunniapuheenjohtaja (Honorary President, Life Member)</p>
+          <p>Tede Fehrmann, Kunniajäsen (Life  Member)</p>
+          <p>Marko Siiskonen, Kunniajäsen (Life Member)</p>
+          <p>Arto Alatalo, Kunniajäsen (Life Member)</p>
+          <p>Hannu Haajanen, Kunniajäsen (Life Member)</p>
+          <p>Ilkka Husu, Kunniajäsen (Life Member)</p>
         </div>
-          <div className='members-container'>
-            <div className='members-section'>
-              <h2 className='members-section-title'>Honored Members</h2>
-              <p>Kimmo Saranen, Kunniapuheenjohtaja (Honorary President, Life Member)</p>
-              <p>Tede Fehrmann, Kunniajäsen (Life  Member)</p>
-              <p>Marko Siiskonen, Kunniajäsen (Life Member)</p>
-              <p>Arto Alatalo, Kunniajäsen (Life Member)</p>
-              <p>Hannu Haajanen, Kunniajäsen (Life Member)</p>
-              <p>Ilkka Husu, Kunniajäsen (Life Member)</p>
-            </div>
-            <div className='members-section'>
-              <h2 className='members-section-title'>Gone But Never Forgotten Members</h2>
-              <p>Seppo, Kunniajäsen (Honorary Member)</p>
-              <p>Antti, Kunniajäsen (Honorary Member)</p>
-              <p>Tapsa</p>
-              <p>Kaisa</p>
-              <p>Ari</p>
-              <p>Pekka</p>
-              <p>Pasi</p>
-            </div>
-          </div>
+        <div className='members-section'>
+          <h2 className='members-section-title'>Gone But Never Forgotten Members</h2>
+          <p>Seppo, Kunniajäsen (Honorary Member)</p>
+          <p>Antti, Kunniajäsen (Honorary Member)</p>
+          <p>Tapsa</p>
+          <p>Kaisa</p>
+          <p>Ari</p>
+          <p>Pekka</p>
+          <p>Pasi</p>
+        </div>
+      </div>
 
 
-</div>
-);
+    </div>
+  );
 }
