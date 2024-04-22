@@ -1,12 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import "../Rottaralli.css"
 import Footer from '../Footer';
 
 const Ralli = () => {
+  useEffect(() => {
+    // Load Facebook SDK asynchronously
+    window.fbAsyncInit = function () {
+      window.FB.init({
+        appId: 'your-app-id',
+        autoLogAppEvents: true,
+        xfbml: true,
+        version: 'v11.0'
+      });
+    };
 
+    (function (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) { return; }
+      js = d.createElement(s); js.id = id;
+      js.src = "https://connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  }, []);
+
+  useEffect(() => {
+    // Trigger rendering of Facebook feed after SDK is loaded
+    if (window.FB) {
+      window.FB.XFBML.parse();
+    }
+  }, []);
 
   return (
-
     <div>
       <div class='ralli-div'>
         <h1 class='ralli-title'>Rottaralli</h1>
@@ -24,24 +48,23 @@ const Ralli = () => {
       </div>
       <img src='/images/img-9.jpg' alt="img-9" className="ralli-image" />
       <div className="facebook-feed">
-        <div class="fb-page" data-href="https://www.facebook.com/mcroadrats/?locale=fi_FI" data-tabs="timeline" data-width="500" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
-          <blockquote cite="https://www.facebook.com/mcroadrats/?locale=fi_FI" class="fb-xfbml-parse-ignore">
-            <a href="https://www.facebook.com/mcroadrats/?locale=fi_FI">MC Road Rats ry
-            </a>
+        <div className="fb-page"
+          data-href="https://www.facebook.com/mcroadrats/?locale=fi_FI"
+          data-tabs="timeline"
+          data-width="500"
+          data-height=""
+          data-small-header="false"
+          data-adapt-container-width="true"
+          data-hide-cover="false"
+          data-show-facepile="true">
+          <blockquote cite="https://www.facebook.com/mcroadrats/?locale=fi_FI" className="fb-xfbml-parse-ignore">
+            <a href="https://www.facebook.com/mcroadrats/?locale=fi_FI">MC Road Rats ry</a>
           </blockquote>
         </div>
       </div>
-    </div>
-  )
-}
-
-const Rottaralli = () => {
-  return (
-    <div>
-      <Ralli />
       <Footer />
     </div>
   );
 };
 
-export default Rottaralli;
+export default Ralli;
