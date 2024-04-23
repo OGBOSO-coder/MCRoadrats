@@ -32,21 +32,53 @@ const Ralli = () => {
 
   return (
     <div>
-      <div class='ralli-div'>
-        <h1 class='ralli-title'>Rottaralli</h1>
-        <p className='ralli-text'>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis magna libero, placerat non sapien non,
-          suscipit scelerisque urna. Donec et velit non felis gravida posuere ac nec magna. Donec mauris risus,
-          mollis at iaculis vel, suscipit sed massa. Morbi a congue eros, vitae condimentum dolor. Orci varius
-          natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus euismod risus
-          id risus malesuada, non lacinia magna sodales. Vivamus purus est, viverra vitae est vel, accumsan
-          sodales ex. Nunc at maximus nisi, nec ultrices metus.
-          Donec rhoncus velit eu metus auctor, vitae facilisis sapien sagittis. Duis et eros magna. Etiam ac semper
-          quam. Integer eu orci bibendum nisl lobortis bibendum ac vel magna. Maecenas suscipit tempor fermentum.
-          Vestibulum facilisis dui eget dui vulputate facilisis. Aenean vitae massa a nisi tincidunt tristique.
-        </p>
+      <div class='ralli-header'>
+          <h1>Rottaralli 2024</h1>
+          <center>
+            <div class='rottaralli-logo-div'>
+              <img src='/images/rottaralli_logo.png' class='rottaralli-logo-img'/>
+            </div>
+          </center>
       </div>
-      <img src='/images/img-9.jpg' alt="img-9" className="ralli-image" />
+
+      <div className='ralli-info'>
+        <div class='ralli-div'>
+            <h1 class='ralli-title'>Rottaralli 2024 tiedotteita</h1>
+            <p className='ralli-text'>
+            Motoristien mekka - Rottaralli järjestetään Heimarissa 26.-28.7.2024
+            Siimahännät 🐀🐁 painaa rallimeiningit jälkeen kohdalleen rallikansalle 🛵🏍️🦽 Ennakkoliput ja majoitukset avautuvat viimevuotiseen tapaan myyntiin nettilipun kautta. Pientä porkkanaa 🥕 ja tietenkin paljon lihaa 🍖 luiden ympärille 🔥
+            Let’s make Rottaralli again! Tuunaa prätkäsi ja stay tuned 💣
+            #rottaralli #mcroadrats #mpkokoontumisajot #international 
+            #bikeevent #bikerally #finland 
+            </p>
+        </div>
+        <div class='ralli-lippuja'>
+            <div class='ralli-lippu-div'>
+              <h1>Rallilipu</h1>
+              <button>Osta</button>
+            </div>
+            <div class='ralli-lippu-div'>
+              <h1>Hotellin Majoitukset</h1>
+              <button>Lisätietoja</button>
+            </div>
+        </div>
+      </div>
+
+      <div class='ralli-kuvat-div'>
+        <h1>Paikan Kuvat</h1>
+        <div class='rottaralli-kuvat-gallery'>
+          <div class='rottaralli-kuva-gallery-container'>
+            <img src='/images/img-9.jpg' alt="img-9" className="ralli-image" />
+          </div>
+          <div class='rottaralli-kuva-gallery-container'>
+            <img src='/images/img-7.jpg' alt="img-9" className="ralli-image" />
+          </div>
+          <div class='rottaralli-kuva-gallery-container'>
+            <img src='/images/img-8.jpg' alt="img-9" className="ralli-image" />
+          </div>
+        </div>
+      </div>
+
       <div className="facebook-feed">
         <div className="fb-page"
           data-href="https://www.facebook.com/mcroadrats/?locale=fi_FI"

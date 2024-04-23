@@ -1,5 +1,24 @@
+.ralli-title {
+    display: grid;
+}
+
+.rottaralli-logo-div{
+    max-width: 500px;
+    width: 100%;
+    height: 410px;
+    margin-bottom: 50px;
+    margin-top: 20px;
+}
+
+.rottaralli-logo-img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
 .ralli-div {
-    margin: 60px auto;
+    margin-left: 30px;
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
@@ -8,16 +27,55 @@
     width: 40%;
 }
 
-.ralli-title {
+.ralli-header{
     display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
+.ralli-info{
+    display: flex;
+    justify-content: center;
+}
+.ralli-lippuja{
+    display: flex;
+    flex-direction: column;
+}
+.ralli-lippu-div{
+    display: flex;
+    flex-direction: column;
+    margin: 30px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-size: 20px;
+    float: left;
+}
+
+.ralli-kuvat-div{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, rgb(28, 27, 27) 0%, rgb(26, 23, 23) 100%);
+    color: white;
+    width: 100%;
+}
+.rottaralli-kuvat-gallery{
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
 .ralli-image {
-    display: block;
-    margin: auto;
-    width: 45%;
-    height: auto;
-    padding-bottom: 45px;
+    width: 600px;
+    height: 500px;
+    width: 100%;
+    padding: 30px;
+    object-fit: cover;
+}
+
+.ralli-image:hover {
+    opacity: 0.7;
+    cursor: pointer;
 }
 
 .facebook-feed {
@@ -34,7 +92,19 @@
     }
 
     .ralli-image {
-        width: 80%;
+        width: 100%;
         padding-bottom: 30px;
     }
+    .rottaralli-logo-div{
+        height: 300px;
+        width: 350px;
+    }
+    .ralli-info{
+        flex-direction: column;
+    }
+    .rottaralli-kuvat-gallery{
+        flex-direction: column;
+        width: 100%;
+    }
+
 }
