@@ -31,7 +31,7 @@ const Ralli = () => {
   }, []);
 
   return (
-    <div>
+    <div class= "sivut" >
       <div class='ralli-header'>
           <h1>Rottaralli 2024</h1>
           <center>

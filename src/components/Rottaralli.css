@@ -83,6 +83,11 @@
     padding-bottom: 40px;
     width: 400px;
 }
+.sivut {
+    margin: 20px;
+    padding-bottom: 120px;
+    background: #ffffff;
+  }
 
 @media only screen and (max-width: 600px) {
     .ralli-div {
