@@ -95,6 +95,7 @@
 
 .equipment-container {
   margin: 20px;
+  padding-bottom: 150px;
 }
 
 .equipment-title {
@@ -155,7 +156,7 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  padding-bottom: 150px;
+  padding-bottom: 100px;
   
 }
 
