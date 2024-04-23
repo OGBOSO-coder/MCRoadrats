@@ -150,3 +150,57 @@
 .tulokset img {
   max-width: 100%; /* Make sure the image doesn't exceed its container's width */
 }
+
+.frontpage-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  padding-bottom: 150px;
+  
+}
+
+.intro-section {
+  margin-bottom: 40px;
+}
+
+.intro-section h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.intro-section p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.future-events, .past-events {
+  margin-bottom: 40px;
+}
+
+.future-events h2, .past-events h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.future-events ul, .past-events ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.future-events li, .past-events li {
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.future-events li h3, .past-events li h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.future-events li p, .past-events li p {
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
