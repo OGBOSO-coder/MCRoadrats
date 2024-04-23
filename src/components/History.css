@@ -1,4 +1,4 @@
-.history-div{
+.history-div {
     margin: 100px;
     background-color: #f9f9f9;
     padding: 20px;
@@ -6,10 +6,12 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     font-size: 20px;
 }
-.history-title{
+
+.history-title {
     display: flex;
 }
-.history-image-slider-div{
+
+.history-image-slider-div {
     background-color: rgb(160, 156, 156);
     max-width: 1200px;
     width: 100%;
@@ -18,15 +20,15 @@
     margin-top: 20px;
 }
 
-.history-img-slider-img{
+.history-img-slider-img {
     object-fit: cover;
     width: 100%;
     height: 100%;
     display: block;
 }
 
-@media screen and (max-width: 500px){
-    .history-div{
+@media screen and (max-width: 500px) {
+    .history-div {
         margin: 50px;
         font-size: 20px;
     }
