@@ -3,7 +3,7 @@ import Navbar from './components/Navbar';
 import './App.css';
 import Home from './components/pages/Home';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import kerho from './components/pages/kerho';
+import palvelut from './components/pages/palvelut';
 import hallitus from './components/pages/hallitus';
 import rottaralli from './components/pages/rottaralli';
 import SignUp from './components/pages/SignUp';
@@ -16,7 +16,7 @@ function App() {
         <Navbar />
         <Switch>
           <Route path='/' exact component={Home} />
-          <Route path='/kerho' component={kerho} />
+          <Route path='/palvelut' component={palvelut} />
           <Route path='/hallitus' component={hallitus} />
           <Route path='/rottaralli' component={rottaralli} />
           <Route path='/history' component={History}/>
