@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Footer from '../Footer';
 
 function Home() {
@@ -28,6 +28,33 @@ function Home() {
     const updatedEvents = futureEvents.filter(event => event.id !== id);
     setFutureEvents(updatedEvents);
   };
+
+  useEffect(() => {
+    // Load Facebook SDK asynchronously
+    window.fbAsyncInit = function () {
+      window.FB.init({
+        appId: 'your-app-id',
+        autoLogAppEvents: true,
+        xfbml: true,
+        version: 'v11.0'
+      });
+    };
+
+    (function (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) { return; }
+      js = d.createElement(s); js.id = id;
+      js.src = "https://connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  }, []);
+
+  useEffect(() => {
+    // Trigger rendering of Facebook feed after SDK is loaded
+    if (window.FB) {
+      window.FB.XFBML.parse();
+    }
+  }, []);
 
   return (
     <div>
@@ -91,6 +118,21 @@ function Home() {
             {/* Display past events here */}
           </ul>
         </section>
+        <div className="facebook-feed">
+        <div className="fb-page"
+          data-href="https://www.facebook.com/mcroadrats/?locale=fi_FI"
+          data-tabs="timeline"
+          data-width="550"
+          data-height="600"
+          data-small-header="false"
+          data-adapt-container-width="true"
+          data-hide-cover="false"
+          data-show-facepile="true">
+          <blockquote cite="https://www.facebook.com/mcroadrats/?locale=fi_FI" className="fb-xfbml-parse-ignore">
+            <a href="https://www.facebook.com/mcroadrats/?locale=fi_FI">MC Road Rats ry</a>
+          </blockquote>
+        </div>
+      </div>
       </div>
       <Footer />
     </div>
