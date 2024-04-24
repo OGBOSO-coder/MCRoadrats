@@ -31,36 +31,36 @@ const Ralli = () => {
   }, []);
 
   return (
-    <div class= "sivut" >
+    <div class="sivut" >
       <div class='ralli-header'>
-          <h1>Rottaralli 2024</h1>
-          <center>
-            <div class='rottaralli-logo-div'>
-              <img src='/images/rottaralli_logo.png' class='rottaralli-logo-img'/>
-            </div>
-          </center>
+        <h1>Rottaralli 2024</h1>
+        <center>
+          <div class='rottaralli-logo-div'>
+            <img src='/images/rottaralli_logo.png' class='rottaralli-logo-img' />
+          </div>
+        </center>
       </div>
 
       <div className='ralli-info'>
         <div class='ralli-div'>
-            <h1 class='ralli-title'>Rottaralli 2024 tiedotteita</h1>
-            <p className='ralli-text'>
+          <h1 class='ralli-title'>Rottaralli 2024 tiedotteita</h1>
+          <p className='ralli-text'>
             Motoristien mekka - Rottaralli järjestetään Heimarissa 26.-28.7.2024
             Siimahännät 🐀🐁 painaa rallimeiningit jälkeen kohdalleen rallikansalle 🛵🏍️🦽 Ennakkoliput ja majoitukset avautuvat viimevuotiseen tapaan myyntiin nettilipun kautta. Pientä porkkanaa 🥕 ja tietenkin paljon lihaa 🍖 luiden ympärille 🔥
             Let’s make Rottaralli again! Tuunaa prätkäsi ja stay tuned 💣
-            #rottaralli #mcroadrats #mpkokoontumisajot #international 
-            #bikeevent #bikerally #finland 
-            </p>
+            #rottaralli #mcroadrats #mpkokoontumisajot #international
+            #bikeevent #bikerally #finland
+          </p>
         </div>
         <div class='ralli-lippuja'>
-            <div class='ralli-lippu-div'>
-              <h1>Rallilipu</h1>
-              <button>Osta</button>
-            </div>
-            <div class='ralli-lippu-div'>
-              <h1>Hotellin Majoitukset</h1>
-              <button>Lisätietoja</button>
-            </div>
+          <div class='ralli-lippu-div'>
+            <h1>Rallilipu</h1>
+            <button>Osta</button>
+          </div>
+          <div class='ralli-lippu-div'>
+            <h1>Hotellin Majoitukset</h1>
+            <button>Lisätietoja</button>
+          </div>
         </div>
       </div>
 
