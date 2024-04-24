@@ -15,22 +15,17 @@ function Home() {
       name: eventName,
       date: eventDate,
       description: eventDescription,
-      id: Date.now() // Add a unique ID for each event
+      id: Date.now() 
     };
-    // Add the new event to the list of future events
     setFutureEvents([...futureEvents, newEvent]);
-    // Reset form fields
     setEventName('');
     setEventDate('');
     setEventDescription('');
-    // Hide the form after submission
     setShowForm(false);
   };
 
   const handleDelete = (id) => {
-    // Filter out the event with the given ID
     const updatedEvents = futureEvents.filter(event => event.id !== id);
-    // Update the list of future events
     setFutureEvents(updatedEvents);
   };
 
