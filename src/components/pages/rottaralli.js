@@ -81,16 +81,16 @@ const Ralli = () => {
 
       <div className="facebook-feed">
         <div className="fb-page"
-          data-href="https://www.facebook.com/mcroadrats/?locale=fi_FI"
+          data-href="https://www.facebook.com/p/Rottaralli-100057561793735/"
           data-tabs="timeline"
-          data-width="500"
+          data-width="400"
           data-height=""
           data-small-header="false"
           data-adapt-container-width="true"
           data-hide-cover="false"
           data-show-facepile="true">
-          <blockquote cite="https://www.facebook.com/mcroadrats/?locale=fi_FI" className="fb-xfbml-parse-ignore">
-            <a href="https://www.facebook.com/mcroadrats/?locale=fi_FI">MC Road Rats ry</a>
+          <blockquote cite="https://www.facebook.com/p/Rottaralli-100057561793735/" className="fb-xfbml-parse-ignore">
+            <a href="https://www.facebook.com/p/Rottaralli-100057561793735/">MC Road Rats ry</a>
           </blockquote>
         </div>
       </div>
