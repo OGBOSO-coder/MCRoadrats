@@ -66,7 +66,12 @@ export default function Services() {
           <p>Pasi</p>
         </div>
       </div>
-
+        <center>
+          <div class='ryhmäkuva'>
+            <img src='/images/g' class='' />
+            <p className='image-caption'>ryhmäkuva</p>
+          </div>
+        </center>
 
     </div>
   );
