@@ -39,10 +39,6 @@ export default function Services() {
           <h2 className='service-title'>Hermanni Saresma</h2>
           <p className='service-description'>Jäsen</p>
         </div>
-        <div className='service'>
-          <h2 className='service-title'>Hermanni Saresma</h2>
-          <p className='service-description'>varajäsen</p>
-        </div>
         {/* Add more services as needed */}
       </div>
       <div className='members-container'>
@@ -56,7 +52,7 @@ export default function Services() {
           <p>Ilkka Husu, Kunniajäsen (Life Member)</p>
         </div>
         <div className='members-section'>
-          <h2 className='members-section-title'>Gone But Never Forgotten Members</h2>
+          <h2 className='members-section-title'>Gone But Never Forgotten</h2>
           <p>Seppo, Kunniajäsen (Honorary Member)</p>
           <p>Antti, Kunniajäsen (Honorary Member)</p>
           <p>Tapsa</p>
