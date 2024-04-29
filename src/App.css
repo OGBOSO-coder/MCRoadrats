@@ -43,7 +43,10 @@
   font-size: 100px;
 }
 .services-container {
-  margin: 20px;
+  max-width: 1700px;
+  margin: 0 auto;
+  padding: 20px;
+  padding-bottom: 100px;
 }
 
 .services-title {
@@ -94,8 +97,10 @@
 }
 
 .equipment-container {
-  margin: 20px;
-  padding-bottom: 150px;
+  max-width: 1700px;
+  margin: 0 auto;
+  padding: 20px;
+  padding-bottom: 100px;
 }
 
 .equipment-title {
