@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from '../firebase'; // Import your Firebase configuration
+import { auth, db, storage } from '../firebase'; // Import your Firebase configuration
 import { addDoc, collection, getDocs, deleteDoc, doc } from 'firebase/firestore'; // Import Firestore functions
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'; // Import Firebase Storage functions
 
 const SignupAndLogin = () => {
   const [email, setEmail] = useState('');
@@ -12,6 +13,7 @@ const SignupAndLogin = () => {
   const [postTitle, setPostTitle] = useState('');
   const [postDescription, setPostDescription] = useState('');
   const [posts, setPosts] = useState([]); // State to store posts
+  const [image, setImage] = useState(null); // State to store selected image file
 
   // Function to fetch posts from Firestore
   const fetchPosts = async () => {
@@ -59,11 +61,17 @@ const SignupAndLogin = () => {
   const handlePostCreation = async (e) => {
     e.preventDefault();
     try {
+      // Upload image to Firebase Storage
+      const storageRef = ref(storage, `images/${image.name}`);
+      await uploadBytes(storageRef, image);
+      const imageUrl = await getDownloadURL(storageRef);
+
       // Create a new post document in Firestore collection
       await addDoc(collection(db, 'posts'), {
         title: postTitle,
         description: postDescription,
-        date: new Date().toLocaleDateString()
+        date: new Date().toLocaleDateString(),
+        imageUrl: imageUrl,
       });
       alert('Post created successfully!');
       // Optionally, you can clear the input fields after creating the post
@@ -76,15 +84,26 @@ const SignupAndLogin = () => {
     }
   };
 
-  const handlePostDeletion = async (postId) => {
+  const handlePostDeletion = async (postId, imageUrl) => {
     try {
       // Delete the post document from Firestore
       await deleteDoc(doc(db, 'posts', postId));
+
+      // Delete image from Firebase Storage
+      const imageRef = ref(storage, imageUrl);
+      await deleteObject(imageRef);
+
       alert('Post deleted successfully!');
       // Fetch posts again to update the list after deleting a post
       fetchPosts();
     } catch (error) {
       console.error('Error deleting document: ', error);
+    }
+  };
+
+  const handleImageChange = (e) => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
     }
   };
 
@@ -112,6 +131,14 @@ const SignupAndLogin = () => {
               required
             />
           </div>
+          <div>
+            <label>Image</label>
+            <input
+              type="file"
+              onChange={handleImageChange}
+              required
+            />
+          </div>
           <button type="submit">Create Post</button>
         </form>
         <h3>Posts</h3>
@@ -121,7 +148,8 @@ const SignupAndLogin = () => {
               <h3>{post.title}</h3>
               <p>Date: {post.date}</p>
               <p>Description: {post.description}</p>
-              <button onClick={() => handlePostDeletion(post.id)}>Delete</button>
+              {post.imageUrl && <img src={post.imageUrl} alt="Post" />}
+              <button onClick={() => handlePostDeletion(post.id, post.imageUrl)}>Delete</button>
             </li>
           ))}
         </ul>
