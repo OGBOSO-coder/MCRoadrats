@@ -24,6 +24,12 @@ const ContactForm = () => {
     });
   };
 
+  const validatePhoneNumber = phone => {
+    // Phone number validation regex (accepts only numbers with optional hyphens)
+    const phoneRegex = /^\d{3}-?\d{3}-?\d{4}$/;
+    return phoneRegex.test(phone);
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
 
@@ -31,7 +37,12 @@ const ContactForm = () => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      setErrorMessage('Please enter a valid email address.');
+      setErrorMessage('Syötä oikea sähköposti');
+      return;
+    }
+
+    if (!validatePhoneNumber(formData.phone)) {
+      setErrorMessage('Syötä oikea puhelinnumero (123-123-1234)');
       return;
     }
 
@@ -75,14 +86,14 @@ const ContactForm = () => {
         <div className="form-group">
           <label htmlFor="phone">Puhelinnumero:</label>
           <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} required />
-          <div className="form-group">
-            <label htmlFor="address">Osoite:</label>
-            <input type="text" id="address" name="address" value={formData.address} onChange={handleChange} required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="motorbikeBrand">Moottoripyörämerkki:</label>
-            <input type="text" id="motorbikeBrand" name="motorbikeBrand" value={formData.motorbikeBrand} onChange={handleChange} required />
-          </div>
+        </div>
+        <div className="form-group">
+          <label htmlFor="address">Osoite:</label>
+          <input type="text" id="address" name="address" value={formData.address} onChange={handleChange} required />
+        </div>
+        <div className="form-group">
+          <label htmlFor="motorbikeBrand">Moottoripyörämerkki:</label>
+          <input type="text" id="motorbikeBrand" name="motorbikeBrand" value={formData.motorbikeBrand} onChange={handleChange} required />
         </div>
         <div className="form-group">
           <label htmlFor="about">Kerro itsestäsi:</label>
