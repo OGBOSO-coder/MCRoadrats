@@ -59,6 +59,11 @@ function Home() {
   return (
     <div>
       <div className='frontpage-container'>
+        <center>
+          <div class='logo-div'>
+            <img src='\images\logo.PNG' class='logo-img' />
+          </div>
+        </center>
         <section className='intro-section'>
           <h1>Meistä?</h1>
           <p>
@@ -118,21 +123,6 @@ function Home() {
             {/* Display past events here */}
           </ul>
         </section>
-        <div className="facebook-feed">
-        <div className="fb-page"
-          data-href="https://www.facebook.com/mcroadrats/?locale=fi_FI"
-          data-tabs="timeline"
-          data-width="550"
-          data-height="600"
-          data-small-header="false"
-          data-adapt-container-width="true"
-          data-hide-cover="false"
-          data-show-facepile="true">
-          <blockquote cite="https://www.facebook.com/mcroadrats/?locale=fi_FI" className="fb-xfbml-parse-ignore">
-            <a href="https://www.facebook.com/mcroadrats/?locale=fi_FI">MC Road Rats ry</a>
-          </blockquote>
-        </div>
-      </div>
       </div>
       <Footer />
     </div>

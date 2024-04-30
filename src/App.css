@@ -210,3 +210,18 @@
   font-size: 1rem;
   margin-bottom: 5px;
 }
+
+.logo-div{
+  max-width: 350px;
+  width: 100%;
+  height: 450px;
+  margin-bottom: 50px;
+  margin-top: 20px;
+}
+
+.logo-img{
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
