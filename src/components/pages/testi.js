@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth, db, storage } from '../firebase'; // Import your Firebase configuration
-import { addDoc, collection, getDocs, deleteDoc, doc } from 'firebase/firestore'; // Import Firestore functions
-import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'; // Import Firebase Storage functions
+import { addDoc, collection, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore'; // Import Firestore functions
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'; // Import Firebase Storage functions
 
 const SignupAndLogin = () => {
   const [email, setEmail] = useState('');
@@ -14,6 +14,10 @@ const SignupAndLogin = () => {
   const [postDescription, setPostDescription] = useState('');
   const [posts, setPosts] = useState([]); // State to store posts
   const [image, setImage] = useState(null); // State to store selected image file
+  const [editMode, setEditMode] = useState(null); // State to track the post being edited
+  const [editedTitle, setEditedTitle] = useState(''); // State to store edited title
+  const [editedDescription, setEditedDescription] = useState(''); // State to store edited description
+  const [editedImage, setEditedImage] = useState(null); // State to store edited image file
 
   // Function to fetch posts from Firestore
   const fetchPosts = async () => {
@@ -22,6 +26,18 @@ const SignupAndLogin = () => {
     const postList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     setPosts(postList);
   };
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        setLoggedIn(true);
+      } else {
+        setLoggedIn(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     if (loggedIn) {
@@ -55,6 +71,16 @@ const SignupAndLogin = () => {
       alert('Logged in successfully!'); // Optionally, provide feedback to the user
     } catch (error) {
       setError(error.message); // Handle authentication errors
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setLoggedIn(false);
+      alert('Logged out successfully!');
+    } catch (error) {
+      console.error('Error signing out: ', error);
     }
   };
 
@@ -101,6 +127,58 @@ const SignupAndLogin = () => {
     }
   };
 
+  const handleEditPost = (post) => {
+    setEditMode(post.id); // Set the post id to enable edit mode
+    setEditedTitle(post.title); // Set the current title in the edit form
+    setEditedDescription(post.description); // Set the current description in the edit form
+  };
+
+  const handleSaveEdit = async (postId, oldImageUrl) => {
+    try {
+      if (editedImage) {
+        // If a new image is selected, upload it to Firebase Storage
+        const storageRef = ref(storage, `images/${editedImage.name}`);
+        await uploadBytes(storageRef, editedImage);
+        const newImageUrl = await getDownloadURL(storageRef);
+
+        // Update the post document in Firestore with the new image URL
+        await updateDoc(doc(db, 'posts', postId), {
+          title: editedTitle,
+          description: editedDescription,
+          imageUrl: newImageUrl,
+        });
+
+        // If a new image is uploaded, delete the old image from Storage
+        const oldImageRef = ref(storage, oldImageUrl);
+        await deleteObject(oldImageRef);
+      } else {
+        // If no new image is selected, update the post document with existing image URL
+        await updateDoc(doc(db, 'posts', postId), {
+          title: editedTitle,
+          description: editedDescription,
+        });
+      }
+      // Clear edit mode and reset edited states
+      setEditMode(null);
+      setEditedTitle('');
+      setEditedDescription('');
+      setEditedImage(null);
+      // Fetch posts again to update the list after editing a post
+      fetchPosts();
+      alert('Post edited successfully!');
+    } catch (error) {
+      console.error('Error editing post: ', error);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    // Clear edit mode and reset edited states
+    setEditMode(null);
+    setEditedTitle('');
+    setEditedDescription('');
+    setEditedImage(null);
+  };
+
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
       setImage(e.target.files[0]);
@@ -112,10 +190,11 @@ const SignupAndLogin = () => {
     return (
       <div>
         <h2>Welcome, User!</h2>
+        <button onClick={handleLogout}>Logout</button>
         <h3>Create a New Post</h3>
         <form onSubmit={handlePostCreation}>
           <div>
-            <label>Title</label>
+            <label>Titteli</label>
             <input
               type="text"
               value={postTitle}
@@ -124,7 +203,7 @@ const SignupAndLogin = () => {
             />
           </div>
           <div>
-            <label>Description</label>
+            <label>Selite</label>
             <textarea
               value={postDescription}
               onChange={(e) => setPostDescription(e.target.value)}
@@ -132,24 +211,46 @@ const SignupAndLogin = () => {
             />
           </div>
           <div>
-            <label>Image</label>
+            <label>Kuva</label>
             <input
               type="file"
               onChange={handleImageChange}
               required
             />
           </div>
-          <button type="submit">Create Post</button>
+          <button type="submit">Julkaise</button>
         </form>
         <h3>Posts</h3>
         <ul>
           {posts.map(post => (
             <li key={post.id}>
-              <h3>{post.title}</h3>
-              <p>Date: {post.date}</p>
-              <p>Description: {post.description}</p>
-              {post.imageUrl && <img src={post.imageUrl} alt="Post" />}
-              <button onClick={() => handlePostDeletion(post.id, post.imageUrl)}>Delete</button>
+              {editMode === post.id ? (
+                <div>
+                  <input
+                    type="text"
+                    value={editedTitle}
+                    onChange={(e) => setEditedTitle(e.target.value)}
+                  />
+                  <textarea
+                    value={editedDescription}
+                    onChange={(e) => setEditedDescription(e.target.value)}
+                  />
+                  <input
+                    type="file"
+                    onChange={(e) => setEditedImage(e.target.files[0])}
+                  />
+                  <button onClick={() => handleSaveEdit(post.id, post.imageUrl)}>Save</button>
+                  <button onClick={handleCancelEdit}>Cancel</button>
+                </div>
+              ) : (
+                <div>
+                  <h3>{post.title}</h3>
+                  <p>{post.description}</p>
+                  {post.imageUrl && <img src={post.imageUrl} alt="Post" />}
+                  <button onClick={() => handleEditPost(post)}>Edit</button>
+                  <button onClick={() => handlePostDeletion(post.id, post.imageUrl)}>Delete</button>
+                </div>
+              )}
             </li>
           ))}
         </ul>

@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import "../Rottaralli.css"
 import Footer from '../Footer';
+import { auth } from '../firebase'; // Import your Firebase authentication
 
 const Ralli = () => {
+  const [user, setUser] = useState(null); // Placeholder for user state
   useEffect(() => {
     // Load Facebook SDK asynchronously
     window.fbAsyncInit = function () {
@@ -30,10 +32,23 @@ const Ralli = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        setUser(user); // Set user if logged in
+      } else {
+        setUser(null); // Set user to null if logged out
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <div class="sivut" >
       <div class='ralli-header'>
         <h1>Rottaralli 2024</h1>
+        {user && <h3>Hello, {user.email}</h3>} {/* Display hello (logged user) */}
         <center>
           <div class='rottaralli-logo-div'>
             <img src='/images/rottaralli_logo.png' class='rottaralli-logo-img' />
