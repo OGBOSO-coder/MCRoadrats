@@ -83,11 +83,11 @@ function Navbar() {
                 className='nav-links-mobile'
                 onClick={closeMobileMenu}
               >
-                Liity Nyt
+                Hae Jäseneksi
               </Link>
             </li>
           </ul>
-          {button && <Button buttonStyle='btn--outline'>Liity Nyt</Button>}
+          {button && <Button buttonStyle='btn--outline'>Hae Jäseneksi</Button>}
         </div>
       </nav>
     </>

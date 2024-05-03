@@ -47,7 +47,7 @@ const ContactForm = () => {
     }
 
     setIsSubmitting(true);
-    emailjs.sendForm('service_hfus7e5', 'template_dj3e3a7', e.target, '4k16Bqp5i4wAylP5v')
+    emailjs.sendForm('service_b1gcgxj', 'template_4tiylj8', e.target, 'Td4QDsAY5pI1HCi74')
       .then((result) => {
         console.log(result.text);
         setSuccessMessage('Email sent successfully!');

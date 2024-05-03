@@ -1,5 +1,8 @@
 .history-div {
-    margin: 100px;
+    margin-top: 100px;
+    margin-left: 300px;
+    margin-right: 300px;
+    margin-bottom: 100px;
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
@@ -9,6 +12,9 @@
 
 .history-title {
     display: flex;
+}
+.history-text {
+    margin-bottom: 30px;
 }
 
 .history-image-slider-div {
@@ -29,7 +35,7 @@
 
 @media screen and (max-width: 500px) {
     .history-div {
-        margin: 50px;
+        margin: 10px;
         font-size: 20px;
     }
 }
