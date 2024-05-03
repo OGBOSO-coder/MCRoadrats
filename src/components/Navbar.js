@@ -55,7 +55,7 @@ function Navbar() {
                 className='nav-links'
                 onClick={closeMobileMenu}
               >
-                Hallitus
+                Jäsenistö
               </Link>
             </li>
             <li className='nav-item'>
@@ -64,7 +64,7 @@ function Navbar() {
                 className='nav-links'
                 onClick={closeMobileMenu}
               >
-                History
+                Historia
               </Link>
             </li>
             <li className='nav-item'>
@@ -83,11 +83,11 @@ function Navbar() {
                 className='nav-links-mobile'
                 onClick={closeMobileMenu}
               >
-                Liity Nyt
+                Hae jäseneksi
               </Link>
             </li>
           </ul>
-          {button && <Button buttonStyle='btn--outline'>Liity Nyt</Button>}
+          {button && <Button buttonStyle='btn--outline'>Hae jäseneksi</Button>}
         </div>
       </nav>
     </>
