@@ -215,7 +215,6 @@ const SignupAndLogin = () => {
             <input
               type="file"
               onChange={handleImageChange}
-              required
             />
           </div>
           <button type="submit">Julkaise</button>
