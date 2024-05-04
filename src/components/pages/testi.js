@@ -63,14 +63,14 @@ const SignupAndLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password); // Sign in with email and password
+      await signInWithEmailAndPassword(auth, email, password);
       setError('');
       setEmail('');
       setPassword('');
-      setLoggedIn(true); // Set loggedIn state to true after successful login
-      alert('Logged in successfully!'); // Optionally, provide feedback to the user
+      setLoggedIn(true);
+      alert('Logged in successfully!');
     } catch (error) {
-      setError(error.message); // Handle authentication errors
+      setError(error.message);
     }
   };
 
@@ -261,8 +261,8 @@ const SignupAndLogin = () => {
   return (
     <div>
       <div>
-        <h2>{isSigningUp ? 'Sign Up' : 'Login'}</h2>
-        <form onSubmit={isSigningUp ? handleSignup : handleLogin}>
+        <h2>{'Login'}</h2>
+        <form onSubmit={handleLogin}>
           <div>
             <label>Email</label>
             <input
@@ -281,13 +281,9 @@ const SignupAndLogin = () => {
               required
             />
           </div>
-          <button type="submit">{isSigningUp ? 'Sign Up' : 'Login'}</button>
+          <button type="submit">{'Login'}</button>
         </form>
         {error && <p>{error}</p>}
-      </div>
-      <div>
-        <button onClick={() => setIsSigningUp(true)}>Register for an account</button>
-        <button onClick={() => setIsSigningUp(false)}>Login</button>
       </div>
     </div>
   );

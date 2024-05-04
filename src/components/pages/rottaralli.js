@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import "../Rottaralli.css"
 import Footer from '../Footer';
 import { auth, db } from '../firebase'; // Import your Firebase configuration
-import { addDoc, collection, getDocs } from 'firebase/firestore'; // Import Firestore functions
+import { addDoc, collection, getDocs, updateDoc, doc } from 'firebase/firestore'; // Import Firestore functions
 
 const Ralli = () => {
   const [user, setUser] = useState(null); // Placeholder for user state
   const [eventInfo, setEventInfo] = useState(''); // State to hold the event info text
   const [newPost, setNewPost] = useState(''); // State to hold the new post text
   const [posts, setPosts] = useState([]); // State to hold the posts
+  const [editingPostId, setEditingPostId] = useState(null); // State to hold the ID of the post being edited
+  const [editedPostText, setEditedPostText] = useState(''); // State to hold the edited post text
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -39,21 +41,21 @@ const Ralli = () => {
     fetchEventInfo(); // Call fetchEventInfo function when component mounts
   }, []);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        // Fetch posts from Firebase database under the "event-info" collection
-        const postsCollection = collection(db, 'event-info');
-        const snapshot = await getDocs(postsCollection);
-        const postsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setPosts(postsData);
-      } catch (error) {
-        console.error('Error fetching posts: ', error);
-      }
-    };
+  const fetchPosts = async () => {
+    try {
+      // Fetch posts from Firebase database under the "event-info" collection
+      const postsCollection = collection(db, 'event-info');
+      const snapshot = await getDocs(postsCollection);
+      const postsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setPosts(postsData);
+    } catch (error) {
+      console.error('Error fetching posts: ', error);
+    }
+  };
 
-    fetchPosts(); // Call fetchPosts function when component mounts
-  }, []);
+  useEffect(() => {
+    fetchPosts(); // Call fetchPosts function when component mounts or when editing is done
+  }, [editingPostId]); // Add editingPostId to the dependencies to refetch posts after editing
 
   const handlePostSubmit = async () => {
     try {
@@ -65,15 +67,30 @@ const Ralli = () => {
       });
       console.log('Post added with ID: ', docRef.id);
       setNewPost(''); // Clear the input field after submitting
+      fetchPosts(); // Refetch posts after adding a new post
     } catch (error) {
       console.error('Error adding post: ', error);
+    }
+  };
+
+  const handleEditPost = async (postId) => {
+    try {
+      // Update the post in the "event-info" collection
+      await updateDoc(doc(db, 'event-info', postId), {
+        text: editedPostText,
+      });
+      console.log('Post edited successfully');
+      setEditingPostId(null); // Clear the editing state
+      fetchPosts(); // Refetch posts after editing
+    } catch (error) {
+      console.error('Error editing post: ', error);
     }
   };
 
   return (
     <div className="sivut">
       <div className='ralli-header'>
-        <h1>Rottaralli 2024</h1>
+        <h1>Rottaralli</h1>
         {user && <h3>Hello, {user.email}</h3>} {/* Display hello (logged user) */}
         <center>
           <div className='rottaralli-logo-div'>
@@ -84,12 +101,28 @@ const Ralli = () => {
 
       <div className='ralli-info'>
         <div className='ralli-div'>
-          <h1 className='ralli-title'>Rottaralli 2024 tiedotteita</h1>
+          <h1 className='ralli-title'>Rottaralli tiedotteita</h1>
           <p className='ralli-text'>
           <ul>
           {posts.map(post => (
-            <p key={post.id}>{post.text}
-            <button onClick={() => (post)}>Edit</button></p>
+            <div key={post.id}>
+              {editingPostId === post.id ? (
+                <div>
+                  <textarea value={editedPostText} onChange={(e) => setEditedPostText(e.target.value)} />
+                  <button onClick={() => handleEditPost(post.id)}>Save</button>
+                </div>
+              ) : (
+                <div>
+                  <p>{post.text}</p>
+                  {user && (
+                    <button onClick={() => {
+                      setEditingPostId(post.id);
+                      setEditedPostText(post.text);
+                    }}>Edit</button>
+                  )}
+                </div>
+              )}
+            </div>
           ))}
         </ul>
           </p> {/* Display event info text */}
@@ -136,25 +169,6 @@ const Ralli = () => {
           </blockquote>
         </div>
       </div>
-
-      {/* Form to submit a new post */}
-      {user && (
-        <div>
-          <textarea value={newPost} onChange={(e) => setNewPost(e.target.value)} placeholder="Write your post here" />
-          <button onClick={handlePostSubmit}>Submit Post</button>
-        </div>
-      )}
-
-      {/* Display posts */}
-      <div className="posts">
-        <h2>Posts</h2>
-        <ul>
-          {posts.map(post => (
-            <li key={post.id}>{post.text}</li>
-          ))}
-        </ul>
-      </div>
-
       <Footer />
     </div>
   );

@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Footer from '../Footer';
-import { auth } from '../firebase'; // Import your Firebase authentication
-import { db } from '../firebase'; // Import your Firebase database
+import { db, auth, storage } from '../firebase'; // Import your Firebase database
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'; // Import Firebase Storage functions
 import { collection, getDocs, addDoc, deleteDoc, updateDoc, doc } from 'firebase/firestore'; // Import Firestore functions
 
 function Home() {
   const [futureEvents, setFutureEvents] = useState([]); // State to hold future events
   const [user, setUser] = useState(null); // Placeholder for user state
   const [postTitle, setPostTitle] = useState(''); // State for post title
+  const [image, setImage] = useState(null); // State to store selected image file
   const [postDescription, setPostDescription] = useState(''); // State for post description
 
   const fetchEvents = async () => {
@@ -21,7 +22,11 @@ function Home() {
       console.error('Error fetching posts: ', error);
     }
   };
-
+  const handleImageChange = (e) => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
@@ -39,11 +44,15 @@ function Home() {
 
   const handleCreatePost = async () => {
     try {
+      const storageRef = ref(storage, `images/${image.name}`);
+      await uploadBytes(storageRef, image);
+      const imageUrl = await getDownloadURL(storageRef);
       // Create a new post document in Firestore collection 'posts'
       await addDoc(collection(db, 'posts'), {
         title: postTitle,
         description: postDescription,
         date: new Date().toLocaleDateString(),
+        imageUrl: imageUrl,
       });
       alert('Post created successfully!');
       setPostTitle('');
@@ -56,10 +65,14 @@ function Home() {
 
   const handleEditPost = async (postId) => {
     try {
+      const storageRef = ref(storage, `images/${image.name}`);
+      await uploadBytes(storageRef, image);
+      const imageUrl = await getDownloadURL(storageRef);
       // Update the post document in Firestore collection 'posts'
       await updateDoc(doc(db, 'posts', postId), {
         title: postTitle,
         description: postDescription,
+        imageUrl: imageUrl,
       });
       alert('Post updated successfully!');
       setPostTitle('');
@@ -85,7 +98,20 @@ function Home() {
     <div>
       <div className='frontpage-container'>
         {user && <h3>Hello, {user.email}</h3>} {/* Display hello (logged user) */}
-        {user && (
+        <center>
+          <div class='logo-div'>
+            <img src='\images\logo.PNG' class='logo-img' />
+          </div>
+        </center>
+        <section className='intro-section'>
+          <h1>Meistä?</h1>
+          <p>
+            Olemme Mikkelissä toimiva moottoripyöräkerho. Jäseniä kerhossamme on n. 110. Yleisimmät moottoripyörämerkit ovat edustettuina ja yhtälailla tervetulleita. Kerhomme on Suomen Motoristit ry eli SMOTON jäsen.
+          </p>
+        </section>
+        <section className='future-events'>
+          <h2>Tulevat tapahtumat</h2>
+          {user && (
           <div>
             <input
               type="text"
@@ -98,38 +124,16 @@ function Home() {
               onChange={(e) => setPostDescription(e.target.value)}
               placeholder="Post Description"
             ></textarea>
+                      <div>
+            <label>Kuva</label>
+            <input
+              type="file"
+              onChange={handleImageChange}
+            />
+          </div>
             <button onClick={handleCreatePost}>Create Post</button>
           </div>
         )}
-        <center>
-          <div class='logo-div'>
-            <img src='\images\logo.PNG' class='logo-img' />
-          </div>
-        </center>
-        <section className='intro-section'>
-          <h1>Meistä?</h1>
-          <p>
-            Olemme Mikkelissä toimiva moottoripyöräkerho. Jäseniä kerhossamme on n. 110. Yleisimmät moottoripyörämerkit ovat edustettuina ja yhtälailla tervetulleita. Kerhomme on Suomen Motoristit ry eli SMOTON jäsen.
-          </p>
-        </section>
-        <section className='past-events'>
-          <h2>Menneet tapahtumat</h2>
-          <ul>
-            <li>
-              <h3>Rottaralli</h3>
-              <p>Date: January 1, 2024</p>
-              <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </li>
-            <li>
-              <h3>tapahtuma 2</h3>
-              <p>Date: January 1, 2024</p>
-              <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </li>
-            {/* Display past events here */}
-          </ul>
-        </section>
-        <section className='future-events'>
-          <h2>Tulevat tapahtumat</h2>
           <ul>
             {futureEvents.map(event => (
               <li key={event.id}>
