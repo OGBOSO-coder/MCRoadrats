@@ -84,3 +84,16 @@ h2 {
     }
 
 }
+
+.button {
+    background-color: rgb(15, 15, 15);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.button:hover {
+    background-color: rgb(102, 2, 2);
+}

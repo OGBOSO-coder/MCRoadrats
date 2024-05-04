@@ -11,7 +11,22 @@ const Ralli = () => {
   const [posts, setPosts] = useState([]); // State to hold the posts
   const [editingPostId, setEditingPostId] = useState(null); // State to hold the ID of the post being edited
   const [editedPostText, setEditedPostText] = useState(''); // State to hold the edited post text
+  const [ticketLinks, setTicketLinks] = useState([]);
+  
+  useEffect(() => {
+    const fetchTicketLinks = async () => {
+      try {
+        const ticketLinksCollection = collection(db, 'ticketLinks');
+        const snapshot = await getDocs(ticketLinksCollection);
+        const links = snapshot.docs.map(doc => doc.data());
+        setTicketLinks(links);
+      } catch (error) {
+        console.error('Error fetching ticket links:', error);
+      }
+    };
 
+    fetchTicketLinks();
+  }, []);
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
@@ -87,6 +102,7 @@ const Ralli = () => {
     }
   };
 
+
   return (
     <div className="sivut">
       <div className='ralli-header'>
@@ -128,15 +144,16 @@ const Ralli = () => {
           </p> {/* Display event info text */}
         </div>
         <div className='ralli-lippuja'>
-          <div className='ralli-lippu-div'>
-            <h1>Rallilipu</h1>
-            <button>Osta</button>
-          </div>
-          <div className='ralli-lippu-div'>
-            <h1>Hotellin Majoitukset</h1>
-            <button>Lisätietoja</button>
-          </div>
+          {ticketLinks.map((link, index) => (
+            <div className='ralli-lippu-div' key={index}>
+              <h1>{link.title}</h1>
+              <button className='button' onClick={() => window.open(link.url, '_blank')} rel='noopener noreferrer'>
+                {link.buttonText}
+              </button>
+            </div>
+          ))}
         </div>
+
       </div>
 
       <div className='ralli-kuvat-div'>
