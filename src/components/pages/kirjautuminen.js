@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { auth, db, storage } from '../firebase'; // Import your Firebase configuration
-import { addDoc, collection, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore'; // Import Firestore functions
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'; // Import Firebase Storage functions
+import { auth, db, storage } from '../firebase';
+import { addDoc, collection, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 
 const SignupAndLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [isSigningUp, setIsSigningUp] = useState(true); // Default to signup form
-  const [loggedIn, setLoggedIn] = useState(false); // Track login state
+  const [isSigningUp, setIsSigningUp] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [postTitle, setPostTitle] = useState('');
   const [postDescription, setPostDescription] = useState('');
-  const [posts, setPosts] = useState([]); // State to store posts
-  const [image, setImage] = useState(null); // State to store selected image file
-  const [editMode, setEditMode] = useState(null); // State to track the post being edited
-  const [editedTitle, setEditedTitle] = useState(''); // State to store edited title
-  const [editedDescription, setEditedDescription] = useState(''); // State to store edited description
-  const [editedImage, setEditedImage] = useState(null); // State to store edited image file
+  const [posts, setPosts] = useState([]);
+  const [image, setImage] = useState(null);
+  const [editMode, setEditMode] = useState(null);
+  const [editedTitle, setEditedTitle] = useState('');
+  const [editedDescription, setEditedDescription] = useState('');
+  const [editedImage, setEditedImage] = useState(null);
 
   // Function to fetch posts from Firestore
   const fetchPosts = async () => {
@@ -41,22 +41,21 @@ const SignupAndLogin = () => {
 
   useEffect(() => {
     if (loggedIn) {
-      // Fetch posts when the user is logged in
       fetchPosts();
     }
-  }, [loggedIn]); // Fetch posts when loggedIn state changes
+  }, [loggedIn]);
 
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await createUserWithEmailAndPassword(auth, email, password); // Create user with email and password
+      await createUserWithEmailAndPassword(auth, email, password);
       setError('');
       setEmail('');
       setPassword('');
-      setLoggedIn(true); // Set loggedIn state to true after successful signup
-      alert('Account created successfully!'); // Optionally, provide feedback to the user
+      setLoggedIn(true);
+      alert('Käyttäjä luotu!');
     } catch (error) {
-      setError(error.message); // Handle authentication errors
+      setError(error.message);
     }
   };
 
@@ -68,7 +67,7 @@ const SignupAndLogin = () => {
       setEmail('');
       setPassword('');
       setLoggedIn(true);
-      alert('Logged in successfully!');
+      alert('Tervetuloa!');
     } catch (error) {
       setError(error.message);
     }
@@ -78,7 +77,7 @@ const SignupAndLogin = () => {
     try {
       await signOut(auth);
       setLoggedIn(false);
-      alert('Logged out successfully!');
+      alert('Kirjauduit ulos!');
     } catch (error) {
       console.error('Error signing out: ', error);
     }
@@ -99,11 +98,9 @@ const SignupAndLogin = () => {
         date: new Date().toLocaleDateString(),
         imageUrl: imageUrl,
       });
-      alert('Post created successfully!');
-      // Optionally, you can clear the input fields after creating the post
+      alert('Tapahtuma luotu!');
       setPostTitle('');
       setPostDescription('');
-      // Fetch posts again to update the list after creating a new post
       fetchPosts();
     } catch (error) {
       console.error('Error adding document: ', error);
@@ -128,37 +125,32 @@ const SignupAndLogin = () => {
   };
 
   const handleEditPost = (post) => {
-    setEditMode(post.id); // Set the post id to enable edit mode
-    setEditedTitle(post.title); // Set the current title in the edit form
-    setEditedDescription(post.description); // Set the current description in the edit form
+    setEditMode(post.id);
+    setEditedTitle(post.title);
+    setEditedDescription(post.description);
   };
 
   const handleSaveEdit = async (postId, oldImageUrl) => {
     try {
       if (editedImage) {
-        // If a new image is selected, upload it to Firebase Storage
         const storageRef = ref(storage, `images/${editedImage.name}`);
         await uploadBytes(storageRef, editedImage);
         const newImageUrl = await getDownloadURL(storageRef);
 
-        // Update the post document in Firestore with the new image URL
         await updateDoc(doc(db, 'posts', postId), {
           title: editedTitle,
           description: editedDescription,
           imageUrl: newImageUrl,
         });
 
-        // If a new image is uploaded, delete the old image from Storage
         const oldImageRef = ref(storage, oldImageUrl);
         await deleteObject(oldImageRef);
       } else {
-        // If no new image is selected, update the post document with existing image URL
         await updateDoc(doc(db, 'posts', postId), {
           title: editedTitle,
           description: editedDescription,
         });
       }
-      // Clear edit mode and reset edited states
       setEditMode(null);
       setEditedTitle('');
       setEditedDescription('');
@@ -172,7 +164,6 @@ const SignupAndLogin = () => {
   };
 
   const handleCancelEdit = () => {
-    // Clear edit mode and reset edited states
     setEditMode(null);
     setEditedTitle('');
     setEditedDescription('');

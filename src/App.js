@@ -8,11 +8,10 @@ import hallitus from './components/pages/hallitus';
 import rottaralli from './components/pages/rottaralli';
 import SignUp from './components/pages/SignUp';
 import History from './components/pages/History';
-import Testi from './components/pages/testi';
+import Testi from './components/pages/kirjautuminen';
 
 function App() {
   return (
-    <>
       <Router>
         <Navbar />
         <Switch>
@@ -22,10 +21,9 @@ function App() {
           <Route path='/rottaralli' component={rottaralli} />
           <Route path='/history' component={History}/>
           <Route path='/sign-up' component={SignUp} />
-          <Route path='/testi' component={Testi} />
+          <Route path='/admin' component={Testi} />
         </Switch>
       </Router>
-    </>
   );
 }
 

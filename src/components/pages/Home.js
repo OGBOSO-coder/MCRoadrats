@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Footer from '../Footer';
-import { db, auth, storage } from '../firebase'; // Import your Firebase database
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'; // Import Firebase Storage functions
-import { collection, getDocs, addDoc, deleteDoc, updateDoc, doc } from 'firebase/firestore'; // Import Firestore functions
+import { db, auth, storage } from '../firebase';
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { collection, getDocs, addDoc, deleteDoc, updateDoc, doc } from 'firebase/firestore';
 
 function Home() {
-  const [futureEvents, setFutureEvents] = useState([]); // State to hold future events
-  const [user, setUser] = useState(null); // Placeholder for user state
-  const [postTitle, setPostTitle] = useState(''); // State for post title
-  const [image, setImage] = useState(null); // State to store selected image file
-  const [postDescription, setPostDescription] = useState(''); // State for post description
+  const [futureEvents, setFutureEvents] = useState([]);
+  const [user, setUser] = useState(null);
+  const [postTitle, setPostTitle] = useState('');
+  const [image, setImage] = useState(null);
+  const [postDescription, setPostDescription] = useState('');
 
   const fetchEvents = async () => {
     try {
@@ -57,7 +57,7 @@ function Home() {
       alert('Post created successfully!');
       setPostTitle('');
       setPostDescription('');
-      fetchEvents(); // Fetch posts again to update the list after creating a new post
+      fetchEvents();
     } catch (error) {
       console.error('Error adding document: ', error);
     }
@@ -68,7 +68,6 @@ function Home() {
       const storageRef = ref(storage, `images/${image.name}`);
       await uploadBytes(storageRef, image);
       const imageUrl = await getDownloadURL(storageRef);
-      // Update the post document in Firestore collection 'posts'
       await updateDoc(doc(db, 'posts', postId), {
         title: postTitle,
         description: postDescription,
@@ -77,7 +76,7 @@ function Home() {
       alert('Post updated successfully!');
       setPostTitle('');
       setPostDescription('');
-      fetchEvents(); // Fetch posts again to update the list after editing a post
+      fetchEvents();
     } catch (error) {
       console.error('Error updating document: ', error);
     }
@@ -88,7 +87,7 @@ function Home() {
       // Delete the post document from Firestore collection 'posts'
       await deleteDoc(doc(db, 'posts', postId));
       alert('Post deleted successfully!');
-      fetchEvents(); // Fetch posts again to update the list after deleting a post
+      fetchEvents();
     } catch (error) {
       console.error('Error deleting document: ', error);
     }
@@ -97,7 +96,7 @@ function Home() {
   return (
     <div>
       <div className='frontpage-container'>
-        {user && <h3>Hello, {user.email}</h3>} {/* Display hello (logged user) */}
+        {user && <h3>Kirjautunut, {user.email}</h3>} {/* Display hello (logged user) */}
         <center>
           <div class='logo-div'>
             <img src='\images\logo.PNG' class='logo-img' />
@@ -131,7 +130,7 @@ function Home() {
               onChange={handleImageChange}
             />
           </div>
-            <button onClick={handleCreatePost}>Create Post</button>
+            <button onClick={handleCreatePost}>Luo ilmoitus</button>
           </div>
         )}
           <ul>
