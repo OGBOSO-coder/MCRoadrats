@@ -11,6 +11,7 @@ const Ralli = () => {
   const [posts, setPosts] = useState([]); // State to hold the posts
   const [editingPostId, setEditingPostId] = useState(null); // State to hold the ID of the post being edited
   const [editedPostText, setEditedPostText] = useState(''); // State to hold the edited post text
+  const [image, setImage] = useState(null); // State to hold Image
   const [ticketLinks, setTicketLinks] = useState([]);
   
   useEffect(() => {
@@ -102,6 +103,16 @@ const Ralli = () => {
     }
   };
 
+  const handleImageUpload = async (image) => {
+
+  }
+
+  const handleImageChange = (e) => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
+
 
   return (
     <div className="sivut">
@@ -158,6 +169,15 @@ const Ralli = () => {
 
       <div className='ralli-kuvat-div'>
         <h1>Paikan Kuvat</h1>
+        <h1>Uusi kuva</h1>
+        <div className="rotralli-image-upload">
+            <input
+              type="file"
+              onChange={handleImageChange}
+            />
+          <button onClick={handleImageUpload}>Lisää kuva</button>
+        </div>
+
         <div className='rottaralli-kuvat-gallery'>
           <div className='rottaralli-kuva-gallery-container'>
             <img src='/images/img-9.jpg' alt="img-9" className="ralli-image" />

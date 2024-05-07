@@ -2,12 +2,27 @@ import React, { useState, useEffect } from 'react';
 import "../History.css"
 import Footer from '../Footer';
 import ImageSlider from '../ImageSlider';
+import { db, auth, storage } from '../firebase';
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { collection, getDocs, addDoc, deleteDoc, updateDoc, doc } from 'firebase/firestore';
 
 const images = ["images/img-6.jpg", "images/img-7.jpg", "images/img-8.jpg", "images/img-9.jpg"]
 
 // Components 
 
 const EditForm = () => {
+  const [image, setImage] = useState(null);
+
+  const handleImageChange = (e) => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
+
+  const handleImageUpload = () => {
+
+  }
+
   return (
     <div>
       <div className='history-div'>
@@ -25,8 +40,18 @@ const EditForm = () => {
           Rottarallin järjestäminen on tärkein yhteinen vuosittainen tapahtumamme, jonka avulla mahdollistamme yhdistyksemme toiminnan.
         </p>
       </div>
-      <h1>Kuvia MCRoadrats</h1>
+      
       <center>
+      <h1>Kuvia MCRoadrats</h1>
+      <h1>Lisää kuva:</h1>
+      <div className="history-image-upload">
+            <input
+              type="file"
+              onChange={handleImageChange}
+            />
+          <button onClick={handleImageUpload}>Lisää kuva</button>
+        </div>
+      
         <div className='history-image-slider-div'>
           <ImageSlider imageUrls={images} />
         </div>
