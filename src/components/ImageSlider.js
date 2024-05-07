@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import "./History.css"
 
 
+
 const ImageSlider = ({ imageUrls }) => {
     const [imageIndex, setImageIndex] = useState(0)
-
-
 
     return (
         <div style={{ width: "100%", height: "100%", position: "relative" }}>
