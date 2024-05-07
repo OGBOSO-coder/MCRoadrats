@@ -39,22 +39,27 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    fetchEvents(); // Call fetchEvents function when component mounts
-  }, []); // Empty dependency array to run only once when component mounts
+    fetchEvents();
+  }, []);
 
   const handleCreatePost = async () => {
     try {
-      const storageRef = ref(storage, `images/${image.name}`);
-      await uploadBytes(storageRef, image);
-      const imageUrl = await getDownloadURL(storageRef);
-      // Create a new post document in Firestore collection 'posts'
+      let imageUrl = ''; // Initialize imageUrl to empty string
+  
+      // Check if an image is provided
+      if (image) {
+        const storageRef = ref(storage, `images/${image.name}`);
+        await uploadBytes(storageRef, image);
+        imageUrl = await getDownloadURL(storageRef);
+      }
+  
       await addDoc(collection(db, 'posts'), {
         title: postTitle,
         description: postDescription,
         date: new Date().toLocaleDateString(),
         imageUrl: imageUrl,
       });
-      alert('Post created successfully!');
+      alert('tapahtuma luotu!');
       setPostTitle('');
       setPostDescription('');
       fetchEvents();
@@ -65,13 +70,20 @@ function Home() {
 
   const handleEditPost = async (postId) => {
     try {
-      const storageRef = ref(storage, `images/${image.name}`);
-      await uploadBytes(storageRef, image);
-      const imageUrl = await getDownloadURL(storageRef);
+      let imageUrl = ''; // Initialize imageUrl to empty string
+  
+      // Check if an image is provided
+      if (image) {
+        const storageRef = ref(storage, `images/${image.name}`);
+        await uploadBytes(storageRef, image);
+        imageUrl = await getDownloadURL(storageRef);
+      }
+  
+      // Update the post document in Firestore collection 'posts'
       await updateDoc(doc(db, 'posts', postId), {
         title: postTitle,
         description: postDescription,
-        imageUrl: imageUrl,
+        imageUrl: imageUrl, // Assign the imageUrl whether it's empty or contains a value
       });
       alert('Post updated successfully!');
       setPostTitle('');

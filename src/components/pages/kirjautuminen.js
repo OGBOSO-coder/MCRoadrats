@@ -155,9 +155,8 @@ const SignupAndLogin = () => {
       setEditedTitle('');
       setEditedDescription('');
       setEditedImage(null);
-      // Fetch posts again to update the list after editing a post
       fetchPosts();
-      alert('Post edited successfully!');
+      alert('taphtuma muokattu!');
     } catch (error) {
       console.error('Error editing post: ', error);
     }
@@ -229,16 +228,16 @@ const SignupAndLogin = () => {
                     type="file"
                     onChange={(e) => setEditedImage(e.target.files[0])}
                   />
-                  <button onClick={() => handleSaveEdit(post.id, post.imageUrl)}>Save</button>
-                  <button onClick={handleCancelEdit}>Cancel</button>
+                  <button onClick={() => handleSaveEdit(post.id, post.imageUrl)}>Tallenna</button>
+                  <button onClick={handleCancelEdit}>Peruuta</button>
                 </div>
               ) : (
                 <div>
                   <h3>{post.title}</h3>
                   <p>{post.description}</p>
                   {post.imageUrl && <img src={post.imageUrl} alt="Post" />}
-                  <button onClick={() => handleEditPost(post)}>Edit</button>
-                  <button onClick={() => handlePostDeletion(post.id, post.imageUrl)}>Delete</button>
+                  <button onClick={() => handleEditPost(post)}>Muokkaa</button>
+                  <button onClick={() => handlePostDeletion(post.id, post.imageUrl)}>Poista</button>
                 </div>
               )}
             </li>
@@ -264,7 +263,7 @@ const SignupAndLogin = () => {
             />
           </div>
           <div>
-            <label>Password</label>
+            <label>Salasana</label>
             <input
               type="password"
               value={password}
