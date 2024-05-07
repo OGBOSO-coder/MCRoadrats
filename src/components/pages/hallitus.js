@@ -1,6 +1,5 @@
 import React from 'react';
 import '../../App.css';
-import Cards from '../Cards'; // Import the 'Cards' component
 
 export default function Services() {
   return (
@@ -39,7 +38,6 @@ export default function Services() {
           <h2 className='service-title'>Hermanni Saresma</h2>
           <p className='service-description'>Jäsen</p>
         </div>
-        {/* Add more services as needed */}
       </div>
       <div className='members-container'>
         <div className='members-section'>
