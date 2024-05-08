@@ -15,6 +15,12 @@ const Ralli = () => {
   const [ticketLinks, setTicketLinks] = useState([]);
   
   useEffect(() => {
+    // Trigger rendering of Facebook feed after SDK is loaded
+    if (window.FB) {
+      window.FB.XFBML.parse();
+    }
+  }, []);
+  useEffect(() => {
     const fetchTicketLinks = async () => {
       try {
         const ticketLinksCollection = collection(db, 'ticketLinks');
