@@ -13,11 +13,27 @@ const images = ["images/img-6.jpg", "images/img-7.jpg", "images/img-8.jpg", "ima
 const EditForm = () => {
   const [image, setImage] = useState(null);
   const [futureEvents, setFutureEvents] = useState([]);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        setUser(user); // Set user if logged in
+      } else {
+        setUser(null); // Set user to null if logged out
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+  useEffect(() => {
+    fetchEvents();
+  }, []);
 
   const fetchEvents = async () => {
     try {
       // Fetch posts from Firestore collection 'posts'
-      const postCollection = collection(db, 'posts');
+      const postCollection = collection(db, 'Rottaralli-kuvat');
       const snapshot = await getDocs(postCollection);
       const postsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setFutureEvents(postsData);
@@ -74,17 +90,20 @@ const EditForm = () => {
       
       <center>
       <h1>Kuvia MCRoadrats</h1>
-      <h1>Lisää kuva:</h1>
-      <div className="history-image-upload">
-          <input
-            type="file"
-            onChange={handleImageChange}
-          />
-          <button onClick={handleImageUpload}>Lisää kuva</button>
+      {user && (
+        <div>
+          <h1>Lisää kuva:</h1>
+          <div className="history-image-upload">
+            <input
+              type="file"
+              onChange={handleImageChange}
+            />
+            <button onClick={handleImageUpload}>Lisää kuva</button>
+          </div>
         </div>
-      
+      )}
         <div className='history-image-slider-div'>
-          <ImageSlider imageUrls={images} />
+          <ImageSlider imageUrls={futureEvents.map(event => (event.imageUrl))} />
         </div>
       </center>
     </div>
