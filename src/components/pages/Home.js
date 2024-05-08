@@ -149,7 +149,7 @@ function Home() {
             {futureEvents.map(event => (
               <li key={event.id}>
                 <h3>{event.title}</h3>
-                <p>Description: {event.description}</p>
+                <p>Info: {event.description}</p>
                 {event.imageUrl && <img src={event.imageUrl} alt="Event" />}
                 {/* Add edit and delete buttons only if user is logged in */}
                 {user && (
