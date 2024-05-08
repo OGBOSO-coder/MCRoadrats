@@ -12,6 +12,19 @@ const images = ["images/img-6.jpg", "images/img-7.jpg", "images/img-8.jpg", "ima
 
 const EditForm = () => {
   const [image, setImage] = useState(null);
+  const [futureEvents, setFutureEvents] = useState([]);
+
+  const fetchEvents = async () => {
+    try {
+      // Fetch posts from Firestore collection 'posts'
+      const postCollection = collection(db, 'posts');
+      const snapshot = await getDocs(postCollection);
+      const postsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setFutureEvents(postsData);
+    } catch (error) {
+      console.error('Error fetching posts: ', error);
+    }
+  };
 
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
@@ -19,9 +32,27 @@ const EditForm = () => {
     }
   };
 
-  const handleImageUpload = () => {
-
-  }
+  const handleImageUpload = async () => {
+    try {
+      let imageUrl = ''; // Initialize imageUrl to empty string
+  
+      // Check if an image is provided
+      if (image) {
+        const storageRef = ref(storage, `rotrallikuvat/${image.name}`);
+        await uploadBytes(storageRef, image);
+        imageUrl = await getDownloadURL(storageRef);
+      }
+  
+      await addDoc(collection(db, 'Rottaralli-kuvat'), {
+        date: new Date().toLocaleDateString(),
+        imageUrl: imageUrl,
+      });
+      alert('tapahtuma luotu!');
+      fetchEvents();
+    } catch (error) {
+      console.error('Error adding document: ', error);
+    }
+  };
 
   return (
     <div>
@@ -45,10 +76,10 @@ const EditForm = () => {
       <h1>Kuvia MCRoadrats</h1>
       <h1>Lisää kuva:</h1>
       <div className="history-image-upload">
-            <input
-              type="file"
-              onChange={handleImageChange}
-            />
+          <input
+            type="file"
+            onChange={handleImageChange}
+          />
           <button onClick={handleImageUpload}>Lisää kuva</button>
         </div>
       
