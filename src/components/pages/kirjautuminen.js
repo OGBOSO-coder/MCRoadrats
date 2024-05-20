@@ -179,9 +179,9 @@ const SignupAndLogin = () => {
   if (loggedIn) {
     return (
       <div>
-        <h2>Welcome, User!</h2>
-        <button onClick={handleLogout}>Logout</button>
-        <h3>Create a New Post</h3>
+        <h2>Tervetuloa, ylläpitäjä!</h2>
+        <button onClick={handleLogout}>Kirjaudu ulos</button>
+        <h3>Uusi tapahtuma</h3>
         <form onSubmit={handlePostCreation}>
           <div>
             <label>Titteli</label>

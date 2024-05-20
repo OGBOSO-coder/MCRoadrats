@@ -115,7 +115,6 @@ function Home() {
           </div>
         </center>
         <section className='intro-section'>
-          <h1>Meistä?</h1>
           <p>
             Olemme Mikkelissä toimiva moottoripyöräkerho. Jäseniä kerhossamme on n. 110. Yleisimmät moottoripyörämerkit ovat edustettuina ja yhtälailla tervetulleita. Kerhomme on Suomen Motoristit ry eli SMOTON jäsen.
           </p>
@@ -149,7 +148,7 @@ function Home() {
             {futureEvents.map(event => (
               <li key={event.id}>
                 <h3>{event.title}</h3>
-                <p>Info: {event.description}</p>
+                <p>{event.description}</p>
                 {event.imageUrl && <img src={event.imageUrl} alt="Event" />}
                 {/* Add edit and delete buttons only if user is logged in */}
                 {user && (

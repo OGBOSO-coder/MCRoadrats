@@ -6,7 +6,7 @@ import ContactForm from '../ContactForm';
 const SignUp = () => {
   return (
     <div>
-      <h1>Hae jäseneksi</h1>
+      <h1></h1>
       <ContactForm />
     </div>
   );

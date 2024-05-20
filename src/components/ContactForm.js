@@ -85,7 +85,7 @@ const ContactForm = () => {
         </div>
         <div className="form-group">
           <label htmlFor="phone">Puhelinnumero:</label>
-          <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} required />
+          <input type="text" id="phone" name="phone" value={formData.phone} onChange={handleChange} required />
         </div>
         <div className="form-group">
           <label htmlFor="address">Osoite:</label>

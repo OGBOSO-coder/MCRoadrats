@@ -57,7 +57,7 @@ const EditForm = () => {
   return (
     <div>
       <div className='history-div'>
-        <h1 className='history-title'>Mc Roadrats Historia</h1>
+        <h1 className='history-title'>Mc Roadrats historia</h1>
         <p className='history-text'>
           Kerho perustettiin toukokuussa 1987 ja nimeksi silloin annettiin Mikkelin Matkamoottoripyöräilijät (MMP). Ajatuksena oli saada Mikkelin seudun motoristit aktiivisen ja yhdistävän toiminnan piiriin. Jo seuraavana vuonna kerhon jäsenmäärä saavutti nykyisen noin 100 jäsenen tason. MMP toimi ensimmäiset vuodet Saksalan kaupunginosan toimintakeskuksessa. Tilojen vapaassa käytössä ilmeni kuitenkin tiettyjä rajoituksia, joten kerhon aktivistit alkoivat etsiä uusia ja suurempia kerhotiloja toiminnan kasvaessa. Mahdollista muuttoa edesauttoi kerhon taloudellisen tilanteen parantuminen Rottarallista saatujen tulojen myötä. Tämä jo legendaariseksi muodostunut kokoontumisajo pidettiin ensimmäisen kerran 1990.
         </p>
@@ -73,7 +73,7 @@ const EditForm = () => {
       </div>
       
       <center>
-      <h1>Kuvia MCRoadrats</h1>
+      <h1>Kuvia MC Roadrats</h1>
       <h1>Lisää kuva:</h1>
       <div className="history-image-upload">
           <input

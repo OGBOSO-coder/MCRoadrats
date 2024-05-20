@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import "../Rottaralli.css"
 import Footer from '../Footer';
 import { auth, db } from '../firebase'; // Import your Firebase configuration
-import { addDoc, collection, getDocs, updateDoc, doc } from 'firebase/firestore'; // Import Firestore functions
+import { addDoc, collection, getDocs,deleteDoc, updateDoc, doc } from 'firebase/firestore'; // Import Firestore functions
 
 const Ralli = () => {
   const [user, setUser] = useState(null); // Placeholder for user state
   const [eventInfo, setEventInfo] = useState(''); // State to hold the event info text
+  const [postTitle, setPostTitle] = useState('');
   const [newPost, setNewPost] = useState(''); // State to hold the new post text
+  const [postDescription, setPostDescription] = useState('');
   const [posts, setPosts] = useState([]); // State to hold the posts
   const [editingPostId, setEditingPostId] = useState(null); // State to hold the ID of the post being edited
   const [editedPostText, setEditedPostText] = useState(''); // State to hold the edited post text
@@ -83,9 +85,8 @@ const Ralli = () => {
     try {
       // Add new post to the "event-info" collection
       const docRef = await addDoc(collection(db, 'event-info'), {
-        text: newPost,
+        text: postTitle,
         timestamp: new Date().toISOString(),
-        userId: user.uid // Assuming you have user authentication enabled
       });
       console.log('Post added with ID: ', docRef.id);
       setNewPost(''); // Clear the input field after submitting
@@ -112,7 +113,16 @@ const Ralli = () => {
   const handleImageUpload = async (image) => {
 
   }
-
+  const handleDeletePost = async (postId) => {
+    try {
+      // Delete the post document from Firestore collection 'posts'
+      await deleteDoc(doc(db, 'event-info', postId));
+      alert('Post deleted successfully!');
+      fetchPosts();
+    } catch (error) {
+      console.error('Error deleting document: ', error);
+    }
+  };
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
       setImage(e.target.files[0]);
@@ -123,7 +133,6 @@ const Ralli = () => {
   return (
     <div className="sivut">
       <div className='ralli-header'>
-        <h1>Rottaralli</h1>
         {user && <h3>Hello, {user.email}</h3>} {/* Display hello (logged user) */}
         <center>
           <div className='rottaralli-logo-div'>
@@ -131,9 +140,24 @@ const Ralli = () => {
           </div>
         </center>
       </div>
-
       <div className='ralli-info'>
         <div className='ralli-div'>
+        <div>
+            <input
+              type="text"
+              value={postTitle}
+              onChange={(e) => setPostTitle(e.target.value)}
+              placeholder="Post Title"
+            />
+            <textarea
+              value={postDescription}
+              onChange={(e) => setPostDescription(e.target.value)}
+              placeholder="Post Description"
+            ></textarea>
+                      <div>
+          </div>
+            <button onClick={handlePostSubmit}>Hallitus</button>
+          </div>
           <h1 className='ralli-title'>Rottaralli tiedotteita</h1>
           <p className='ralli-text'>
           <ul>
@@ -148,10 +172,10 @@ const Ralli = () => {
                 <div>
                   <p>{post.text}</p>
                   {user && (
-                    <button onClick={() => {
-                      setEditingPostId(post.id);
-                      setEditedPostText(post.text);
-                    }}>Edit</button>
+                    <><button onClick={() => {
+                        setEditingPostId(post.id);
+                        setEditedPostText(post.text);
+                      } }>Edit</button><button onClick={() => handleDeletePost(post.id)}>Poista</button></>
                   )}
                 </div>
               )}
@@ -174,8 +198,6 @@ const Ralli = () => {
       </div>
 
       <div className='ralli-kuvat-div'>
-        <h1>Paikan Kuvat</h1>
-        <h1>Uusi kuva</h1>
         <div className="rotralli-image-upload">
             <input
               type="file"
