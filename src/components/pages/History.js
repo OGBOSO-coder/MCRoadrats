@@ -3,12 +3,10 @@ import "../History.css"
 import Footer from '../Footer';
 import ImageSlider from '../ImageSlider';
 import { db, auth, storage } from '../firebase';
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import { collection, getDocs, addDoc, deleteDoc, updateDoc, doc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { collection, getDocs, addDoc } from 'firebase/firestore';
 
 const images = ["images/img-6.jpg", "images/img-7.jpg", "images/img-8.jpg", "images/img-9.jpg"]
-
-// Components 
 
 const EditForm = () => {
   const [image, setImage] = useState(null);
@@ -26,13 +24,14 @@ const EditForm = () => {
 
     return () => unsubscribe();
   }, []);
+
   useEffect(() => {
     fetchEvents();
   }, []);
 
   const fetchEvents = async () => {
     try {
-      // Fetch posts from Firestore collection 'posts'
+      // Fetch posts from Firestore collection 'Rottaralli-kuvat'
       const postCollection = collection(db, 'Rottaralli-kuvat');
       const snapshot = await getDocs(postCollection);
       const postsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -51,14 +50,14 @@ const EditForm = () => {
   const handleImageUpload = async () => {
     try {
       let imageUrl = ''; // Initialize imageUrl to empty string
-  
+
       // Check if an image is provided
       if (image) {
         const storageRef = ref(storage, `rotrallikuvat/${image.name}`);
         await uploadBytes(storageRef, image);
         imageUrl = await getDownloadURL(storageRef);
       }
-  
+
       await addDoc(collection(db, 'Rottaralli-kuvat'), {
         date: new Date().toLocaleDateString(),
         imageUrl: imageUrl,
@@ -87,39 +86,28 @@ const EditForm = () => {
           Rottarallin järjestäminen on tärkein yhteinen vuosittainen tapahtumamme, jonka avulla mahdollistamme yhdistyksemme toiminnan.
         </p>
       </div>
-      
+
       <center>
-<<<<<<< HEAD
-      <h1>Kuvia MC Roadrats</h1>
-      <h1>Lisää kuva:</h1>
-      <div className="history-image-upload">
-          <input
-            type="file"
-            onChange={handleImageChange}
-          />
-          <button onClick={handleImageUpload}>Lisää kuva</button>
-=======
-      <h1>Kuvia MCRoadrats</h1>
-      {user && (
-        <div>
-          <h1>Lisää kuva:</h1>
-          <div className="history-image-upload">
-            <input
-              type="file"
-              onChange={handleImageChange}
-            />
-            <button onClick={handleImageUpload}>Lisää kuva</button>
+        <h1>Kuvia MCRoadrats</h1>
+        {user && (
+          <div>
+            <h1>Lisää kuva:</h1>
+            <div className="history-image-upload">
+              <input
+                type="file"
+                onChange={handleImageChange}
+              />
+              <button onClick={handleImageUpload}>Lisää kuva</button>
+            </div>
           </div>
->>>>>>> ae3d27a45a89e8ebbcfaecf31738b01c35264e65
-        </div>
-      )}
+        )}
         <div className='history-image-slider-div'>
-          <ImageSlider imageUrls={futureEvents.map(event => (event.imageUrl))} />
+          <ImageSlider imageUrls={futureEvents.map(event => event.imageUrl)} />
         </div>
       </center>
     </div>
-  )
-}
+  );
+};
 
 const History = () => {
   return (
