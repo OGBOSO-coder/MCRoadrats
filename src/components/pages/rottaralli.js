@@ -198,14 +198,20 @@ const Ralli = () => {
       </div>
 
       <div className='ralli-kuvat-div'>
-        <div className="rotralli-image-upload">
-            <input
-              type="file"
-              onChange={handleImageChange}
-            />
-          <button onClick={handleImageUpload}>Lisää kuva</button>
-        </div>
-
+        <h1>Paikan Kuvat</h1>
+        {user && (
+          <div>
+            <h1>Uusi kuva</h1>
+            <div className="rotralli-image-upload">
+              <input
+                type="file"
+                onChange={handleImageChange}
+              />
+              <button onClick={handleImageUpload}>Lisää kuva</button>
+            </div>
+          </div>
+        )}
+        
         <div className='rottaralli-kuvat-gallery'>
           <div className='rottaralli-kuva-gallery-container'>
             <img src='/images/img-9.jpg' alt="img-9" className="ralli-image" />
