@@ -142,7 +142,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 .equipment1-description {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   margin-bottom: 40px;
   margin-left: 15px;
 }
@@ -228,4 +228,10 @@
 .future-events li img {
   max-width: 100%;
   height: auto;
+}
+
+@media screen and (max-width: 500px) {
+  .equipment1-description {
+    font-size: 1rem;
+  }
 }

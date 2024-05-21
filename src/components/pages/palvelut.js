@@ -147,7 +147,7 @@ const Products = () => {
       <div className='equipment-container'>
         <h1 className='equipment-title'>Palvelut</h1>
         {user && <h3>Hello, {user.email}</h3>}
-        <p className='palvelut-text'>
+        <p className='equipment1-description'>
           <ul>{renderPosts('Palvelut')}</ul>
         </p>
 
