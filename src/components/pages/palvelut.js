@@ -145,7 +145,7 @@ const Products = () => {
   return (
     <div className=''>
       <div className='equipment-container'>
-        <h1 className='equipment-title'>Palvelut</h1>
+        <h1>Moottoripyörien tehonmittaus</h1>
         {user && <h3>Hello, {user.email}</h3>}
         <p className='equipment1-description'>
           <ul>{renderPosts('Palvelut')}</ul>
@@ -178,7 +178,7 @@ const Products = () => {
         </div>
 
         <div className='equipment1-description'>
-          <h2>Kalusto</h2>
+          <h2>Kerhomme kalustoa tapahtumiin</h2>
           <ul>{renderPosts('Kalusto')}</ul>
           {user && renderPostForm('Kalusto')}
         </div>
