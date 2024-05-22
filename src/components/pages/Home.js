@@ -6,6 +6,7 @@ import { collection, getDocs, addDoc, deleteDoc, updateDoc, doc } from 'firebase
 
 function Home() {
   const [futureEvents, setFutureEvents] = useState([]);
+  const [Honored, setHonored] = useState([]);
   const [user, setUser] = useState(null);
   const [postTitle, setPostTitle] = useState('');
   const [image, setImage] = useState(null);
@@ -17,6 +18,11 @@ function Home() {
       const postCollection = collection(db, 'posts');
       const snapshot = await getDocs(postCollection);
       const postsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const honoredCollection = collection(db, 'Etusivu');
+      const snapshot1 = await getDocs(honoredCollection);
+      const honordData = snapshot1.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+      setHonored(honordData);
       setFutureEvents(postsData);
     } catch (error) {
       console.error('Error fetching posts: ', error);
@@ -110,9 +116,13 @@ function Home() {
       <div className='frontpage-container'>
         {user && <h3>Kirjautunut, {user.email}</h3>} {/* Display hello (logged user) */}
         <center>
-          <div class='logo-div'>
-            <img src='\images\logo.PNG' class='logo-img' />
-          </div>
+        <div className='logo-div'>
+          {Honored.map(event => (
+            <p key={event.id}>
+              {event.imageUrl && <img className="logo-img" src={event.imageUrl} alt="logo" />}
+            </p>
+          ))}
+        </div>
         </center>
         <section className='intro-section'>
           <p>
