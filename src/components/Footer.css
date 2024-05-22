@@ -8,19 +8,18 @@
   justify-content: center;
 }
 
-.info-right {
+.info-left, .info-right {
   flex: 1;
   max-width: 20%;
   color: white;
-  text-align: left;
 }
 
 .info-left {
-  flex: 1;
-  max-width: 20%;
-  color: white;
   text-align: right;
-  float: right;
+}
+
+.info-right {
+  text-align: left;
 }
 
 .social-media {
@@ -84,7 +83,7 @@
   color: #e4405f;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 1000px) {
   .footer-container {
     flex-direction: column;
     align-items: center;
@@ -96,5 +95,18 @@
     text-align: center;
     margin-top: 20px;
     max-width: 100%;
+  }
+
+  .social-media {
+    order: -1;
+    margin-bottom: 20px;
+  }
+
+  .info-left {
+    order: 1;
+  }
+
+  .info-right {
+    order: 2;
   }
 }
