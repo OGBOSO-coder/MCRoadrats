@@ -146,7 +146,42 @@ function Services() {
       console.error('Error updating document: ', error);
     }
   };
-
+  const handleEditPost1 = async (postId) => {
+    try {
+      let imageUrl = ''; // Initialize imageUrl to empty string
+  
+      // Update the post document in Firestore collection 'posts'
+      await updateDoc(doc(db, 'honored-members', postId), {
+        name: postTitle,
+        description: postDescription,
+        imageUrl: imageUrl, // Assign the imageUrl whether it's empty or contains a value
+      });
+      alert('Post updated successfully!');
+      setPostTitle('');
+      setPostDescription('');
+      fetchEvents();
+    } catch (error) {
+      console.error('Error updating document: ', error);
+    }
+  };
+  const handleEditPost2 = async (postId) => {
+    try {
+      let imageUrl = ''; // Initialize imageUrl to empty string
+  
+      // Update the post document in Firestore collection 'posts'
+      await updateDoc(doc(db, 'Gonemember', postId), {
+        name: postTitle,
+        description: postDescription,
+        imageUrl: imageUrl, // Assign the imageUrl whether it's empty or contains a value
+      });
+      alert('Post updated successfully!');
+      setPostTitle('');
+      setPostDescription('');
+      fetchEvents();
+    } catch (error) {
+      console.error('Error updating document: ', error);
+    }
+  };
   const handleDeletePost = async (postId) => {
     try {
       // Delete the post document from Firestore collection 'posts'
@@ -231,7 +266,7 @@ function Services() {
       <p className=''>{event.name}</p>
       {user && (
         <div>
-          <button onClick={() => (event.id)}>Muokkaa</button>
+          <button onClick={() => handleEditPost1(event.id)}>Muokkaa</button>
           <button onClick={() => handleDeletePost1(event.id)}>Poista</button>
         </div>
       )}
@@ -248,7 +283,7 @@ function Services() {
       <p className=''>{event.name}</p>
       {user && (
         <div>
-          <button onClick={() => (event.id)}>Muokkaa</button>
+          <button onClick={() => handleEditPost2(event.id)}>Muokkaa</button>
           <button onClick={() => handleDeletePost2(event.id)}>Poista</button>
         </div>
       )}
