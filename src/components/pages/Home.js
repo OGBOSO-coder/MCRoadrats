@@ -120,7 +120,7 @@ function Home() {
           </p>
         </section>
         <section className='future-events'>
-          <h2>Tulevat tapahtumat</h2>
+          <h2>Tapahtumia</h2>
           {user && (
           <div>
             <input
