@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Footer from '../Footer';
 import { db, auth, storage } from '../firebase';
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import { collection, getDocs, addDoc, deleteDoc, updateDoc, doc } from 'firebase/firestore';
+import { collection, getDocs, addDoc, deleteDoc, updateDoc, doc, serverTimestamp, query, orderBy } from 'firebase/firestore';
 
 function Home() {
   const [futureEvents, setFutureEvents] = useState([]);
@@ -14,10 +14,12 @@ function Home() {
 
   const fetchEvents = async () => {
     try {
-      // Fetch posts from Firestore collection 'posts'
+      // Fetch posts from Firestore collection 'posts' and order by 'createdAt' in ascending order
       const postCollection = collection(db, 'posts');
-      const snapshot = await getDocs(postCollection);
+      const q = query(postCollection, orderBy('createdAt', 'asc'));
+      const snapshot = await getDocs(q);
       const postsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
       const honoredCollection = collection(db, 'Etusivu');
       const snapshot1 = await getDocs(honoredCollection);
       const honordData = snapshot1.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -28,11 +30,13 @@ function Home() {
       console.error('Error fetching posts: ', error);
     }
   };
+
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
       setImage(e.target.files[0]);
     }
   };
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
@@ -64,6 +68,7 @@ function Home() {
         description: postDescription,
         date: new Date().toLocaleDateString(),
         imageUrl: imageUrl,
+        createdAt: serverTimestamp(), // Add createdAt field
       });
       alert('tapahtuma luotu!');
       setPostTitle('');
