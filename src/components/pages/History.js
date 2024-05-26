@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import "../History.css"
 import Footer from '../Footer';
-import ImageSlider from '../ImageSlider';
 import { db, auth, storage } from '../firebase';
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { collection, getDocs, addDoc, deleteDoc, updateDoc, doc } from 'firebase/firestore';
@@ -114,19 +113,15 @@ const EditForm = () => {
         <div className='history-image-slider-div'>
           {futureEvents.map(event => (
                 <div class="gallery">
-                  
                   <div class="history-image-container">
                     <a target="_blank" href={event.imageUrl}>
                       <img class="history-gallery-image" src={event.imageUrl}/>
                     </a>
                   </div>
                     
-                  
-                  
                     {user && (
                       <button class="history-img-button" onClick={() => handleDeletePost(event.id)}>Poista</button>
                     )}
-                  
                 </div>
 
           ))}
