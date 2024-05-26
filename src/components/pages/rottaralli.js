@@ -8,6 +8,7 @@ const Ralli = () => {
   const [user, setUser] = useState(null); // Placeholder for user state
   const [eventInfo, setEventInfo] = useState(''); // State to hold the event info text
   const [postTitle, setPostTitle] = useState('');
+  const [Honored, setHonored] = useState([]);
   const [newPost, setNewPost] = useState(''); // State to hold the new post text
   const [postDescription, setPostDescription] = useState('');
   const [posts, setPosts] = useState([]); // State to hold the posts
@@ -28,6 +29,10 @@ const Ralli = () => {
         const ticketLinksCollection = collection(db, 'ticketLinks');
         const snapshot = await getDocs(ticketLinksCollection);
         const links = snapshot.docs.map(doc => doc.data());
+        const honoredCollection = collection(db, 'Rottaralli-logo');
+        const snapshot1 = await getDocs(honoredCollection);
+        const honordData = snapshot1.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setHonored(honordData);
         setTicketLinks(links);
       } catch (error) {
         console.error('Error fetching ticket links:', error);
@@ -135,9 +140,13 @@ const Ralli = () => {
       <div className='ralli-header'>
         {user && <h3>Hello, {user.email}</h3>} {/* Display hello (logged user) */}
         <center>
-          <div className='rottaralli-logo-div'>
-            <img src='/images/rottaralli_logo.png' className='rottaralli-logo-img' alt='Rottaralli Logo' />
-          </div>
+        <div className='rottaralli-logo-div'>
+          {Honored.map(event => (
+            <p key={event.id}>
+              {event.imageUrl && <img className="logo-img" src={event.imageUrl} alt="Rottaralli Logo" />}
+            </p>
+          ))}
+        </div>
         </center>
       </div>
       <div className='ralli-info'>

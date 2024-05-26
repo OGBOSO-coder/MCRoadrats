@@ -8,6 +8,7 @@ const Products = () => {
   const [user, setUser] = useState(null);
   const [eventInfo, setEventInfo] = useState('');
   const [newPost, setNewPost] = useState({ text: '', url: '' });
+  const [Honored, setHonored] = useState([]);
   const [posts, setPosts] = useState({ palvelut: [], kalusto: [] });
   const [editingPost, setEditingPost] = useState({ id: null, type: '', text: '', url: '' });
 
@@ -21,6 +22,11 @@ const Products = () => {
       try {
         const snapshot = await getDocs(collection(db, 'Palvelut'));
         snapshot.forEach(doc => setEventInfo(doc.data().info));
+                const honoredCollection = collection(db, 'Palvelu-kuvat');
+        const snapshot1 = await getDocs(honoredCollection);
+        const honordData = snapshot1.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+        setHonored(honordData);
       } catch (error) {
         console.error('Error fetching event info: ', error);
       }
@@ -154,27 +160,17 @@ const Products = () => {
         {user && renderPostForm('Palvelut')}
 
         <div className='equipment-images'>
-          <div className='equipment-image'>
-            <img src='/images/pc3.jpg' alt='Equipment 1' />
-            <p className='image-caption'>Dyno jet PowerCommander</p>
-          </div>
-          <div className='equipment-image'>
-            <img src='/images/injection adjust.jpg' alt='Equipment 2' />
-            <p className='image-caption'>Suzuki injection adjuster. fit's on:
-              Suzuki
-              GSX/R 600, 01-
-              SV 650, 03-
-              GSX/R 750, 98-99
-              GSX/R 750, 01-
-              GSX/R 1000, 01-
-              SV 1000, 03-
-              TL 1000 S, 97-01
-              TL 1000 R, 98-03
-              DL 1000 VStrom, 02-
-              GSX 1300 R Hayabusa, 99-
-              GSX 1400, 01-
-            </p>
-          </div>
+          {Honored.map(event => (
+    <div key={event.id}>
+      <h2 className='service-title'>{event.text}</h2>
+      {event.imageUrl && (
+        <div className='equipment-image'>
+          <img className="logo-img" src={event.imageUrl} alt="Rottaralli Logo" />
+          <p className='image-caption'>{event.description}</p>
+        </div>
+      )}
+    </div>
+  ))}
         </div>
 
         <div className='equipment1-description'>
