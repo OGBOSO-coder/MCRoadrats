@@ -238,7 +238,7 @@ const Ralli = () => {
         <div className="fb-page"
           data-href="https://www.facebook.com/p/Rottaralli-100057561793735/"
           data-tabs="timeline"
-          data-width="400"
+          data-width="375"
           data-height=""
           data-small-header="false"
           data-adapt-container-width="true"

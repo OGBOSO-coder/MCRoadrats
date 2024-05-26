@@ -1,0 +1,55 @@
+.palvelut-img-button {
+    background-color: rgb(15, 15, 15);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.palvelut-img-button:hover {
+    background-color: rgb(102, 2, 2);
+    transition: 0.3s;
+}
+
+.palvelut-image-slider-div {
+    max-width: 1200px;
+    max-width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    margin-bottom: 100px;
+    background-color: #dddddd;
+    border-radius: 20px;
+}
+
+.gallery {
+  border: 1px solid #201f1f;
+  margin: 10px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.palvelut-image-container {
+  width: 500px;
+  height: 400px;
+}
+
+.palvelut-gallery-image{
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+  
+.gallery:hover {
+  border: 1px solid #777;
+}
+
+@media screen and (max-width: 500px) {
+    .palvelut-image-container {
+        width: 390px;
+        height: 290px;
+      }
+}

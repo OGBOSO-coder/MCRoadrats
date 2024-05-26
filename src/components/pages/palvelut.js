@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import '../../App.css';
+import "../Palvelut.css"
 import Footer from '../Footer';
-import { auth, db } from '../firebase';
+import { auth, db, storage } from '../firebase';
 import { addDoc, collection, getDocs, updateDoc, doc, deleteDoc, query, orderBy } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 
 const Products = () => {
   const [user, setUser] = useState(null);
@@ -11,6 +13,9 @@ const Products = () => {
   const [Honored, setHonored] = useState([]);
   const [posts, setPosts] = useState({ palvelut: [], kalusto: [] });
   const [editingPost, setEditingPost] = useState({ id: null, type: '', text: '', url: '' });
+
+  const [image, setImage] = useState(null)
+  const [imagesFromDatabase, setFutureImages] = useState([]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => setUser(user || null));
@@ -148,6 +153,62 @@ const Products = () => {
     ))
   );
 
+  // Image related code
+
+  useEffect(() => {
+    fetchImages();
+  }, []);
+
+  const fetchImages = async () => {
+    try {
+      // Fetch posts from Firestore collection 'Rottaralli-kuvat'
+      const postCollection = collection(db, 'Palvelu-kuvat');
+      const snapshot = await getDocs(postCollection);
+      const postsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setFutureImages(postsData);
+    } catch (error) {
+      console.error('Error fetching posts: ', error);
+    }
+  };
+
+  const handleImageChange = (e) => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
+
+  const handleImageUpload = async () => {
+    try {
+      let imageUrl = ''; // Initialize imageUrl to empty string
+
+      // Check if an image is provided
+      if (image) {
+        const storageRef = ref(storage, `Palvelu-kuvat/${image.name}`);
+        await uploadBytes(storageRef, image);
+        imageUrl = await getDownloadURL(storageRef);
+      }
+
+      await addDoc(collection(db, 'Palvelu-kuvat'), {
+        date: new Date().toLocaleDateString(),
+        imageUrl: imageUrl,
+      });
+      alert('tapahtuma luotu!');
+      fetchImages();
+    } catch (error) {
+      console.error('Error adding document: ', error);
+    }
+  };
+  const handleDeleteImage = async (postId) => {
+    try {
+      // Delete the post document from Firestore collection 'posts'
+      await deleteDoc(doc(db, 'Palvelu-kuvat', postId));
+      alert('Post deleted successfully!');
+      fetchImages();
+    } catch (error) {
+      console.error('Error deleting document: ', error);
+    }
+  };
+
   return (
     <div className=''>
       <div className='equipment-container'>
@@ -180,23 +241,37 @@ const Products = () => {
         </div>
 
         <p className='equipment-description'>Muutamia mitattuja moottoripyöriä.</p>
-        <div className='tulokset'>
-          <div className='tulokset'>
-            <a href='/images/GSXR1100N.jpg' target='_blank' rel='noopener noreferrer'>
-              <img src='/images/GSXR1100N.jpg' alt='GSXR1100N' />
-            </a>
+
+        {user && (
+          <div>
+            <h1>Lisää kuva:</h1>
+            <div className="history-image-upload">
+              <input
+                type="file"
+                onChange={handleImageChange}
+              />
+              <button onClick={handleImageUpload}>Lisää kuva</button>
+            </div>
           </div>
-          <div className='tulokset'>
-            <a href='/images/CBR900RR.jpg' target='_blank' rel='noopener noreferrer'>
-              <img src='/images/CBR900RR.jpg' alt='CBR900RR' />
-            </a>
-          </div>
-          <div className='tulokset'>
-            <a href='/images/Bandit1200[1].jpg' target='_blank' rel='noopener noreferrer'>
-              <img src='/images/Bandit1200[1].jpg' alt='Bandit1200[1]' />
-            </a>
-          </div>
+        )}
+
+        <div className='palvelut-image-slider-div'>
+          {imagesFromDatabase.map(event => (
+                <div class="gallery">
+                  <div class="palvelut-image-container">
+                    <a target="_blank" href={event.imageUrl}>
+                      <img class="palvelut-gallery-image" src={event.imageUrl}/>
+                    </a>
+                  </div>
+                    
+                    {user && (
+                      <button class="palvelut-img-button" onClick={() => handleDeleteImage(event.id)}>Poista</button>
+                    )}
+                </div>
+
+          ))}
         </div>
+
       </div>
       <Footer />
     </div>
