@@ -336,6 +336,7 @@ function Services() {
         </div>
       </div>
         <center>
+          <h1>Kuvia hallituksesta</h1>
           {user && (
             <div>
               <h1>Lisää kuva:</h1>
