@@ -172,6 +172,7 @@ const Products = () => {
       const postCollection = collection(db, 'Palvelu-kuvat');
       const snapshot = await getDocs(postCollection);
       const postsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      delete postsData[0]
       setFutureImages(postsData);
     } catch (error) {
       console.error('Error fetching posts: ', error);

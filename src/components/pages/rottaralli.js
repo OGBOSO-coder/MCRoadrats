@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import "../Rottaralli.css"
 import Footer from '../Footer';
-import { auth, db } from '../firebase'; // Import your Firebase configuration
+import { auth, db, storage } from '../firebase'; // Import your Firebase configuration
 import { addDoc, collection, getDocs,deleteDoc, updateDoc, doc } from 'firebase/firestore'; // Import Firestore functions
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 
 const Ralli = () => {
   const [user, setUser] = useState(null); // Placeholder for user state
@@ -15,6 +16,7 @@ const Ralli = () => {
   const [editingPostId, setEditingPostId] = useState(null); // State to hold the ID of the post being edited
   const [editedPostText, setEditedPostText] = useState(''); // State to hold the edited post text
   const [image, setImage] = useState(null); // State to hold Image
+  const [imagesFromDatabase, setImagesFromDatabase] = useState([]);
   const [ticketLinks, setTicketLinks] = useState([]);
   
   useEffect(() => {
@@ -38,7 +40,7 @@ const Ralli = () => {
         console.error('Error fetching ticket links:', error);
       }
     };
-
+    fetchImages();
     fetchTicketLinks();
   }, []);
   useEffect(() => {
@@ -115,9 +117,7 @@ const Ralli = () => {
     }
   };
 
-  const handleImageUpload = async (image) => {
-
-  }
+  
   const handleDeletePost = async (postId) => {
     try {
       // Delete the post document from Firestore collection 'posts'
@@ -128,12 +128,61 @@ const Ralli = () => {
       console.error('Error deleting document: ', error);
     }
   };
+
+
+  // Image Control
+
+  const fetchImages = async () => {
+    try {
+      // Fetch posts from Firestore collection 'Rottaralli-kuvat'
+      const imageCollection = collection(db, 'Rottaralli-kuvat');
+      const snapshot = await getDocs(imageCollection);
+      const imageData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      delete imageData[0]
+      setImagesFromDatabase(imageData);
+    } catch (error) {
+      console.error('Error fetching posts: ', error);
+    }
+  };
+
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
       setImage(e.target.files[0]);
     }
   };
 
+  const handleImageUpload = async () => {
+    try {
+      let imageUrl = ''; // Initialize imageUrl to empty string
+
+      // Check if an image is provided
+      if (image) {
+        const storageRef = ref(storage, `rotrallikuvat/${image.name}`);
+        await uploadBytes(storageRef, image);
+        imageUrl = await getDownloadURL(storageRef);
+      }
+
+      await addDoc(collection(db, 'Rottaralli-kuvat'), {
+        date: new Date().toLocaleDateString(),
+        imageUrl: imageUrl,
+      });
+      alert('tapahtuma luotu!');
+      fetchImages();
+    } catch (error) {
+      console.error('Error adding document: ', error);
+    }
+  };
+
+  const handleDeleteImage = async (postId) => {
+    try {
+      // Delete the post document from Firestore collection 'posts'
+      await deleteDoc(doc(db, 'Rottaralli-kuvat', postId));
+      alert('Post deleted successfully!');
+      fetchImages();
+    } catch (error) {
+      console.error('Error deleting document: ', error);
+    }
+  };
 
   return (
     <div className="sivut">
@@ -205,13 +254,13 @@ const Ralli = () => {
         </div>
 
       </div>
-
-      <div className='ralli-kuvat-div'>
-        <h1>Paikan Kuvat</h1>
+      
+      <center>
+      <h1>Paikan kuvat</h1>
         {user && (
           <div>
-            <h1>Uusi kuva</h1>
-            <div className="rotralli-image-upload">
+            <h1>Lisää kuva:</h1>
+            <div className="history-image-upload">
               <input
                 type="file"
                 onChange={handleImageChange}
@@ -221,18 +270,23 @@ const Ralli = () => {
           </div>
         )}
         
-        <div className='rottaralli-kuvat-gallery'>
-          <div className='rottaralli-kuva-gallery-container'>
-            <img src='/images/img-9.jpg' alt="img-9" className="ralli-image" />
-          </div>
-          <div className='rottaralli-kuva-gallery-container'>
-            <img src='/images/img-7.jpg' alt="img-9" className="ralli-image" />
-          </div>
-          <div className='rottaralli-kuva-gallery-container'>
-            <img src='/images/img-8.jpg' alt="img-9" className="ralli-image" />
-          </div>
+        <div className='rottaralli-image-slider-div'>
+          {imagesFromDatabase.map(event => (
+                <div class="gallery">
+                  <div class="rottaralli-image-container">
+                    <a target="_blank" href={event.imageUrl}>
+                      <img class="rottaralli-gallery-image" src={event.imageUrl}/>
+                    </a>
+                  </div>
+                    
+                    {user && (
+                      <button class="rottaralli-img-button" onClick={() => handleDeleteImage(event.id)}>Poista</button>
+                    )}
+                </div>
+
+          ))}
         </div>
-      </div>
+      </center>
 
       <div className="facebook-feed">
         <div className="fb-page"

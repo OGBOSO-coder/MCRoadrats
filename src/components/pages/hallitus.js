@@ -31,6 +31,7 @@ function Services() {
       const imageCollection = collection(db, 'hallitus-kuvat');
       const imagesnapshot = await getDocs(imageCollection);
       const imageData = imagesnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      delete imageData[0]
       setimagesFromDatabase(imageData);
       
       setFutureEvents(postsData);
@@ -228,12 +229,12 @@ function Services() {
 
       // Check if an image is provided
       if (image) {
-        const storageRef = ref(storage, `rotrallikuvat/${image.name}`);
+        const storageRef = ref(storage, `hallituskuvat/${image.name}`);
         await uploadBytes(storageRef, image);
         imageUrl = await getDownloadURL(storageRef);
       }
 
-      await addDoc(collection(db, 'Rottaralli-kuvat'), {
+      await addDoc(collection(db, 'hallitus-kuvat'), {
         date: new Date().toLocaleDateString(),
         imageUrl: imageUrl,
       });

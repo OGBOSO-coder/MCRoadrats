@@ -34,6 +34,7 @@ const EditForm = () => {
       const postCollection = collection(db, 'historia-kuvat');
       const snapshot = await getDocs(postCollection);
       const postsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      delete postsData[0]
       setFutureEvents(postsData);
     } catch (error) {
       console.error('Error fetching posts: ', error);
