@@ -31,7 +31,7 @@ const EditForm = () => {
   const fetchEvents = async () => {
     try {
       // Fetch posts from Firestore collection 'Rottaralli-kuvat'
-      const postCollection = collection(db, 'Rottaralli-kuvat');
+      const postCollection = collection(db, 'historia-kuvat');
       const snapshot = await getDocs(postCollection);
       const postsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setFutureEvents(postsData);
@@ -52,12 +52,12 @@ const EditForm = () => {
 
       // Check if an image is provided
       if (image) {
-        const storageRef = ref(storage, `rotrallikuvat/${image.name}`);
+        const storageRef = ref(storage, `historiakuvat/${image.name}`);
         await uploadBytes(storageRef, image);
         imageUrl = await getDownloadURL(storageRef);
       }
 
-      await addDoc(collection(db, 'Rottaralli-kuvat'), {
+      await addDoc(collection(db, 'historia-kuvat'), {
         date: new Date().toLocaleDateString(),
         imageUrl: imageUrl,
       });
@@ -70,7 +70,7 @@ const EditForm = () => {
   const handleDeletePost = async (postId) => {
     try {
       // Delete the post document from Firestore collection 'posts'
-      await deleteDoc(doc(db, 'Rottaralli-kuvat', postId));
+      await deleteDoc(doc(db, 'historia-kuvat', postId));
       alert('Post deleted successfully!');
       fetchEvents();
     } catch (error) {

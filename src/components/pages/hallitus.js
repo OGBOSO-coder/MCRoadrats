@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../App.css';
+import "../Hallitus.css"
 import { db, auth, storage } from '../firebase';
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { collection, getDocs, addDoc, deleteDoc, updateDoc, doc } from 'firebase/firestore';
@@ -11,6 +12,7 @@ function Services() {
   const [user, setUser] = useState(null);
   const [postTitle, setPostTitle] = useState('');
   const [image, setImage] = useState(null);
+  const [imagesFromDatabase, setimagesFromDatabase] = useState([]);
   const [postDescription, setPostDescription] = useState('');
 
   const fetchEvents = async () => {
@@ -25,6 +27,11 @@ function Services() {
       const goneCollection = collection(db, 'Gonemember');
       const snapshot2 = await getDocs(goneCollection);
       const goneData = snapshot2.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+      const imageCollection = collection(db, 'hallitus-kuvat');
+      const imagesnapshot = await getDocs(imageCollection);
+      const imageData = imagesnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setimagesFromDatabase(imageData);
       
       setFutureEvents(postsData);
       setHonored(honordData);
@@ -212,6 +219,42 @@ function Services() {
       console.error('Error deleting document: ', error);
     }
   };
+
+  // Image control
+
+  const handleImageUpload = async () => {
+    try {
+      let imageUrl = ''; // Initialize imageUrl to empty string
+
+      // Check if an image is provided
+      if (image) {
+        const storageRef = ref(storage, `rotrallikuvat/${image.name}`);
+        await uploadBytes(storageRef, image);
+        imageUrl = await getDownloadURL(storageRef);
+      }
+
+      await addDoc(collection(db, 'Rottaralli-kuvat'), {
+        date: new Date().toLocaleDateString(),
+        imageUrl: imageUrl,
+      });
+      alert('tapahtuma luotu!');
+      fetchEvents();
+    } catch (error) {
+      console.error('Error adding document: ', error);
+    }
+  };
+
+  const handleDeleteImage = async (postId) => {
+    try {
+      // Delete the post document from Firestore collection 'posts'
+      await deleteDoc(doc(db, 'hallitus-kuvat', postId));
+      alert('Post deleted successfully!');
+      fetchEvents();
+    } catch (error) {
+      console.error('Error deleting document: ', error);
+    }
+  };
+
   return (
     <div className='services-container'>
               {user && <h3>Kirjautunut, {user.email}</h3>} {/* Display hello (logged user) */}
@@ -292,10 +335,35 @@ function Services() {
         </div>
       </div>
         <center>
-          <div class='ryhmäkuva'>
-            <img src='/images/g' class='' />
-            <p className='image-caption'>ryhmäkuva</p>
-          </div>
+          {user && (
+            <div>
+              <h1>Lisää kuva:</h1>
+              <div className="hallitus-image-upload">
+                <input
+                  type="file"
+                  onChange={handleImageChange}
+                />
+                <button onClick={handleImageUpload}>Lisää kuva</button>
+              </div>
+            </div>
+          )}
+
+        <div className='hallitus-image-slider-div'>
+          {imagesFromDatabase.map(event => (
+                <div class="gallery">
+                  <div class="hallitus-image-container">
+                    <a target="_blank" href={event.imageUrl}>
+                      <img class="hallitus-gallery-image" src={event.imageUrl}/>
+                    </a>
+                  </div>
+                    
+                    {user && (
+                      <button class="hallitus-img-button" onClick={() => handleDeleteImage(event.id)}>Poista</button>
+                    )}
+                </div>
+
+          ))}
+        </div>
         </center>
 
     </div>
