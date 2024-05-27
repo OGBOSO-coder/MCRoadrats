@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/uudet/build/static/css/main.a5a0b384.css",
-    "main.js": "/uudet/build/static/js/main.90b4c07c.js",
+    "main.css": "/uudet/build/static/css/main.11fbc3e7.css",
+    "main.js": "/uudet/build/static/js/main.ccba68a3.js",
     "static/media/img-2.jpg": "/uudet/build/static/media/img-2.bb238fc1bea8ae2474d2.jpg",
     "static/media/img-1.jpg": "/uudet/build/static/media/img-1.53f4843759ebec256cb9.jpg",
     "static/media/img-8.jpg": "/uudet/build/static/media/img-8.fabdf94dc5be2d3dc707.jpg",
     "index.html": "/uudet/build/index.html",
-    "main.a5a0b384.css.map": "/uudet/build/static/css/main.a5a0b384.css.map",
-    "main.90b4c07c.js.map": "/uudet/build/static/js/main.90b4c07c.js.map"
+    "main.11fbc3e7.css.map": "/uudet/build/static/css/main.11fbc3e7.css.map",
+    "main.ccba68a3.js.map": "/uudet/build/static/js/main.ccba68a3.js.map"
   },
   "entrypoints": [
-    "static/css/main.a5a0b384.css",
-    "static/js/main.90b4c07c.js"
+    "static/css/main.11fbc3e7.css",
+    "static/js/main.ccba68a3.js"
   ]
 }
