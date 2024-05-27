@@ -10,6 +10,7 @@ const Products = () => {
   const [user, setUser] = useState(null);
   const [eventInfo, setEventInfo] = useState('');
   const [newPost, setNewPost] = useState({ text: '', url: '' });
+  const [Honored, setHonored] = useState([]);
   const [posts, setPosts] = useState({ palvelut: [], kalusto: [] });
   const [editingPost, setEditingPost] = useState({ id: null, type: '', text: '', url: '' });
 
@@ -26,6 +27,12 @@ const Products = () => {
       try {
         const snapshot = await getDocs(collection(db, 'Palvelut'));
         snapshot.forEach(doc => setEventInfo(doc.data().info));
+        
+        const honoredCollection = collection(db, 'Palvelu-kuvat');
+        const snapshot1 = await getDocs(honoredCollection);
+        const honordData = snapshot1.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+        setHonored(honordData);
       } catch (error) {
         console.error('Error fetching event info: ', error);
       }
@@ -41,7 +48,7 @@ const Products = () => {
       const snapshot = await getDocs(q);
       return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     } catch (error) {
-      console.error(`Error fetching ${type} posts: `, error);
+      console.error(`Virhe haettaessa ${type} viestejä: `, error);
       return [];
     }
   };
@@ -67,8 +74,10 @@ const Products = () => {
         [type.toLowerCase()]: [...prevPosts[type.toLowerCase()], { id: docRef.id, text, url, createdAt }]
       }));
       setNewPost({ text: '', url: '' });
+      alert('Post added successfully!');
     } catch (error) {
-      console.error(`Error adding new ${type} post: `, error);
+      console.error(`Virhe lisättäessä uutta ${type} viestiä: `, error);
+      alert('Error adding post!');
     }
   };
 
@@ -84,8 +93,10 @@ const Products = () => {
           post.id === id ? { ...post, text, url } : post)
       }));
       setEditingPost({ id: null, type: '', text: '', url: '' });
+      alert('Post edited successfully!');
     } catch (error) {
-      console.error(`Error editing ${type} post: `, error);
+      console.error(`Virhe muokattaessa ${type} viestiä: `, error);
+      alert('Error editing post!');
     }
   };
 
@@ -96,8 +107,10 @@ const Products = () => {
         ...prevPosts,
         [type.toLowerCase()]: prevPosts[type.toLowerCase()].filter(post => post.id !== id)
       }));
+      alert('Post deleted successfully!');
     } catch (error) {
-      console.error(`Error deleting ${type} post: `, error);
+      console.error(`Virhe poistettaessa ${type} viestiä: `, error);
+      alert('Error deleting post!');
     }
   };
 
@@ -106,15 +119,15 @@ const Products = () => {
       <textarea
         value={newPost.text}
         onChange={(e) => setNewPost({ ...newPost, text: e.target.value })}
-        placeholder='Enter your post here...'
+        placeholder='Kirjoita ilmoitus tähän...'
       />
       <input
         type='text'
         value={newPost.url}
         onChange={(e) => setNewPost({ ...newPost, url: e.target.value })}
-        placeholder='Enter URL (optional)'
+        placeholder='Syötä URL (valinnainen)'
       />
-      <button type='submit'>Add Post</button>
+      <button type='submit'>Lisää ilmoitus</button>
     </form>
   );
 
@@ -128,17 +141,17 @@ const Products = () => {
               type='text'
               value={editingPost.url}
               onChange={(e) => setEditingPost({ ...editingPost, url: e.target.value })}
-              placeholder='Enter URL (optional)'
+              placeholder='Syötä URL (valinnainen)'
             />
-            <button onClick={() => handleEditPost(type)}>Save</button>
+            <button onClick={() => handleEditPost(type)}>Tallenna</button>
           </div>
         ) : (
           <div>
             <p>{post.text} {post.url && <a href={post.url} target='_blank' rel='noopener noreferrer'>{post.url}</a>}</p>
             {user && (
               <>
-                <button onClick={() => setEditingPost({ id: post.id, type, text: post.text, url: post.url || '' })}>Edit</button>
-                <button onClick={() => handleDeletePost(post.id, type)}>Delete</button>
+                <button onClick={() => setEditingPost({ id: post.id, type, text: post.text, url: post.url || '' })}>Muokkaa</button>
+                <button onClick={() => handleDeletePost(post.id, type)}>Poista</button>
               </>
             )}
           </div>
@@ -146,7 +159,7 @@ const Products = () => {
       </div>
     ))
   );
-
+  
   // Image related code
 
   useEffect(() => {
@@ -192,6 +205,7 @@ const Products = () => {
       console.error('Error adding document: ', error);
     }
   };
+
   const handleDeleteImage = async (postId) => {
     try {
       // Delete the post document from Firestore collection 'posts'
@@ -207,7 +221,7 @@ const Products = () => {
     <div className=''>
       <div className='equipment-container'>
         <h1>Moottoripyörien tehonmittaus</h1>
-        {user && <h3>Hello, {user.email}</h3>}
+        {user && <h3>Kirjautunut, {user.email}</h3>}
         <p className='equipment1-description'>
           <ul>{renderPosts('Palvelut')}</ul>
         </p>
@@ -215,27 +229,17 @@ const Products = () => {
         {user && renderPostForm('Palvelut')}
 
         <div className='equipment-images'>
-          <div className='equipment-image'>
-            <img src='/images/pc3.jpg' alt='Equipment 1' />
-            <p className='image-caption'>Dyno jet PowerCommander</p>
-          </div>
-          <div className='equipment-image'>
-            <img src='/images/injection adjust.jpg' alt='Equipment 2' />
-            <p className='image-caption'>Suzuki injection adjuster. fit's on:
-              Suzuki
-              GSX/R 600, 01-
-              SV 650, 03-
-              GSX/R 750, 98-99
-              GSX/R 750, 01-
-              GSX/R 1000, 01-
-              SV 1000, 03-
-              TL 1000 S, 97-01
-              TL 1000 R, 98-03
-              DL 1000 VStrom, 02-
-              GSX 1300 R Hayabusa, 99-
-              GSX 1400, 01-
-            </p>
-          </div>
+          {Honored.map(event => (
+            <div key={event.id}>
+              <h2 className='service-title'>{event.text}</h2>
+              {event.imageUrl && (
+                <div className='equipment-image'>
+                  <img className="logo-img" src={event.imageUrl} alt="Rottaralli Logo" />
+                  <p className='image-caption'>{event.description}</p>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
 
         <div className='equipment1-description'>
@@ -261,18 +265,16 @@ const Products = () => {
 
         <div className='palvelut-image-slider-div'>
           {imagesFromDatabase.map(event => (
-                <div class="gallery">
-                  <div class="palvelut-image-container">
-                    <a target="_blank" href={event.imageUrl}>
-                      <img class="palvelut-gallery-image" src={event.imageUrl}/>
-                    </a>
-                  </div>
-                    
-                    {user && (
-                      <button class="palvelut-img-button" onClick={() => handleDeleteImage(event.id)}>Poista</button>
-                    )}
-                </div>
-
+            <div class="gallery">
+              <div class="palvelut-image-container">
+                <a target="_blank" href={event.imageUrl}>
+                  <img class="palvelut-gallery-image" src={event.imageUrl}/>
+                </a>
+              </div>
+              {user && (
+                <button class="palvelut-img-button" onClick={() => handleDeleteImage(event.id)}>Poista</button>
+              )}
+            </div>
           ))}
         </div>
 
