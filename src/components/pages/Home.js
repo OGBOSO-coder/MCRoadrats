@@ -53,6 +53,12 @@ function Home() {
   }, []);
 
   const handleCreatePost = async () => {
+    // Check if all input fields are empty
+    if (!postTitle && !postDescription && !image) {
+      alert('All input fields are empty');
+      return; // Exit the function early
+    }
+  
     try {
       let imageUrl = ''; // Initialize imageUrl to empty string
 

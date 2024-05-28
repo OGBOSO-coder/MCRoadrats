@@ -24,10 +24,12 @@ const Ralli = () => {
       window.FB.XFBML.parse();
     }
   }, []);
+
   useEffect(() => {
     fetchImages();
     fetchTicketLinks();
   }, []);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
@@ -74,7 +76,12 @@ const Ralli = () => {
     fetchPosts(); // Call fetchPosts function when component mounts or when editing is done
   }, [editingPost.id]); // Add editingPost.id to the dependencies to refetch posts after editing
 
-  const handlePostSubmit = async () => {
+  const handleCreatePost = async () => {
+    // Check if all input fields are empty
+    if (!postTitle && !postDescription) {
+      alert('All input fields are empty');
+      return; // Exit the function early
+    }
     try {
       const createdAt = new Date();
       const docRef = await addDoc(collection(db, 'event-info'), {
@@ -254,7 +261,7 @@ const Ralli = () => {
                 onChange={(e) => setPostDescription(e.target.value)}
                 placeholder="Post Description"
               ></textarea>
-              <button onClick={handlePostSubmit}>Add Post</button>
+              <button onClick={handleCreatePost}>Add Post</button>
             </div>
           )}
           <div className='ralli-text'>

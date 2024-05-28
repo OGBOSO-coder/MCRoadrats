@@ -64,7 +64,11 @@ const Products = () => {
   const handleAddPost = async (e, type) => {
     e.preventDefault();
     const { text, url } = newPost;
-    if (!text.trim()) return;
+    // Check if all input fields are empty
+    if (!text.trim() && !url.trim() && !image) {
+      alert('All input fields are empty');
+      return; // Exit the function early
+    }
 
     try {
       const createdAt = new Date();
