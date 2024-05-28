@@ -55,14 +55,14 @@ function Home() {
   const handleCreatePost = async () => {
     try {
       let imageUrl = ''; // Initialize imageUrl to empty string
-  
+
       // Check if an image is provided
       if (image) {
         const storageRef = ref(storage, `images/${image.name}`);
         await uploadBytes(storageRef, image);
         imageUrl = await getDownloadURL(storageRef);
       }
-  
+
       await addDoc(collection(db, 'posts'), {
         title: postTitle,
         description: postDescription,
@@ -82,14 +82,14 @@ function Home() {
   const handleEditPost = async (postId) => {
     try {
       let imageUrl = ''; // Initialize imageUrl to empty string
-  
+
       // Check if an image is provided
       if (image) {
         const storageRef = ref(storage, `images/${image.name}`);
         await uploadBytes(storageRef, image);
         imageUrl = await getDownloadURL(storageRef);
       }
-  
+
       // Update the post document in Firestore collection 'posts'
       await updateDoc(doc(db, 'posts', postId), {
         title: postTitle,
@@ -121,13 +121,13 @@ function Home() {
       <div className='frontpage-container'>
         {user && <h3>Kirjautunut, {user.email}</h3>} {/* Display hello (logged user) */}
         <center>
-        <div className='logo-div'>
-          {Honored.map(event => (
-            <p key={event.id}>
-              {event.imageUrl && <img className="logo-img" src={event.imageUrl} alt="logo" />}
-            </p>
-          ))}
-        </div>
+          <div className='logo-div'>
+            {Honored.map(event => (
+              <p key={event.id}>
+                {event.imageUrl && <img className="logo-img" src={event.imageUrl} alt="logo" />}
+              </p>
+            ))}
+          </div>
         </center>
         <section className='intro-section'>
           <p>
@@ -137,28 +137,28 @@ function Home() {
         <section className='future-events'>
           <h2>Tapahtumia</h2>
           {user && (
-          <div>
-            <input
-              type="text"
-              value={postTitle}
-              onChange={(e) => setPostTitle(e.target.value)}
-              placeholder="Post Title"
-            />
-            <textarea
-              value={postDescription}
-              onChange={(e) => setPostDescription(e.target.value)}
-              placeholder="Post Description"
-            ></textarea>
-                      <div>
-            <label>Kuva</label>
-            <input
-              type="file"
-              onChange={handleImageChange}
-            />
-          </div>
-            <button onClick={handleCreatePost}>Luo ilmoitus</button>
-          </div>
-        )}
+            <div>
+              <input
+                type="text"
+                value={postTitle}
+                onChange={(e) => setPostTitle(e.target.value)}
+                placeholder="Post Title"
+              />
+              <textarea
+                value={postDescription}
+                onChange={(e) => setPostDescription(e.target.value)}
+                placeholder="Post Description"
+              ></textarea>
+              <div>
+                <label>Kuva</label>
+                <input
+                  type="file"
+                  onChange={handleImageChange}
+                />
+              </div>
+              <button onClick={handleCreatePost}>Luo ilmoitus</button>
+            </div>
+          )}
           <ul>
             {futureEvents.map(event => (
               <li key={event.id}>

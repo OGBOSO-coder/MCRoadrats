@@ -27,7 +27,7 @@ const Products = () => {
       try {
         const snapshot = await getDocs(collection(db, 'Palvelut'));
         snapshot.forEach(doc => setEventInfo(doc.data().info));
-        
+
         const honoredCollection = collection(db, 'Laitekuvat');
         const snapshot1 = await getDocs(honoredCollection);
         const honordData = snapshot1.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -159,7 +159,7 @@ const Products = () => {
       </div>
     ))
   );
-  
+
   // Image related code
 
   useEffect(() => {
@@ -265,16 +265,16 @@ const Products = () => {
 
         <div className='palvelut-image-slider-div'>
           {imagesFromDatabase.map(event => (
-                <div class="gallery">
-                  <div class="palvelut-image-container">
-                    <a target="_blank" href={event.imageUrl}>
-                      <img class="palvelut-gallery-image" src={event.imageUrl}/>
-                    </a>
-                  </div>
-                    {user && (
-                      <button class="palvelut-img-button" onClick={() => handleDeleteImage(event.id)}>Poista</button>
-                    )}
-                </div>
+            <div class="gallery">
+              <div class="palvelut-image-container">
+                <a target="_blank" href={event.imageUrl}>
+                  <img class="palvelut-gallery-image" src={event.imageUrl} />
+                </a>
+              </div>
+              {user && (
+                <button class="palvelut-img-button" onClick={() => handleDeleteImage(event.id)}>Poista</button>
+              )}
+            </div>
 
           ))}
         </div>

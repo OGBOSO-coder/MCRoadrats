@@ -113,17 +113,17 @@ const EditForm = () => {
         )}
         <div className='history-image-slider-div'>
           {futureEvents.map(event => (
-                <div class="gallery">
-                  <div class="history-image-container">
-                    <a target="_blank" href={event.imageUrl}>
-                      <img class="history-gallery-image" src={event.imageUrl}/>
-                    </a>
-                  </div>
-                    
-                    {user && (
-                      <button class="history-img-button" onClick={() => handleDeletePost(event.id)}>Poista</button>
-                    )}
-                </div>
+            <div class="gallery">
+              <div class="history-image-container">
+                <a target="_blank" href={event.imageUrl}>
+                  <img class="history-gallery-image" src={event.imageUrl} />
+                </a>
+              </div>
+
+              {user && (
+                <button class="history-img-button" onClick={() => handleDeletePost(event.id)}>Poista</button>
+              )}
+            </div>
 
           ))}
         </div>

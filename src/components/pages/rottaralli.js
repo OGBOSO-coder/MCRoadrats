@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import "../Rottaralli.css"
 import Footer from '../Footer';
 import { auth, db, storage } from '../firebase'; // Import your Firebase configuration
-import { addDoc, collection, getDocs,deleteDoc, updateDoc, doc } from 'firebase/firestore'; // Import Firestore functions
+import { addDoc, collection, getDocs, deleteDoc, updateDoc, doc } from 'firebase/firestore'; // Import Firestore functions
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 
 const Ralli = () => {
@@ -18,7 +18,7 @@ const Ralli = () => {
   const [image, setImage] = useState(null); // State to hold Image
   const [imagesFromDatabase, setImagesFromDatabase] = useState([]);
   const [ticketLinks, setTicketLinks] = useState([]);
-  
+
   useEffect(() => {
     // Trigger rendering of Facebook feed after SDK is loaded
     if (window.FB) {
@@ -117,7 +117,7 @@ const Ralli = () => {
     }
   };
 
-  
+
   const handleDeletePost = async (postId) => {
     try {
       // Delete the post document from Firestore collection 'posts'
@@ -189,18 +189,18 @@ const Ralli = () => {
       <div className='ralli-header'>
         {user && <h3>Hello, {user.email}</h3>} {/* Display hello (logged user) */}
         <center>
-        <div className='rottaralli-logo-div'>
-          {Honored.map(event => (
-            <p key={event.id}>
-              {event.imageUrl && <img className="logo-img" src={event.imageUrl} alt="Rottaralli Logo" />}
-            </p>
-          ))}
-        </div>
+          <div className='rottaralli-logo-div'>
+            {Honored.map(event => (
+              <p key={event.id}>
+                {event.imageUrl && <img className="logo-img" src={event.imageUrl} alt="Rottaralli Logo" />}
+              </p>
+            ))}
+          </div>
         </center>
       </div>
       <div className='ralli-info'>
         <div className='ralli-div'>
-        <div>
+          <div>
             <input
               type="text"
               value={postTitle}
@@ -212,34 +212,34 @@ const Ralli = () => {
               onChange={(e) => setPostDescription(e.target.value)}
               placeholder="Post Description"
             ></textarea>
-                      <div>
-          </div>
+            <div>
+            </div>
             <button onClick={handlePostSubmit}>Hallitus</button>
           </div>
           <h1 className='ralli-title'>Rottaralli tiedotteita</h1>
           <p className='ralli-text'>
-          <ul>
-          {posts.map(post => (
-            <div key={post.id}>
-              {editingPostId === post.id ? (
-                <div>
-                  <textarea value={editedPostText} onChange={(e) => setEditedPostText(e.target.value)} />
-                  <button onClick={() => handleEditPost(post.id)}>Save</button>
-                </div>
-              ) : (
-                <div>
-                  <p>{post.text}</p>
-                  {user && (
-                    <><button onClick={() => {
-                        setEditingPostId(post.id);
-                        setEditedPostText(post.text);
-                      } }>Edit</button><button onClick={() => handleDeletePost(post.id)}>Poista</button></>
+            <ul>
+              {posts.map(post => (
+                <div key={post.id}>
+                  {editingPostId === post.id ? (
+                    <div>
+                      <textarea value={editedPostText} onChange={(e) => setEditedPostText(e.target.value)} />
+                      <button onClick={() => handleEditPost(post.id)}>Save</button>
+                    </div>
+                  ) : (
+                    <div>
+                      <p>{post.text}</p>
+                      {user && (
+                        <><button onClick={() => {
+                          setEditingPostId(post.id);
+                          setEditedPostText(post.text);
+                        }}>Edit</button><button onClick={() => handleDeletePost(post.id)}>Poista</button></>
+                      )}
+                    </div>
                   )}
                 </div>
-              )}
-            </div>
-          ))}
-        </ul>
+              ))}
+            </ul>
           </p> {/* Display event info text */}
         </div>
         <div className='ralli-lippuja'>
@@ -254,9 +254,9 @@ const Ralli = () => {
         </div>
 
       </div>
-      
+
       <center>
-      <h1>Paikan kuvat</h1>
+        <h1>Paikan kuvat</h1>
         {user && (
           <div>
             <h1>Lisää kuva:</h1>
@@ -269,20 +269,20 @@ const Ralli = () => {
             </div>
           </div>
         )}
-        
+
         <div className='rottaralli-image-slider-div'>
           {imagesFromDatabase.map(event => (
-                <div class="gallery">
-                  <div class="rottaralli-image-container">
-                    <a target="_blank" href={event.imageUrl}>
-                      <img class="rottaralli-gallery-image" src={event.imageUrl}/>
-                    </a>
-                  </div>
-                    
-                    {user && (
-                      <button class="rottaralli-img-button" onClick={() => handleDeleteImage(event.id)}>Poista</button>
-                    )}
-                </div>
+            <div class="gallery">
+              <div class="rottaralli-image-container">
+                <a target="_blank" href={event.imageUrl}>
+                  <img class="rottaralli-gallery-image" src={event.imageUrl} />
+                </a>
+              </div>
+
+              {user && (
+                <button class="rottaralli-img-button" onClick={() => handleDeleteImage(event.id)}>Poista</button>
+              )}
+            </div>
 
           ))}
         </div>
