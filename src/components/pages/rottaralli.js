@@ -248,22 +248,6 @@ const Ralli = () => {
       </div>
       <div className='ralli-info'>
         <div className='ralli-div'>
-          {user && (
-            <div>
-              <input
-                type="text"
-                value={postTitle}
-                onChange={(e) => setPostTitle(e.target.value)}
-                placeholder="Post Title"
-              />
-              <textarea
-                value={postDescription}
-                onChange={(e) => setPostDescription(e.target.value)}
-                placeholder="Post Description"
-              ></textarea>
-              <button onClick={handleCreatePost}>Add Post</button>
-            </div>
-          )}
           <div className='ralli-text'>
             <ul>
               {posts.map(post => (
@@ -297,6 +281,22 @@ const Ralli = () => {
                   )}
                 </div>
               ))}
+              {user && (
+            <div>
+              <input
+                type="text"
+                value={postTitle}
+                onChange={(e) => setPostTitle(e.target.value)}
+                placeholder="Post Title"
+              />
+              <textarea
+                value={postDescription}
+                onChange={(e) => setPostDescription(e.target.value)}
+                placeholder="Post Description"
+              ></textarea>
+              <button onClick={handleCreatePost}>Add Post</button>
+            </div>
+          )}
             </ul>
           </div>
         </div>
