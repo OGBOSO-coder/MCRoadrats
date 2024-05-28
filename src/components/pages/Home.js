@@ -106,13 +106,16 @@ function Home() {
   };
 
   const handleDeletePost = async (postId) => {
-    try {
-      // Delete the post document from Firestore collection 'posts'
-      await deleteDoc(doc(db, 'posts', postId));
-      alert('Post deleted successfully!');
-      fetchEvents();
-    } catch (error) {
-      console.error('Error deleting document: ', error);
+    const confirmed = window.confirm('Are you sure you want to delete this post?');
+    if (confirmed) {
+      try {
+        // Delete the post document from Firestore collection 'posts'
+        await deleteDoc(doc(db, 'posts', postId));
+        alert('Post deleted successfully!');
+        fetchEvents();
+      } catch (error) {
+        console.error('Error deleting document: ', error);
+      }
     }
   };
 

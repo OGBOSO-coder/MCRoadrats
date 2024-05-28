@@ -113,12 +113,15 @@ const Ralli = () => {
 
 
   const handleDeletePost = async (postId) => {
-    try {
-      await deleteDoc(doc(db, 'event-info', postId));
-      alert('Post deleted successfully!');
-      fetchPosts();
-    } catch (error) {
-      console.error('Error deleting document: ', error);
+    const confirmed = window.confirm('Are you sure you want to delete this post?');
+    if (confirmed) {
+      try {
+        await deleteDoc(doc(db, 'event-info', postId));
+        alert('Post deleted successfully!');
+        fetchPosts();
+      } catch (error) {
+        console.error('Error deleting document: ', error);
+      }
     }
   };
 
@@ -209,13 +212,16 @@ const Ralli = () => {
   };
 
   const handleDeleteImage = async (postId) => {
-    try {
-      // Delete the post document from Firestore collection 'posts'
-      await deleteDoc(doc(db, 'Rottaralli-kuvat', postId));
-      alert('Post deleted successfully!');
-      fetchImages();
-    } catch (error) {
-      console.error('Error deleting document: ', error);
+    const confirmed = window.confirm('Are you sure you want to delete this post?');
+    if (confirmed) {
+      try {
+        // Delete the post document from Firestore collection 'posts'
+        await deleteDoc(doc(db, 'Rottaralli-kuvat', postId));
+        alert('Post deleted successfully!');
+        fetchImages();
+      } catch (error) {
+        console.error('Error deleting document: ', error);
+      }
     }
   };
 

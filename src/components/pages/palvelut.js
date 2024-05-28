@@ -101,16 +101,19 @@ const Products = () => {
   };
 
   const handleDeletePost = async (id, type) => {
-    try {
-      await deleteDoc(doc(db, type, id));
-      setPosts(prevPosts => ({
-        ...prevPosts,
-        [type.toLowerCase()]: prevPosts[type.toLowerCase()].filter(post => post.id !== id)
-      }));
-      alert('Post deleted successfully!');
-    } catch (error) {
-      console.error(`Virhe poistettaessa ${type} viestiä: `, error);
-      alert('Error deleting post!');
+    const confirmed = window.confirm('Are you sure you want to delete this post?');
+    if (confirmed) {
+      try {
+        await deleteDoc(doc(db, type, id));
+        setPosts(prevPosts => ({
+          ...prevPosts,
+          [type.toLowerCase()]: prevPosts[type.toLowerCase()].filter(post => post.id !== id)
+        }));
+        alert('Post deleted successfully!');
+      } catch (error) {
+        console.error(`Virhe poistettaessa ${type} viestiä: `, error);
+        alert('Error deleting post!');
+      }
     }
   };
 
@@ -207,13 +210,16 @@ const Products = () => {
   };
 
   const handleDeleteImage = async (postId) => {
-    try {
-      // Delete the post document from Firestore collection 'posts'
-      await deleteDoc(doc(db, 'Palvelu-kuvat', postId));
-      alert('Post deleted successfully!');
-      fetchImages();
-    } catch (error) {
-      console.error('Error deleting document: ', error);
+    const confirmed = window.confirm('Are you sure you want to delete this post?');
+    if (confirmed) {
+      try {
+        // Delete the post document from Firestore collection 'posts'
+        await deleteDoc(doc(db, 'Palvelu-kuvat', postId));
+        alert('Post deleted successfully!');
+        fetchImages();
+      } catch (error) {
+        console.error('Error deleting document: ', error);
+      }
     }
   };
 
