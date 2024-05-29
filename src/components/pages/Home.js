@@ -209,8 +209,8 @@ function Home() {
                         onChange={(e) => handleImageChange(e, setEditImage)}
                       />
                     </div>
-                    <button onClick={handleEditPost}>Save Changes</button>
-                    <button onClick={cancelEdit}>Cancel</button>
+                    <button onClick={handleEditPost}>Tallenna</button>
+                    <button onClick={cancelEdit}>Peruuta</button>
                   </div>
                 ) : (
                   <div>
@@ -219,8 +219,8 @@ function Home() {
                     {event.imageUrl && <img src={event.imageUrl} alt="Event" />}
                     {user && (
                       <div>
-                        <button onClick={() => startEditingPost(event)}>Edit</button>
-                        <button onClick={() => handleDeletePost(event.id)}>Delete</button>
+                        <button onClick={() => startEditingPost(event)}>Muokkaa</button>
+                        <button onClick={() => handleDeletePost(event.id)}>Poista</button>
                       </div>
                     )}
                   </div>
