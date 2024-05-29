@@ -9,8 +9,23 @@ function Home() {
   const [Honored, setHonored] = useState([]);
   const [user, setUser] = useState(null);
   const [postTitle, setPostTitle] = useState('');
-  const [image, setImage] = useState(null);
   const [postDescription, setPostDescription] = useState('');
+  const [image, setImage] = useState(null);
+  const [editingPostId, setEditingPostId] = useState(null);
+  const [editTitle, setEditTitle] = useState('');
+  const [editDescription, setEditDescription] = useState('');
+  const [editImage, setEditImage] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      setUser(user || null);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
 
   const fetchEvents = async () => {
     try {
@@ -22,43 +37,28 @@ function Home() {
 
       const honoredCollection = collection(db, 'Etusivu');
       const snapshot1 = await getDocs(honoredCollection);
-      const honordData = snapshot1.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const honoredData = snapshot1.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-      setHonored(honordData);
+      setHonored(honoredData);
       setFutureEvents(postsData);
     } catch (error) {
       console.error('Error fetching posts: ', error);
     }
   };
 
-  const handleImageChange = (e) => {
+  const handleImageChange = (e, setImageFn) => {
     if (e.target.files[0]) {
-      setImage(e.target.files[0]);
+      setImageFn(e.target.files[0]);
     }
   };
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      if (user) {
-        setUser(user); // Set user if logged in
-      } else {
-        setUser(null); // Set user to null if logged out
-      }
-    });
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    fetchEvents();
-  }, []);
-
   const handleCreatePost = async () => {
-    // Check if all input fields are empty
-    if (!postTitle && !postDescription && !image) {
+     // Check if all input fields are empty
+    if (!postTitle.trim() && !postDescription.trim() && !image) {
       alert('All input fields are empty');
-      return; // Exit the function early
+      return;
     }
-  
+
     try {
       let imageUrl = ''; // Initialize imageUrl to empty string
 
@@ -76,35 +76,40 @@ function Home() {
         imageUrl: imageUrl,
         createdAt: serverTimestamp(), // Add createdAt field
       });
+
       alert('tapahtuma luotu!');
       setPostTitle('');
       setPostDescription('');
+      setImage(null);
       fetchEvents();
     } catch (error) {
       console.error('Error adding document: ', error);
     }
   };
 
-  const handleEditPost = async (postId) => {
-    try {
-      let imageUrl = ''; // Initialize imageUrl to empty string
+  const handleEditPost = async () => {
+    const postToEdit = futureEvents.find(post => post.id === editingPostId);
+    if (!postToEdit) return;
 
-      // Check if an image is provided
-      if (image) {
-        const storageRef = ref(storage, `images/${image.name}`);
-        await uploadBytes(storageRef, image);
-        imageUrl = await getDownloadURL(storageRef);
+    try {
+      let newImageUrl = postToEdit.imageUrl;  // Initialize imageUrl to empty string
+      if (editImage) {
+        const storageRef = ref(storage, `images/${editImage.name}`);
+        await uploadBytes(storageRef, editImage);
+        newImageUrl = await getDownloadURL(storageRef);
       }
 
-      // Update the post document in Firestore collection 'posts'
-      await updateDoc(doc(db, 'posts', postId), {
-        title: postTitle,
-        description: postDescription,
-        imageUrl: imageUrl, // Assign the imageUrl whether it's empty or contains a value
+      await updateDoc(doc(db, 'posts', editingPostId), {
+        title: editTitle,
+        description: editDescription,
+        imageUrl: newImageUrl,
       });
+
       alert('Post updated successfully!');
-      setPostTitle('');
-      setPostDescription('');
+      setEditingPostId(null);
+      setEditTitle('');
+      setEditDescription('');
+      setEditImage(null);
       fetchEvents();
     } catch (error) {
       console.error('Error updating document: ', error);
@@ -115,7 +120,6 @@ function Home() {
     const confirmed = window.confirm('Are you sure you want to delete this post?');
     if (confirmed) {
       try {
-        // Delete the post document from Firestore collection 'posts'
         await deleteDoc(doc(db, 'posts', postId));
         alert('Post deleted successfully!');
         fetchEvents();
@@ -125,10 +129,24 @@ function Home() {
     }
   };
 
+  const startEditingPost = (post) => {
+    setEditingPostId(post.id);
+    setEditTitle(post.title);
+    setEditDescription(post.description);
+    setEditImage(null);
+  };
+
+  const cancelEdit = () => {
+    setEditingPostId(null);
+    setEditTitle('');
+    setEditDescription('');
+    setEditImage(null);
+  };
+
   return (
     <div>
       <div className='frontpage-container'>
-        {user && <h3>Kirjautunut, {user.email}</h3>} {/* Display hello (logged user) */}
+        {user && <h3>Kirjautunut, {user.email}</h3>}
         <center>
           <div className='logo-div'>
             {Honored.map(event => (
@@ -162,7 +180,7 @@ function Home() {
                 <label>Kuva</label>
                 <input
                   type="file"
-                  onChange={handleImageChange}
+                  onChange={(e) => handleImageChange(e, setImage)}
                 />
               </div>
               <button onClick={handleCreatePost}>Luo ilmoitus</button>
@@ -171,14 +189,40 @@ function Home() {
           <ul>
             {futureEvents.map(event => (
               <li key={event.id}>
-                <h3>{event.title}</h3>
-                <p>{event.description}</p>
-                {event.imageUrl && <img src={event.imageUrl} alt="Event" />}
-                {/* Add edit and delete buttons only if user is logged in */}
-                {user && (
+                {editingPostId === event.id ? (
                   <div>
-                    <button onClick={() => handleEditPost(event.id)}>Muokkaa</button>
-                    <button onClick={() => handleDeletePost(event.id)}>Poista</button>
+                    <input
+                      type="text"
+                      value={editTitle}
+                      onChange={(e) => setEditTitle(e.target.value)}
+                      placeholder="Post Title"
+                    />
+                    <textarea
+                      value={editDescription}
+                      onChange={(e) => setEditDescription(e.target.value)}
+                      placeholder="Post Description"
+                    ></textarea>
+                    <div>
+                      <label>Image</label>
+                      <input
+                        type="file"
+                        onChange={(e) => handleImageChange(e, setEditImage)}
+                      />
+                    </div>
+                    <button onClick={handleEditPost}>Save Changes</button>
+                    <button onClick={cancelEdit}>Cancel</button>
+                  </div>
+                ) : (
+                  <div>
+                    <h3>{event.title}</h3>
+                    <p>{event.description}</p>
+                    {event.imageUrl && <img src={event.imageUrl} alt="Event" />}
+                    {user && (
+                      <div>
+                        <button onClick={() => startEditingPost(event)}>Edit</button>
+                        <button onClick={() => handleDeletePost(event.id)}>Delete</button>
+                      </div>
+                    )}
                   </div>
                 )}
               </li>
