@@ -343,7 +343,7 @@ const Ralli = () => {
         </div>
       </div>
       <center>
-        <h1>Paikan kuvat</h1>
+      <h1>Paikan kuvat</h1>
         {user && (
           <div>
             <h1>Lisää kuva:</h1>
