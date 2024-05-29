@@ -33,7 +33,7 @@ function Services() {
       const imageData = imagesnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       delete imageData[0]
       setimagesFromDatabase(imageData);
-      
+
       setFutureEvents(postsData);
       setHonored(honordData);
       setGone(goneData);
@@ -62,16 +62,22 @@ function Services() {
   }, []);
 
   const handleCreatePost = async () => {
+    // Check if all input fields are empty
+    if (!postTitle && !postDescription) {
+      alert('All input fields are empty');
+      return; // Exit the function early
+    }
+  
     try {
       let imageUrl = ''; // Initialize imageUrl to empty string
-  
+
       // Check if an image is provided
       if (image) {
         const storageRef = ref(storage, `images/${image.name}`);
         await uploadBytes(storageRef, image);
         imageUrl = await getDownloadURL(storageRef);
       }
-  
+
       await addDoc(collection(db, 'members'), {
         name: postTitle,
         description: postDescription,
@@ -87,16 +93,22 @@ function Services() {
     }
   };
   const handleCreatePost1 = async () => {
+    // Check if all input fields are empty
+    if (!postTitle && !postDescription) {
+      alert('All input fields are empty');
+      return; // Exit the function early
+    }
+  
     try {
       let imageUrl = ''; // Initialize imageUrl to empty string
-  
+
       // Check if an image is provided
       if (image) {
         const storageRef = ref(storage, `images/${image.name}`);
         await uploadBytes(storageRef, image);
         imageUrl = await getDownloadURL(storageRef);
       }
-  
+
       await addDoc(collection(db, 'honored-members'), {
         name: postTitle,
         description: postDescription,
@@ -112,16 +124,22 @@ function Services() {
     }
   };
   const handleCreatePost3 = async () => {
+    // Check if all input fields are empty
+    if (!postTitle && !postDescription) {
+      alert('All input fields are empty');
+      return; // Exit the function early
+    }
+  
     try {
       let imageUrl = ''; // Initialize imageUrl to empty string
-  
+
       // Check if an image is provided
       if (image) {
         const storageRef = ref(storage, `images/${image.name}`);
         await uploadBytes(storageRef, image);
         imageUrl = await getDownloadURL(storageRef);
       }
-  
+
       await addDoc(collection(db, 'Gonemember'), {
         name: postTitle,
         description: postDescription,
@@ -139,7 +157,7 @@ function Services() {
   const handleEditPost = async (postId) => {
     try {
       let imageUrl = ''; // Initialize imageUrl to empty string
-  
+
       // Update the post document in Firestore collection 'posts'
       await updateDoc(doc(db, 'members', postId), {
         name: postTitle,
@@ -157,7 +175,7 @@ function Services() {
   const handleEditPost1 = async (postId) => {
     try {
       let imageUrl = ''; // Initialize imageUrl to empty string
-  
+
       // Update the post document in Firestore collection 'posts'
       await updateDoc(doc(db, 'honored-members', postId), {
         name: postTitle,
@@ -175,7 +193,7 @@ function Services() {
   const handleEditPost2 = async (postId) => {
     try {
       let imageUrl = ''; // Initialize imageUrl to empty string
-  
+
       // Update the post document in Firestore collection 'posts'
       await updateDoc(doc(db, 'Gonemember', postId), {
         name: postTitle,
@@ -191,33 +209,42 @@ function Services() {
     }
   };
   const handleDeletePost = async (postId) => {
-    try {
-      // Delete the post document from Firestore collection 'posts'
-      await deleteDoc(doc(db, 'members', postId));
-      alert('Post deleted successfully!');
-      fetchEvents();
-    } catch (error) {
-      console.error('Error deleting document: ', error);
+    const confirmed = window.confirm('Are you sure you want to delete this post?');
+    if (confirmed) {
+      try {
+        // Delete the post document from Firestore collection 'posts'
+        await deleteDoc(doc(db, 'members', postId));
+        alert('Post deleted successfully!');
+        fetchEvents();
+      } catch (error) {
+        console.error('Error deleting document: ', error);
+      }
     }
   };
   const handleDeletePost1 = async (postId) => {
-    try {
-      // Delete the post document from Firestore collection 'posts'
-      await deleteDoc(doc(db, 'honored-members', postId));
-      alert('Post deleted successfully!');
-      fetchEvents();
-    } catch (error) {
-      console.error('Error deleting document: ', error);
+    const confirmed = window.confirm('Are you sure you want to delete this post?');
+    if (confirmed) {
+      try {
+        // Delete the post document from Firestore collection 'posts'
+        await deleteDoc(doc(db, 'honored-members', postId));
+        alert('Post deleted successfully!');
+        fetchEvents();
+      } catch (error) {
+        console.error('Error deleting document: ', error);
+      }
     }
   };
   const handleDeletePost2 = async (postId) => {
-    try {
-      // Delete the post document from Firestore collection 'posts'
-      await deleteDoc(doc(db, 'Gonemember', postId));
-      alert('Post deleted successfully!');
-      fetchEvents();
-    } catch (error) {
-      console.error('Error deleting document: ', error);
+    const confirmed = window.confirm('Are you sure you want to delete this post?');
+    if (confirmed) {
+      try {
+        // Delete the post document from Firestore collection 'posts'
+        await deleteDoc(doc(db, 'Gonemember', postId));
+        alert('Post deleted successfully!');
+        fetchEvents();
+      } catch (error) {
+        console.error('Error deleting document: ', error);
+      }
     }
   };
 
@@ -246,127 +273,130 @@ function Services() {
   };
 
   const handleDeleteImage = async (postId) => {
-    try {
-      // Delete the post document from Firestore collection 'posts'
-      await deleteDoc(doc(db, 'hallitus-kuvat', postId));
-      alert('Post deleted successfully!');
-      fetchEvents();
-    } catch (error) {
-      console.error('Error deleting document: ', error);
+    const confirmed = window.confirm('Are you sure you want to delete this post?');
+    if (confirmed) {
+      try {
+        // Delete the post document from Firestore collection 'posts'
+        await deleteDoc(doc(db, 'hallitus-kuvat', postId));
+        alert('Post deleted successfully!');
+        fetchEvents();
+      } catch (error) {
+        console.error('Error deleting document: ', error);
+      }
     }
   };
 
   return (
     <div className='services-container'>
-              {user && <h3>Kirjautunut, {user.email}</h3>} {/* Display hello (logged user) */}
-              {user && (
-          <div>
-            <input
-              type="text"
-              value={postTitle}
-              onChange={(e) => setPostTitle(e.target.value)}
-              placeholder="Post Title"
-            />
-            <textarea
-              value={postDescription}
-              onChange={(e) => setPostDescription(e.target.value)}
-              placeholder="Post Description"
-            ></textarea>
-                      <div>
-          </div>
-            <button onClick={handleCreatePost}>Hallitus</button>
-            <button onClick={handleCreatePost1}>Honored</button>
-            <button onClick={handleCreatePost3}>Gone</button>
-          </div>
-        )}
-          <h1 className='services-title'>Hallitus</h1>
-    <div className='services-grid'>
-      {/* Map over futureEvents to render service boxes */}
-      {futureEvents
-  .slice() // Create a copy of the array to avoid mutating the original array
-  .reverse() // Reverse the order of the array
-  .map(event => (
-    <div key={event.id} className='service'>
-      <h2 className='service-title'>{event.name}</h2>
-      <p className='service-description'>{event.description}</p>
+      {user && <h3>Kirjautunut, {user.email}</h3>} {/* Display hello (logged user) */}
       {user && (
         <div>
-          <button onClick={() => handleEditPost(event.id)}>Muokkaa</button>
-          <button onClick={() => handleDeletePost(event.id)}>Poista</button>
+          <input
+            type="text"
+            value={postTitle}
+            onChange={(e) => setPostTitle(e.target.value)}
+            placeholder="Post Title"
+          />
+          <textarea
+            value={postDescription}
+            onChange={(e) => setPostDescription(e.target.value)}
+            placeholder="Post Description"
+          ></textarea>
+          <div>
+          </div>
+          <button onClick={handleCreatePost}>Hallitus</button>
+          <button onClick={handleCreatePost1}>Honored</button>
+          <button onClick={handleCreatePost3}>Gone</button>
         </div>
       )}
-    </div>
-  ))}
+      <h1 className='services-title'>Hallitus</h1>
+      <div className='services-grid'>
+        {/* Map over futureEvents to render service boxes */}
+        {futureEvents
+          .slice() // Create a copy of the array to avoid mutating the original array
+          .reverse() // Reverse the order of the array
+          .map(event => (
+            <div key={event.id} className='service'>
+              <h2 className='service-title'>{event.name}</h2>
+              <p className='service-description'>{event.description}</p>
+              {user && (
+                <div>
+                  <button onClick={() => handleEditPost(event.id)}>Muokkaa</button>
+                  <button onClick={() => handleDeletePost(event.id)}>Poista</button>
+                </div>
+              )}
+            </div>
+          ))}
 
-    </div>
+      </div>
       <div className='members-container'>
         <div className='members-section'>
           <h2 className='members-section-title'>Honored Members</h2>
           {Honored
-  .slice() // Create a copy of the array to avoid mutating the original array
-  .reverse() // Reverse the order of the array
-  .map(event => (
-    <div key={event.id} className=''>
-      <p className=''>{event.name}</p>
-      {user && (
-        <div>
-          <button onClick={() => handleEditPost1(event.id)}>Muokkaa</button>
-          <button onClick={() => handleDeletePost1(event.id)}>Poista</button>
-        </div>
-      )}
-    </div>
-  ))}
+            .slice() // Create a copy of the array to avoid mutating the original array
+            .reverse() // Reverse the order of the array
+            .map(event => (
+              <div key={event.id} className=''>
+                <p className=''>{event.name}</p>
+                {user && (
+                  <div>
+                    <button onClick={() => handleEditPost1(event.id)}>Muokkaa</button>
+                    <button onClick={() => handleDeletePost1(event.id)}>Poista</button>
+                  </div>
+                )}
+              </div>
+            ))}
         </div>
         <div className='members-section'>
           <h2 className='members-section-title'>Gone But Never Forgotten</h2>
           {Gone
-  .slice() // Create a copy of the array to avoid mutating the original array
-  .reverse() // Reverse the order of the array
-  .map(event => (
-    <div key={event.id} className=''>
-      <p className=''>{event.name}</p>
-      {user && (
-        <div>
-          <button onClick={() => handleEditPost2(event.id)}>Muokkaa</button>
-          <button onClick={() => handleDeletePost2(event.id)}>Poista</button>
-        </div>
-      )}
-    </div>
-  ))}
+            .slice() // Create a copy of the array to avoid mutating the original array
+            .reverse() // Reverse the order of the array
+            .map(event => (
+              <div key={event.id} className=''>
+                <p className=''>{event.name}</p>
+                {user && (
+                  <div>
+                    <button onClick={() => handleEditPost2(event.id)}>Muokkaa</button>
+                    <button onClick={() => handleDeletePost2(event.id)}>Poista</button>
+                  </div>
+                )}
+              </div>
+            ))}
         </div>
       </div>
-        <center>
-          <h1>Kuvia hallituksesta</h1>
-          {user && (
-            <div>
-              <h1>Lisää kuva:</h1>
-              <div className="hallitus-image-upload">
-                <input
-                  type="file"
-                  onChange={handleImageChange}
-                />
-                <button onClick={handleImageUpload}>Lisää kuva</button>
-              </div>
+      <center>
+        <h1>Kuvia hallituksesta</h1>
+        {user && (
+          <div>
+            <h1>Lisää kuva:</h1>
+            <div className="hallitus-image-upload">
+              <input
+                type="file"
+                onChange={handleImageChange}
+              />
+              <button onClick={handleImageUpload}>Lisää kuva</button>
             </div>
-          )}
+          </div>
+        )}
 
         <div className='hallitus-image-slider-div'>
           {imagesFromDatabase.map(event => (
-                <div class="gallery">
-                  <div class="hallitus-image-container">
-                    <a target="_blank" href={event.imageUrl}>
-                      <img class="hallitus-gallery-image" src={event.imageUrl}/>
-                    </a>
-                  </div>
-                    
-                    {user && (
-                      <button class="hallitus-img-button" onClick={() => handleDeleteImage(event.id)}>Poista</button>
-                    )}
-                </div>
+            <div class="gallery">
+              <div class="hallitus-image-container">
+                <a target="_blank" href={event.imageUrl}>
+                  <img class="hallitus-gallery-image" src={event.imageUrl} />
+                </a>
+              </div>
+
+              {user && (
+                <button class="hallitus-img-button" onClick={() => handleDeleteImage(event.id)}>Poista</button>
+              )}
+            </div>
 
           ))}
         </div>
-        </center>
+      </center>
 
     </div>
   );

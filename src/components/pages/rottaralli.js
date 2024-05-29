@@ -2,47 +2,34 @@ import React, { useState, useEffect } from 'react';
 import "../Rottaralli.css"
 import Footer from '../Footer';
 import { auth, db, storage } from '../firebase'; // Import your Firebase configuration
-import { addDoc, collection, getDocs,deleteDoc, updateDoc, doc } from 'firebase/firestore'; // Import Firestore functions
+import { addDoc, collection, getDocs, updateDoc, doc, deleteDoc, query, orderBy } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 
 const Ralli = () => {
   const [user, setUser] = useState(null); // Placeholder for user state
   const [eventInfo, setEventInfo] = useState(''); // State to hold the event info text
   const [postTitle, setPostTitle] = useState('');
-  const [Honored, setHonored] = useState([]);
-  const [newPost, setNewPost] = useState(''); // State to hold the new post text
   const [postDescription, setPostDescription] = useState('');
   const [posts, setPosts] = useState([]); // State to hold the posts
-  const [editingPostId, setEditingPostId] = useState(null); // State to hold the ID of the post being edited
-  const [editedPostText, setEditedPostText] = useState(''); // State to hold the edited post text
+  const [editingPost, setEditingPost] = useState({ id: null, title: '', description: '' });
   const [image, setImage] = useState(null); // State to hold Image
   const [imagesFromDatabase, setImagesFromDatabase] = useState([]);
   const [ticketLinks, setTicketLinks] = useState([]);
-  
+  const [editingLink, setEditingLink] = useState({ id: null, title: '', url: '', buttonText: '' });
+  const [honored, setHonored] = useState([]);
+
   useEffect(() => {
     // Trigger rendering of Facebook feed after SDK is loaded
     if (window.FB) {
       window.FB.XFBML.parse();
     }
   }, []);
+
   useEffect(() => {
-    const fetchTicketLinks = async () => {
-      try {
-        const ticketLinksCollection = collection(db, 'ticketLinks');
-        const snapshot = await getDocs(ticketLinksCollection);
-        const links = snapshot.docs.map(doc => doc.data());
-        const honoredCollection = collection(db, 'Rottaralli-logo');
-        const snapshot1 = await getDocs(honoredCollection);
-        const honordData = snapshot1.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setHonored(honordData);
-        setTicketLinks(links);
-      } catch (error) {
-        console.error('Error fetching ticket links:', error);
-      }
-    };
     fetchImages();
     fetchTicketLinks();
   }, []);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
@@ -76,7 +63,8 @@ const Ralli = () => {
     try {
       // Fetch posts from Firebase database under the "event-info" collection
       const postsCollection = collection(db, 'event-info');
-      const snapshot = await getDocs(postsCollection);
+      const q = query(postsCollection, orderBy('createdAt', 'asc'));
+      const snapshot = await getDocs(q);
       const postsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setPosts(postsData);
     } catch (error) {
@@ -86,49 +74,106 @@ const Ralli = () => {
 
   useEffect(() => {
     fetchPosts(); // Call fetchPosts function when component mounts or when editing is done
-  }, [editingPostId]); // Add editingPostId to the dependencies to refetch posts after editing
+  }, [editingPost.id]); // Add editingPost.id to the dependencies to refetch posts after editing
 
-  const handlePostSubmit = async () => {
+  const handleCreatePost = async () => {
+    // Check if all input fields are empty
+    if (!postTitle && !postDescription) {
+      alert('All input fields are empty');
+      return; // Exit the function early
+    }
     try {
-      // Add new post to the "event-info" collection
+      const createdAt = new Date();
       const docRef = await addDoc(collection(db, 'event-info'), {
-        text: postTitle,
-        timestamp: new Date().toISOString(),
+        title: postTitle,
+        description: postDescription,
+        createdAt
       });
-      console.log('Post added with ID: ', docRef.id);
-      setNewPost(''); // Clear the input field after submitting
-      fetchPosts(); // Refetch posts after adding a new post
+      setPosts(prevPosts => [
+        ...prevPosts,
+        { id: docRef.id, title: postTitle, description: postDescription, createdAt }
+      ]);
+      setPostTitle(''); // Clear the input fields after submitting
+      setPostDescription('');
+      alert('Post added successfully!');
     } catch (error) {
       console.error('Error adding post: ', error);
+      alert('Error adding post!');
     }
   };
 
-  const handleEditPost = async (postId) => {
+  const handleEditPost = async () => {
+    const { id, title, description } = editingPost;
+
     try {
-      // Update the post in the "event-info" collection
-      await updateDoc(doc(db, 'event-info', postId), {
-        text: editedPostText,
+      await updateDoc(doc(db, 'event-info', id), {
+        title,
+        description,
       });
       console.log('Post edited successfully');
-      setEditingPostId(null); // Clear the editing state
+      setEditingPost({ id: null, title: '', description: '' }); // Clear the editing state
       fetchPosts(); // Refetch posts after editing
     } catch (error) {
       console.error('Error editing post: ', error);
     }
   };
 
-  
+
   const handleDeletePost = async (postId) => {
-    try {
-      // Delete the post document from Firestore collection 'posts'
-      await deleteDoc(doc(db, 'event-info', postId));
-      alert('Post deleted successfully!');
-      fetchPosts();
-    } catch (error) {
-      console.error('Error deleting document: ', error);
+    const confirmed = window.confirm('Are you sure you want to delete this post?');
+    if (confirmed) {
+      try {
+        await deleteDoc(doc(db, 'event-info', postId));
+        alert('Post deleted successfully!');
+        fetchPosts();
+      } catch (error) {
+        console.error('Error deleting document: ', error);
+      }
     }
   };
 
+  // Ticket Link Control
+
+  const fetchTicketLinks = async () => {
+    try {
+      const ticketLinksCollection = collection(db, 'ticketLinks');
+      const snapshot = await getDocs(ticketLinksCollection);
+      const links = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setTicketLinks(links);
+
+      const honoredCollection = collection(db, 'Rottaralli-logo');
+      const snapshot1 = await getDocs(honoredCollection);
+      const honoredData = snapshot1.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setHonored(honoredData);
+    } catch (error) {
+      console.error('Error fetching ticket links:', error);
+    }
+  };
+
+  const handleLinkEdit = (link) => {
+    setEditingLink(link);
+  };
+
+  const handleLinkUpdate = async () => {
+    const { id, title, url, buttonText } = editingLink;
+    if (!id || !url.trim() || !buttonText.trim()) {
+      alert('Link URL and Button Text cannot be empty');
+      return;
+    }
+
+    try {
+      await updateDoc(doc(db, 'ticketLinks', id), {
+        title,
+        url,
+        buttonText,
+      });
+      alert('Link updated successfully!');
+      setEditingLink({ id: null, title: '', url: '', buttonText: '' }); // Clear the editing state
+      fetchTicketLinks(); // Refetch ticket links after editing
+    } catch (error) {
+      console.error('Error updating link: ', error);
+    }
+  };
 
   // Image Control
 
@@ -174,88 +219,131 @@ const Ralli = () => {
   };
 
   const handleDeleteImage = async (postId) => {
-    try {
-      // Delete the post document from Firestore collection 'posts'
-      await deleteDoc(doc(db, 'Rottaralli-kuvat', postId));
-      alert('Post deleted successfully!');
-      fetchImages();
-    } catch (error) {
-      console.error('Error deleting document: ', error);
+    const confirmed = window.confirm('Are you sure you want to delete this post?');
+    if (confirmed) {
+      try {
+        // Delete the post document from Firestore collection 'posts'
+        await deleteDoc(doc(db, 'Rottaralli-kuvat', postId));
+        alert('Post deleted successfully!');
+        fetchImages();
+      } catch (error) {
+        console.error('Error deleting document: ', error);
+      }
     }
   };
 
   return (
     <div className="sivut">
       <div className='ralli-header'>
-        {user && <h3>Hello, {user.email}</h3>} {/* Display hello (logged user) */}
+        {user && <h3>Hello, {user.email}</h3>}
         <center>
-        <div className='rottaralli-logo-div'>
-          {Honored.map(event => (
-            <p key={event.id}>
-              {event.imageUrl && <img className="logo-img" src={event.imageUrl} alt="Rottaralli Logo" />}
-            </p>
-          ))}
-        </div>
+          <div className='rottaralli-logo-div'>
+            {honored.map(event => (
+              <p key={event.id}>
+                {event.imageUrl && <img className="logo-img" src={event.imageUrl} alt="Rottaralli Logo" />}
+              </p>
+            ))}
+          </div>
         </center>
       </div>
       <div className='ralli-info'>
         <div className='ralli-div'>
-        <div>
-            <input
-              type="text"
-              value={postTitle}
-              onChange={(e) => setPostTitle(e.target.value)}
-              placeholder="Post Title"
-            />
-            <textarea
-              value={postDescription}
-              onChange={(e) => setPostDescription(e.target.value)}
-              placeholder="Post Description"
-            ></textarea>
-                      <div>
+          <div className='ralli-text'>
+            <ul>
+              {posts.map(post => (
+                <div key={post.id}>
+                  {editingPost.id === post.id ? (
+                    <div>
+                      <input
+                        type="text"
+                        value={editingPost.title}
+                        onChange={(e) => setEditingPost({ ...editingPost, title: e.target.value })}
+                        placeholder="Edit Title"
+                      />
+                      <textarea
+                        value={editingPost.description}
+                        onChange={(e) => setEditingPost({ ...editingPost, description: e.target.value })}
+                        placeholder="Edit Description"
+                      ></textarea>
+                      <button onClick={handleEditPost}>Save</button>
+                    </div>
+                  ) : (
+                    <div>
+                      {post.title && <h2 className="ralli-title">{post.title}</h2>}
+                      <p>{post.description}</p>
+                      {user && (
+                        <>
+                          <button onClick={() => setEditingPost({ id: post.id, title: post.title, description: post.description })}>Edit</button>
+                          <button onClick={() => handleDeletePost(post.id)}>Delete</button>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+              {user && (
+            <div>
+              <input
+                type="text"
+                value={postTitle}
+                onChange={(e) => setPostTitle(e.target.value)}
+                placeholder="Post Title"
+              />
+              <textarea
+                value={postDescription}
+                onChange={(e) => setPostDescription(e.target.value)}
+                placeholder="Post Description"
+              ></textarea>
+              <button onClick={handleCreatePost}>Add Post</button>
+            </div>
+          )}
+            </ul>
           </div>
-            <button onClick={handlePostSubmit}>Hallitus</button>
-          </div>
-          <h1 className='ralli-title'>Rottaralli tiedotteita</h1>
-          <p className='ralli-text'>
-          <ul>
-          {posts.map(post => (
-            <div key={post.id}>
-              {editingPostId === post.id ? (
+        </div>
+        <div className='ralli-lippuja'>
+          {ticketLinks.map((link, index) => (
+            <div className='ralli-lippu-div' key={index}>
+              {editingLink.id === link.id ? (
                 <div>
-                  <textarea value={editedPostText} onChange={(e) => setEditedPostText(e.target.value)} />
-                  <button onClick={() => handleEditPost(post.id)}>Save</button>
+                  <input
+                    type="text"
+                    value={editingLink.title}
+                    onChange={(e) => setEditingLink({ ...editingLink, title: e.target.value })}
+                    placeholder="Edit Title"
+                  />
+                  <input
+                    type="text"
+                    value={editingLink.url}
+                    onChange={(e) => setEditingLink({ ...editingLink, url: e.target.value })}
+                    placeholder="Edit URL"
+                  />
+                  <input
+                    type="text"
+                    value={editingLink.buttonText}
+                    onChange={(e) => setEditingLink({ ...editingLink, buttonText: e.target.value })}
+                    placeholder="Edit Button Text"
+                  />
+                  <button onClick={handleLinkUpdate}>Save</button>
                 </div>
               ) : (
                 <div>
-                  <p>{post.text}</p>
+                  <h1>{link.title}</h1>
+                  <button className='button' onClick={() => window.open(link.url, '_blank')} rel='noopener noreferrer'>
+                    {link.buttonText}
+                  </button>
                   {user && (
-                    <><button onClick={() => {
-                        setEditingPostId(post.id);
-                        setEditedPostText(post.text);
-                      } }>Edit</button><button onClick={() => handleDeletePost(post.id)}>Poista</button></>
+                    <div>
+                      <button onClick={() => handleLinkEdit(link)}>Edit</button>
+                    </div>
                   )}
                 </div>
               )}
             </div>
           ))}
-        </ul>
-          </p> {/* Display event info text */}
         </div>
-        <div className='ralli-lippuja'>
-          {ticketLinks.map((link, index) => (
-            <div className='ralli-lippu-div' key={index}>
-              <h1>{link.title}</h1>
-              <button className='button' onClick={() => window.open(link.url, '_blank')} rel='noopener noreferrer'>
-                {link.buttonText}
-              </button>
-            </div>
-          ))}
-        </div>
-
       </div>
-      
       <center>
+      <h1>Paikan kuvat</h1>
         {user && (
           <div>
             <h1>Lisää kuva:</h1>
@@ -268,20 +356,20 @@ const Ralli = () => {
             </div>
           </div>
         )}
-        
+
         <div className='rottaralli-image-slider-div'>
           {imagesFromDatabase.map(event => (
-                <div class="gallery">
-                  <div class="rottaralli-image-container">
-                    <a target="_blank" href={event.imageUrl}>
-                      <img class="rottaralli-gallery-image" src={event.imageUrl}/>
-                    </a>
-                  </div>
-                    
-                    {user && (
-                      <button class="rottaralli-img-button" onClick={() => handleDeleteImage(event.id)}>Poista</button>
-                    )}
-                </div>
+            <div class="gallery">
+              <div class="rottaralli-image-container">
+                <a target="_blank" href={event.imageUrl}>
+                  <img class="rottaralli-gallery-image" src={event.imageUrl} />
+                </a>
+              </div>
+
+              {user && (
+                <button class="rottaralli-img-button" onClick={() => handleDeleteImage(event.id)}>Poista</button>
+              )}
+            </div>
 
           ))}
         </div>
