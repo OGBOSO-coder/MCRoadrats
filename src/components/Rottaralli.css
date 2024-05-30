@@ -144,6 +144,12 @@ h2 {
         flex-direction: column;
     }
 
+    .rottaralli-image-container{
+        min-width: 300px;
+        width: auto;
+        height: 250px;
+    }
+
 }
 
 .button {
