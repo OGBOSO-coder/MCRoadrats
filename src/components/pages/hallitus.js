@@ -321,7 +321,7 @@ function Services() {
           <h2 className='members-section-title'>Gone But Never Forgotten</h2>
           {Gone
   .slice() // Create a copy of the array to avoid mutating the original array
-  .reverse() // Reverse the order of the array
+  .reverse() // Reverse the order of the arra
   .map(event => (
     <div key={event.id} className=''>
       <p className=''>{event.name}</p>
