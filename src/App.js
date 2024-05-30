@@ -19,8 +19,8 @@ function App() {
           <Route path='/palvelut' component={palvelut} />
           <Route path='/hallitus' component={hallitus} />
           <Route path='/rottaralli' component={rottaralli} />
-          <Route path='/history' component={History}/>
-          <Route path='/sign-up' component={SignUp} />
+          <Route path='/historia' component={History}/>
+          <Route path='/jaseneksi' component={SignUp} />
           <Route path='/admin' component={Testi} />
         </Switch>
         </BrowserRouter>
