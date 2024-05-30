@@ -282,21 +282,21 @@ const Ralli = () => {
                 </div>
               ))}
               {user && (
-            <div>
-              <input
-                type="text"
-                value={postTitle}
-                onChange={(e) => setPostTitle(e.target.value)}
-                placeholder="Post Title"
-              />
-              <textarea
-                value={postDescription}
-                onChange={(e) => setPostDescription(e.target.value)}
-                placeholder="Post Description"
-              ></textarea>
-              <button onClick={handleCreatePost}>Add Post</button>
-            </div>
-          )}
+                <div>
+                  <input
+                    type="text"
+                    value={postTitle}
+                    onChange={(e) => setPostTitle(e.target.value)}
+                    placeholder="Post Title"
+                  />
+                  <textarea
+                    value={postDescription}
+                    onChange={(e) => setPostDescription(e.target.value)}
+                    placeholder="Post Description"
+                  ></textarea>
+                  <button onClick={handleCreatePost}>Add Post</button>
+                </div>
+              )}
             </ul>
           </div>
         </div>
@@ -340,6 +340,21 @@ const Ralli = () => {
               )}
             </div>
           ))}
+          <div className="facebook-feed">
+            <div className="fb-page"
+              data-href="https://www.facebook.com/p/Rottaralli-100057561793735/"
+              data-tabs="timeline"
+              data-width="360"
+              data-height=""
+              data-small-header="false"
+              data-adapt-container-width="true"
+              data-hide-cover="false"
+              data-show-facepile="true">
+              <blockquote cite="https://www.facebook.com/p/Rottaralli-100057561793735/" className="fb-xfbml-parse-ignore">
+                <a href="https://www.facebook.com/p/Rottaralli-100057561793735/">MC Road Rats ry</a>
+              </blockquote>
+            </div>
+          </div>
         </div>
       </div>
       <center>
@@ -373,22 +388,6 @@ const Ralli = () => {
           ))}
         </div>
       </center>
-
-      <div className="facebook-feed">
-        <div className="fb-page"
-          data-href="https://www.facebook.com/p/Rottaralli-100057561793735/"
-          data-tabs="timeline"
-          data-width="375"
-          data-height=""
-          data-small-header="false"
-          data-adapt-container-width="true"
-          data-hide-cover="false"
-          data-show-facepile="true">
-          <blockquote cite="https://www.facebook.com/p/Rottaralli-100057561793735/" className="fb-xfbml-parse-ignore">
-            <a href="https://www.facebook.com/p/Rottaralli-100057561793735/">MC Road Rats ry</a>
-          </blockquote>
-        </div>
-      </div>
       <Footer />
     </div>
   );
