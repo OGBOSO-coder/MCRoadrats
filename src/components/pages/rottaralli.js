@@ -112,12 +112,16 @@ const Ralli = () => {
       });
       console.log('Post edited successfully');
       setEditingPost({ id: null, title: '', description: '' }); // Clear the editing state
+      alert('Post edited successfully!');
       fetchPosts(); // Refetch posts after editing
     } catch (error) {
       console.error('Error editing post: ', error);
     }
   };
 
+  const handleCancelEditPost = () => {
+    setEditingPost({ id: null, title: '', description: '' }); // Clear the editing state
+  };
 
   const handleDeletePost = async (postId) => {
     const confirmed = window.confirm('Are you sure you want to delete this post?');
@@ -173,6 +177,10 @@ const Ralli = () => {
     } catch (error) {
       console.error('Error updating link: ', error);
     }
+  };
+
+  const handleCancelEditLink = () => {
+    setEditingLink({ id: null, title: '', url: '', buttonText: '' }); // Clear the editing state
   };
 
   // Image Control
@@ -248,57 +256,57 @@ const Ralli = () => {
       </div>
       <div className='ralli-info'>
         <div className='ralli-div'>
-          <div className='ralli-text'>
-            <ul>
-              {posts.map(post => (
-                <div key={post.id}>
-                  {editingPost.id === post.id ? (
-                    <div>
-                      <input
-                        type="text"
-                        value={editingPost.title}
-                        onChange={(e) => setEditingPost({ ...editingPost, title: e.target.value })}
-                        placeholder="Edit Title"
-                      />
-                      <textarea
-                        value={editingPost.description}
-                        onChange={(e) => setEditingPost({ ...editingPost, description: e.target.value })}
-                        placeholder="Edit Description"
-                      ></textarea>
-                      <button onClick={handleEditPost}>Save</button>
-                    </div>
-                  ) : (
-                    <div>
-                      {post.title && <h2 className="ralli-title">{post.title}</h2>}
-                      <p>{post.description}</p>
-                      {user && (
-                        <>
-                          <button onClick={() => setEditingPost({ id: post.id, title: post.title, description: post.description })}>Edit</button>
-                          <button onClick={() => handleDeletePost(post.id)}>Delete</button>
-                        </>
-                      )}
-                    </div>
-                  )}
-                </div>
-              ))}
-              {user && (
-                <div>
-                  <input
-                    type="text"
-                    value={postTitle}
-                    onChange={(e) => setPostTitle(e.target.value)}
-                    placeholder="Post Title"
-                  />
-                  <textarea
-                    value={postDescription}
-                    onChange={(e) => setPostDescription(e.target.value)}
-                    placeholder="Post Description"
-                  ></textarea>
-                  <button onClick={handleCreatePost}>Add Post</button>
-                </div>
-              )}
-            </ul>
-          </div>
+
+          <ul>
+            {posts.map(post => (
+              <div key={post.id}>
+                {editingPost.id === post.id ? (
+                  <div>
+                    <input
+                      type="text"
+                      value={editingPost.title}
+                      onChange={(e) => setEditingPost({ ...editingPost, title: e.target.value })}
+                      placeholder="Otsikko"
+                    />
+                    <textarea
+                      value={editingPost.description}
+                      onChange={(e) => setEditingPost({ ...editingPost, description: e.target.value })}
+                      placeholder="Teksti"
+                    ></textarea>
+                    <button onClick={handleEditPost}>Tallenna</button>
+                    <button onClick={handleCancelEditPost}>Peruuta</button>
+                  </div>
+                ) : (
+                  <div className='ralli-text'>
+                    {post.title && <h2 className="ralli-title">{post.title}</h2>}
+                    <p>{post.description}</p>
+                    {user && (
+                      <>
+                        <button onClick={() => setEditingPost({ id: post.id, title: post.title, description: post.description })}>Muokkaa</button>
+                        <button onClick={() => handleDeletePost(post.id)}>Poista</button>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+            {user && (
+              <div>
+                <input
+                  type="text"
+                  value={postTitle}
+                  onChange={(e) => setPostTitle(e.target.value)}
+                  placeholder="Otsikko"
+                />
+                <textarea
+                  value={postDescription}
+                  onChange={(e) => setPostDescription(e.target.value)}
+                  placeholder="Teksti"
+                ></textarea>
+                <button onClick={handleCreatePost}>Lisää</button>
+              </div>
+            )}
+          </ul>
         </div>
         <div className='ralli-lippuja'>
           {ticketLinks.map((link, index) => (
@@ -309,21 +317,22 @@ const Ralli = () => {
                     type="text"
                     value={editingLink.title}
                     onChange={(e) => setEditingLink({ ...editingLink, title: e.target.value })}
-                    placeholder="Edit Title"
+                    placeholder="Otsikko"
                   />
                   <input
                     type="text"
                     value={editingLink.url}
                     onChange={(e) => setEditingLink({ ...editingLink, url: e.target.value })}
-                    placeholder="Edit URL"
+                    placeholder="Linkki"
                   />
                   <input
                     type="text"
                     value={editingLink.buttonText}
                     onChange={(e) => setEditingLink({ ...editingLink, buttonText: e.target.value })}
-                    placeholder="Edit Button Text"
+                    placeholder="Painikkeen teksti"
                   />
-                  <button onClick={handleLinkUpdate}>Save</button>
+                  <button onClick={handleLinkUpdate}>Tallenna</button>
+                  <button onClick={handleCancelEditLink}>Peruuta</button>
                 </div>
               ) : (
                 <div>
@@ -333,7 +342,7 @@ const Ralli = () => {
                   </button>
                   {user && (
                     <div>
-                      <button onClick={() => handleLinkEdit(link)}>Edit</button>
+                      <button onClick={() => handleLinkEdit(link)}>Muokkaa</button>
                     </div>
                   )}
                 </div>
