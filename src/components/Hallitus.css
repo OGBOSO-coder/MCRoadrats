@@ -1,27 +1,27 @@
 .hallitus-img-button {
-  background-color: rgb(15, 15, 15);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  margin: 20px;
-  cursor: pointer;
-  font-size: 16px;
+    background-color: rgb(15, 15, 15);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 20px;
+    cursor: pointer;
+    font-size: 16px;
 }
 
 .hallitus-img-button:hover {
-  background-color: rgb(102, 2, 2);
-  transition: 0.3s;
+    background-color: rgb(102, 2, 2);
+    transition: 0.3s;
 }
 
 .hallitus-image-slider-div {
-  max-width: 1200px;
-  max-width: 100%;
-  display: flex;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-  margin-bottom: 100px;
-  background-color: #dddddd;
-  border-radius: 20px;
+    max-width: 1200px;
+    max-width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    margin-bottom: 100px;
+    background-color: #dddddd;
+    border-radius: 20px;
 }
 
 .gallery {
@@ -36,20 +36,21 @@
   height: 400px;
 }
 
-.hallitus-gallery-image {
+.hallitus-gallery-image{
   object-fit: cover;
   width: 100%;
   height: 100%;
   border-radius: 10px;
 }
-
+  
 .gallery:hover {
   border: 1px solid #777;
 }
 
-@media screen and (max-width: 500px) {
-  .hallitus-image-container {
-    width: 390px;
-    height: 290px;
-  }
+@media screen and (max-width: 650px) {
+    .hallitus-image-container {
+        min-width: 300px;
+        width: auto;
+        height: 250px;
+      }
 }

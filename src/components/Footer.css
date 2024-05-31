@@ -8,8 +8,7 @@
   justify-content: center;
 }
 
-.info-left,
-.info-right {
+.info-left, .info-right {
   flex: 1;
   max-width: 20%;
   color: white;

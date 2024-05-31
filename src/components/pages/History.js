@@ -5,6 +5,8 @@ import { db, auth, storage } from '../firebase';
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { collection, getDocs, addDoc, deleteDoc, updateDoc, doc } from 'firebase/firestore';
 
+const images = ["images/img-6.jpg", "images/img-7.jpg", "images/img-8.jpg", "images/img-9.jpg"]
+
 const EditForm = () => {
   const [image, setImage] = useState(null);
   const [futureEvents, setFutureEvents] = useState([]);
@@ -67,16 +69,13 @@ const EditForm = () => {
     }
   };
   const handleDeletePost = async (postId) => {
-    const confirmed = window.confirm('Are you sure you want to delete this image?');
-    if (confirmed) {
-      try {
-        // Delete the post document from Firestore collection 'posts'
-        await deleteDoc(doc(db, 'historia-kuvat', postId));
-        alert('Post deleted successfully!');
-        fetchEvents();
-      } catch (error) {
-        console.error('Error deleting document: ', error);
-      }
+    try {
+      // Delete the post document from Firestore collection 'posts'
+      await deleteDoc(doc(db, 'historia-kuvat', postId));
+      alert('Post deleted successfully!');
+      fetchEvents();
+    } catch (error) {
+      console.error('Error deleting document: ', error);
     }
   };
 
@@ -114,17 +113,17 @@ const EditForm = () => {
         )}
         <div className='history-image-slider-div'>
           {futureEvents.map(event => (
-            <div class="gallery">
-              <div class="history-image-container">
-                <a target="_blank" href={event.imageUrl}>
-                  <img class="history-gallery-image" src={event.imageUrl} />
-                </a>
-              </div>
-
-              {user && (
-                <button class="history-img-button" onClick={() => handleDeletePost(event.id)}>Poista</button>
-              )}
-            </div>
+                <div class="gallery">
+                  <div class="history-image-container">
+                    <a target="_blank" href={event.imageUrl}>
+                      <img class="history-gallery-image" src={event.imageUrl}/>
+                    </a>
+                  </div>
+                    
+                    {user && (
+                      <button class="history-img-button" onClick={() => handleDeletePost(event.id)}>Poista</button>
+                    )}
+                </div>
 
           ))}
         </div>

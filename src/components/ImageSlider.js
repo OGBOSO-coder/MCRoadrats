@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import "./History.css"
-import { ArrowBigLeft, ArrowBigRight } from "lucide-react"
+import {ArrowBigLeft, ArrowBigRight} from "lucide-react"
 
 
 const ImageSlider = ({ imageUrls }) => {
@@ -18,7 +18,7 @@ const ImageSlider = ({ imageUrls }) => {
                     }
                 })
             }}>
-                <ArrowBigLeft />
+                <ArrowBigLeft/>
             </button>
             <button className="history-img-slider-button" onClick={() => {
                 setImageIndex(index => {
