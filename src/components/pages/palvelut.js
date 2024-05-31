@@ -27,8 +27,8 @@ const Products = () => {
       try {
         const snapshot = await getDocs(collection(db, 'Palvelut'));
         snapshot.forEach(doc => setEventInfo(doc.data().info));
-        
-        const honoredCollection = collection(db, 'Palvelu-kuvat');
+
+        const honoredCollection = collection(db, 'Laitekuvat');
         const snapshot1 = await getDocs(honoredCollection);
         const honordData = snapshot1.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
@@ -64,7 +64,11 @@ const Products = () => {
   const handleAddPost = async (e, type) => {
     e.preventDefault();
     const { text, url } = newPost;
-    if (!text.trim()) return;
+    // Check if all input fields are empty
+    if (!text.trim() && !url.trim() && !image) {
+      alert('All input fields are empty');
+      return; // Exit the function early
+    }
 
     try {
       const createdAt = new Date();
@@ -101,16 +105,19 @@ const Products = () => {
   };
 
   const handleDeletePost = async (id, type) => {
-    try {
-      await deleteDoc(doc(db, type, id));
-      setPosts(prevPosts => ({
-        ...prevPosts,
-        [type.toLowerCase()]: prevPosts[type.toLowerCase()].filter(post => post.id !== id)
-      }));
-      alert('Post deleted successfully!');
-    } catch (error) {
-      console.error(`Virhe poistettaessa ${type} viestiä: `, error);
-      alert('Error deleting post!');
+    const confirmed = window.confirm('Are you sure you want to delete this post?');
+    if (confirmed) {
+      try {
+        await deleteDoc(doc(db, type, id));
+        setPosts(prevPosts => ({
+          ...prevPosts,
+          [type.toLowerCase()]: prevPosts[type.toLowerCase()].filter(post => post.id !== id)
+        }));
+        alert('Post deleted successfully!');
+      } catch (error) {
+        console.error(`Virhe poistettaessa ${type} viestiä: `, error);
+        alert('Error deleting post!');
+      }
     }
   };
 
@@ -159,7 +166,7 @@ const Products = () => {
       </div>
     ))
   );
-  
+
   // Image related code
 
   useEffect(() => {
@@ -172,7 +179,6 @@ const Products = () => {
       const postCollection = collection(db, 'Palvelu-kuvat');
       const snapshot = await getDocs(postCollection);
       const postsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      delete postsData[0]
       setFutureImages(postsData);
     } catch (error) {
       console.error('Error fetching posts: ', error);
@@ -208,13 +214,16 @@ const Products = () => {
   };
 
   const handleDeleteImage = async (postId) => {
-    try {
-      // Delete the post document from Firestore collection 'posts'
-      await deleteDoc(doc(db, 'Palvelu-kuvat', postId));
-      alert('Post deleted successfully!');
-      fetchImages();
-    } catch (error) {
-      console.error('Error deleting document: ', error);
+    const confirmed = window.confirm('Are you sure you want to delete this post?');
+    if (confirmed) {
+      try {
+        // Delete the post document from Firestore collection 'posts'
+        await deleteDoc(doc(db, 'Palvelu-kuvat', postId));
+        alert('Post deleted successfully!');
+        fetchImages();
+      } catch (error) {
+        console.error('Error deleting document: ', error);
+      }
     }
   };
 
@@ -249,7 +258,7 @@ const Products = () => {
           {user && renderPostForm('Kalusto')}
         </div>
 
-        <p className='equipment-description'>Muutamia mitattuja moottoripyöriä.</p>
+        <p className='equipment-description'></p>
 
         {user && (
           <div>
@@ -269,13 +278,14 @@ const Products = () => {
             <div class="gallery">
               <div class="palvelut-image-container">
                 <a target="_blank" href={event.imageUrl}>
-                  <img class="palvelut-gallery-image" src={event.imageUrl}/>
+                  <img class="palvelut-gallery-image" src={event.imageUrl} />
                 </a>
               </div>
               {user && (
                 <button class="palvelut-img-button" onClick={() => handleDeleteImage(event.id)}>Poista</button>
               )}
             </div>
+
           ))}
         </div>
 

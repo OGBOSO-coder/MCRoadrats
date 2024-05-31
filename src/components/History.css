@@ -13,6 +13,7 @@
 .history-title {
     display: flex;
 }
+
 .history-text {
     margin-bottom: 30px;
 }
@@ -53,40 +54,39 @@
 }
 
 .gallery {
-  border: 1px solid #201f1f;
-  margin: 10px;
-  background-color: white;
-  border-radius: 10px;
+    border: 1px solid #201f1f;
+    margin: 10px;
+    background-color: white;
+    border-radius: 10px;
 }
 
 .history-image-container {
-  width: 400px;
-  height: 300px;
+    width: 400px;
+    height: 300px;
 }
 
-.history-gallery-image{
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
+.history-gallery-image {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
 }
-  
+
 .gallery:hover {
-  border: 1px solid #777;
+    border: 1px solid #777;
 }
 
 
-  
-  
-  
+
+
+
 @media screen and (max-width: 500px) {
     .history-div {
         margin: 10px;
         font-size: 20px;
     }
-    .history-image-container{
-        min-width: 300px;
-        width: auto;
-        height: 250px;
+
+    .history-image-slider-div {
+        height: 300px;
     }
 }

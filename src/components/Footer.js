@@ -12,7 +12,7 @@ function Footer() {
         <div className='social-media-wrap'>
           <div className='social-icons'>
             <a
-            href='https://www.facebook.com/mcroadrats/'
+              href='https://www.facebook.com/mcroadrats/'
               className='social-icon-link facebook'
               target='_blank'
               aria-label='Facebook'

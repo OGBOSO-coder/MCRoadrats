@@ -181,68 +181,7 @@ const SignupAndLogin = () => {
       <div>
         <h2>Tervetuloa, ylläpitäjä!</h2>
         <button onClick={handleLogout}>Kirjaudu ulos</button>
-        <h3>Uusi tapahtuma</h3>
-        <form onSubmit={handlePostCreation}>
-          <div>
-            <label>Titteli</label>
-            <input
-              type="text"
-              value={postTitle}
-              onChange={(e) => setPostTitle(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label>Selite</label>
-            <textarea
-              value={postDescription}
-              onChange={(e) => setPostDescription(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label>Kuva</label>
-            <input
-              type="file"
-              onChange={handleImageChange}
-            />
-          </div>
-          <button type="submit">Julkaise</button>
-        </form>
-        <h3>Posts</h3>
-        <ul>
-          {posts.map(post => (
-            <li key={post.id}>
-              {editMode === post.id ? (
-                <div>
-                  <input
-                    type="text"
-                    value={editedTitle}
-                    onChange={(e) => setEditedTitle(e.target.value)}
-                  />
-                  <textarea
-                    value={editedDescription}
-                    onChange={(e) => setEditedDescription(e.target.value)}
-                  />
-                  <input
-                    type="file"
-                    onChange={(e) => setEditedImage(e.target.files[0])}
-                  />
-                  <button onClick={() => handleSaveEdit(post.id, post.imageUrl)}>Tallenna</button>
-                  <button onClick={handleCancelEdit}>Peruuta</button>
-                </div>
-              ) : (
-                <div>
-                  <h3>{post.title}</h3>
-                  <p>{post.description}</p>
-                  {post.imageUrl && <img src={post.imageUrl} alt="Post" />}
-                  <button onClick={() => handleEditPost(post)}>Muokkaa</button>
-                  <button onClick={() => handlePostDeletion(post.id, post.imageUrl)}>Poista</button>
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
+      
       </div>
     );
   }
