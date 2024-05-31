@@ -86,7 +86,9 @@
         font-size: 20px;
     }
 
-    .history-image-slider-div {
-        height: 300px;
+    .history-image-container{
+        min-width: 300px;
+        width: auto;
+        height: 250px;
     }
 }

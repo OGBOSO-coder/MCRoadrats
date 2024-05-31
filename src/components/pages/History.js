@@ -99,7 +99,6 @@ const EditForm = () => {
       </div>
 
       <center>
-        <h1>Kuvia MCRoadrats</h1>
         {user && (
           <div>
             <h1>Lisää kuva:</h1>

@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from './components/Navbar';
 import './App.css';
 import Home from './components/pages/Home';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import palvelut from './components/pages/palvelut';
 import hallitus from './components/pages/hallitus';
 import rottaralli from './components/pages/rottaralli';
@@ -12,7 +12,7 @@ import Testi from './components/pages/kirjautuminen';
 
 function App() {
   return (
-    <BrowserRouter basename="/uudet/build">
+    <Router>
         <Navbar />
         <Switch>
           <Route path='/' exact component={Home} />
@@ -23,7 +23,7 @@ function App() {
           <Route path='/jaseneksi' component={SignUp} />
           <Route path='/admin' component={Testi} />
         </Switch>
-        </BrowserRouter>
+        </Router>
   );
 }
 

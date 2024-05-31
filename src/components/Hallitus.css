@@ -47,9 +47,10 @@
   border: 1px solid #777;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 650px) {
   .hallitus-image-container {
-    width: 390px;
-    height: 290px;
+    min-width: 300px;
+    width: auto;
+    height: 250px;
   }
 }
