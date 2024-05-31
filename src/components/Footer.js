@@ -37,12 +37,6 @@ function Footer() {
         <p>mail@mcroadrats.com​ <br />
           laskut@mcroadrats.com</p>
       </div>
-          <Link
-                to='/rottaralli'
-                className='nav-links'
-              >
-                o
-          </Link>
     </div>
   );
 }
