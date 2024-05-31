@@ -83,6 +83,11 @@
 .instagram:hover {
   color: #e4405f;
 }
+.adminnappin{
+  max-width: 20px;
+  max-height: 20px;
+  background-color: #161616;
+}
 
 @media screen and (max-width: 1000px) {
   .footer-container {

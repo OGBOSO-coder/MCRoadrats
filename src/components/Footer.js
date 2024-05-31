@@ -1,5 +1,6 @@
 import React from 'react';
 import './Footer.css';
+import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
@@ -36,6 +37,12 @@ function Footer() {
         <p>mail@mcroadrats.com​ <br />
           laskut@mcroadrats.com</p>
       </div>
+          <Link
+                to='/rottaralli'
+                className='nav-links'
+              >
+                o
+          </Link>
     </div>
   );
 }

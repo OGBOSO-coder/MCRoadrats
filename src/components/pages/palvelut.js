@@ -258,8 +258,6 @@ const Products = () => {
           {user && renderPostForm('Kalusto')}
         </div>
 
-        <p className='equipment-description'></p>
-
         {user && (
           <div>
             <h1>Lisää kuva:</h1>
